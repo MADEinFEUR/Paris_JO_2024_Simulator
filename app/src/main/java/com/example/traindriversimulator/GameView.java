@@ -14,6 +14,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.os.Handler;
+import android.widget.Button;
 
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.res.ResourcesCompat;
@@ -42,6 +43,9 @@ public class GameView extends View{
 
     ArrayList<Tower> towers;
 
+
+
+
     public  GameView(Context context){
         super(context);
         this.context = context;
@@ -56,6 +60,15 @@ public class GameView extends View{
         rectBackground = new Rect(0,0,dWidth,dHeight);
         rectBase = new Rect(0,dHeight-base.getHeight(),dWidth,dHeight);
         handler = new Handler();
+        Button bouton1 = new Button(context);
+        bouton1.setText("zizi");
+        bouton1.setVisibility(VISIBLE);
+        bouton1.setHeight(50);
+        bouton1.setWidth(100);
+
+
+
+
         runnable = new Runnable() {
             @Override
             public void run() {
@@ -68,8 +81,8 @@ public class GameView extends View{
         textPaint.setTextAlign(Paint.Align.LEFT);
         healthPaint.setColor(Color.GREEN);
         random = new Random();
-        baseX = dWidth / 2 - base.getWidth();
-        baseY = 0;
+        baseX = 0 ;
+        baseY = size.y;
         enemies = new ArrayList<>();
         towers = new ArrayList<>();
         explosions = new ArrayList<>();
@@ -84,15 +97,17 @@ public class GameView extends View{
         super.onDraw(canvas);
         canvas.drawBitmap(background, null, rectBackground, null);
         canvas.drawBitmap(base, null, rectBase, null);
+
         for (int i = 0; i < enemies.size(); i++) {
             canvas.drawBitmap(enemies.get(i).getEnemy(enemies.get(i).enemyFrame), enemies.get(i).getPositionX(), enemies.get(i).getPositionY(), null);
             enemies.get(i).enemyFrame++;
-            if (enemies.get(i).enemyFrame > 2) {
+            if (enemies.get(i).enemyFrame > 3) {
                 enemies.get(i).enemyFrame = 0;
 
             }
             enemies.get(i).positionY += enemies.get(i).enemyVelocity;
-            if (enemies.get(i).getPositionY() + enemies.get(i).getEnemyHeight() >= dHeight) {
+
+            if (enemies.get(i).getPositionY() >= baseY - base.getHeight() - 100) {
                 Explosion explosion = new Explosion(context);
                 explosion.explosionX = enemies.get(i).getPositionX();
                 explosion.explosionY = enemies.get(i).positionY;
@@ -103,10 +118,7 @@ public class GameView extends View{
         }
 
         for (int i = 0; i < enemies.size(); i++) {
-            if (enemies.get(i).getPositionX() + enemies.get(i).getEnemyWidth() >= baseX
-                    && enemies.get(i).getPositionX() <= baseX + base.getWidth()
-                    && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() >= baseY
-                    && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() <= baseY + base.getHeight()) {
+            if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() >=  baseY - base.getHeight()) {
                 life--;
                 enemies.get(i).resetPosition();
                 if (life == 0) {
@@ -122,19 +134,20 @@ public class GameView extends View{
         for (int i = 0; i < explosions.size(); i++) {
             canvas.drawBitmap(explosions.get(i).getExplosion(explosions.get(i).explosionFrame), explosions.get(i).explosionX, explosions.get(i).explosionY, null);
             explosions.get(i).explosionFrame++;
-            if (explosions.get(i).explosionFrame > 3) {
+            if (explosions.get(i).explosionFrame >= 8) {
                 explosions.remove(i);
             }
         }
         if (life < 60) {
             healthPaint.setColor(Color.YELLOW);
 
-        } else if (life >= 30) {
+        } else if (life <= 30) {
             healthPaint.setColor(Color.RED);
         }
         canvas.drawRect(dWidth - 200, 30, dWidth - 200 + 60 * life, 80, healthPaint);
         canvas.drawText("" + points, 20, TEXT_SIZE, textPaint);
         handler.postDelayed(runnable, UPADATE_MILLIS);
+
     }
 
 

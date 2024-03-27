@@ -12,9 +12,9 @@ public class Enemy {
     private int attaque;
     private String type;
 
-    Bitmap enemy[] = new Bitmap[3];
+    Bitmap enemy[] = new Bitmap[5];
     int enemyFrame = 0;
-    private int positionX;
+    public int positionX;
     public int positionY;
     public int enemyVelocity;
     Random random;
@@ -31,6 +31,8 @@ public class Enemy {
         enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
         enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
         enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+        enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+        enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
 
         random = new Random();
         resetPosition();

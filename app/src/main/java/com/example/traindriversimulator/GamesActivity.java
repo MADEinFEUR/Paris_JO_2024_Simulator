@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,13 +43,15 @@ public class GamesActivity extends AppCompatActivity {
 
     public int boutonjeux = 1;
 
+    WindowManager.LayoutParams ds = new WindowManager.LayoutParams(1,2);
+
     public void launchgame(View view) {
 
         findViewById(R.id.start).setEnabled(false);
         findViewById(R.id.start).setVisibility(View.INVISIBLE);
 
         GameView gameView = new GameView(this);
-        setContentView(gameView);
+        setContentView(gameView, ds);
         /*
         Game game = new Game();
         game.game(GetmapX(), GetmapY(), 100);
@@ -79,6 +82,7 @@ public class GamesActivity extends AppCompatActivity {
         boutonjeux = 2;
         Button repa = findViewById(R.id.button4);
         repa.setText("Réparation");
+        repa.bringToFront();
         Button up = findViewById(R.id.button6);
         up.setText("Amélioration");
         Button destru = findViewById(R.id.button5);
