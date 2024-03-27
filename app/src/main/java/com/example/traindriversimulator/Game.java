@@ -42,9 +42,9 @@ public class Game {
 
     public void spawn() {
         //test spawn manuel
-        addEnemy(new Enemy("t",10,20,10,10));
-        addEnemy(new Enemy("t",10,20,10,10));
-        addEnemy(new Enemy("t",10,20,10,10));
+       // addEnemy(new Enemy("t",10,20,10,10,10));
+      //  addEnemy(new Enemy("t",10,20,10,10,10));
+       // addEnemy(new Enemy("t",10,20,10,10,10));
 
 
 
@@ -105,14 +105,14 @@ public class Game {
             int lvl = 1;
             switch (lvl) {
                 case 1:
-                    addTower(new Tower(10, 10 + rangeplus, 1, 1));
+                   // addTower(new Tower(10, 10 + rangeplus, 1, 1));
                     break;
 
                 case 2:
-                    addTower(new Tower(30, 10 + rangeplus, 1, 1));
+                   // addTower(new Tower(30, 10 + rangeplus, 1, 1));
                     break;
                 case 3:
-                    addTower(new Tower(50, 10 + rangeplus, 1, 1));
+                  //  addTower(new Tower(50, 10 + rangeplus, 1, 1));
                     break;
 
                 default:

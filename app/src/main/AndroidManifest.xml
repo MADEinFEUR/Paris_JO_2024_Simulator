@@ -10,17 +10,22 @@
         android:label="SNCF ROYAL DEFENSE"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TrainDriverSimulator"
+        android:theme="@style/Theme.AppCompat.Light.noActionBar.FullScreen"
         tools:targetApi="31">
         <activity
             android:name=".GamesActivity"
-            android:exported="true"
-            android:label="SNCF ROYAL DEFENSE"
-            android:theme="@style/Theme.TrainDriverSimulator" />
+            android:screenOrientation="portrait"
+            android:exported="true" />
+
+        <activity
+            android:name=".GameOver"
+            android:screenOrientation="portrait"
+            android:exported="true" />
 
 
         <activity
             android:name=".App"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

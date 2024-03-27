@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.graphics.Canvas;
@@ -23,6 +24,7 @@ public class GamesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.games_activity);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
         Game game = new Game();
@@ -42,16 +44,18 @@ public class GamesActivity extends AppCompatActivity {
 
     public void launchgame(View view) {
 
-        System.out.println(GetmapX() + "et" + GetmapY());
         findViewById(R.id.start).setEnabled(false);
         findViewById(R.id.start).setVisibility(View.INVISIBLE);
 
+        GameView gameView = new GameView(this);
+        setContentView(gameView);
+        /*
         Game game = new Game();
         game.game(GetmapX(), GetmapY(), 100);
         game.spawn();
         game.startgame();
+        */
 
-        MyBitmapView myBitmap = new MyBitmapView();
 
 
     }
@@ -157,40 +161,4 @@ public class GamesActivity extends AppCompatActivity {
 //_________________________________________________________________________Gestion graphique du jeu _________________________________________________________
 
 
-    public class MyBitmapView extends View {
-        private Bitmap mBitmap;
-        private int mX;
-        private int mY;
-        private int mSpeed;
-
-        public MyBitmapView() {
-            super(context);
-
-            // Load the Bitmap image from the app's resources
-            mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.enemi1);
-
-            // Set the initial position and speed of the Bitmap
-            mX = 0;
-            mY = 0;
-            mSpeed = 10;
-
-            // Create a Paint object to draw the Bitmap
-            Paint paint = new Paint();
-            paint.setFilterBitmap(true);
-        }
-
-        @Override
-        protected void onDraw(Canvas canvas) {
-            super.onDraw(canvas);
-
-            // Draw the Bitmap on the canvas
-            canvas.drawBitmap(mBitmap, mX, mY, null);
-
-            // Move the Bitmap vertically by the speed value
-            mY += mSpeed;
-
-            // Invalidate the view to trigger a redraw
-            invalidate();
-        }
-    }
 }
