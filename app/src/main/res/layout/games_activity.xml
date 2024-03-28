@@ -57,101 +57,102 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/horizontalScrollView2"
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:rotationX="43"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/horizontalScrollView2"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:rotationX="43"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
-            <LinearLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent">
+
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:onClick="bouton1jeu"
+                android:text="T1"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:onClick="bouton3jeu"
+                android:text="T3"
+                android:visibility="visible"
+                tools:layout_editor_absoluteX="220dp"
+                tools:layout_editor_absoluteY="395dp" />
+
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:onClick="bouton2jeu"
+                android:text="T2"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="384dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:text="Button"
+                android:visibility="visible" />
 
-
-                <Button
-                    android:id="@+id/button4"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:onClick="bouton1jeu"
-                    android:text="T1"
-                    android:visibility="visible" />
-
-                <Button
-                    android:id="@+id/button6"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:onClick="bouton3jeu"
-                    android:text="T3"
-                    android:visibility="visible"
-                    tools:layout_editor_absoluteX="220dp"
-                    tools:layout_editor_absoluteY="395dp" />
-
-                <Button
-                    android:id="@+id/button5"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:onClick="bouton2jeu"
-                    android:text="T2"
-                    android:visibility="visible" />
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <ScrollView
-            android:id="@+id/scrollView3"
-            android:layout_width="393dp"
-            android:layout_height="54dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
+            <Button
+                android:id="@+id/button8"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="38dp"
+                android:layout_weight="1"
+                android:onClick="test"
+                android:text="Button"
+                android:visibility="visible" />
 
-                <Button
-                    android:id="@+id/button9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Button"
-                    android:visibility="visible" />
+        </LinearLayout>
+    </ScrollView>
 
-                <Button
-                    android:id="@+id/button8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="test"
-                    android:text="Button"
-                    android:visibility="visible" />
+    <View
+        android:id="@+id/map"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView3"
+        app:layout_constraintVertical_bias="0.0" />
 
-            </LinearLayout>
-        </ScrollView>
-
-        <View
-            android:id="@+id/map"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scrollView3"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
+    <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -174,11 +175,14 @@
             app:layout_constraintStart_toStartOf="@+id/map"
             app:layout_constraintTop_toBottomOf="@+id/scrollView3" />
 
-        <androidx.constraintlayout.helper.widget.Layer
-            android:id="@+id/layer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:constraint_referenced_ids="horizontalScrollView2" />
+    <androidx.constraintlayout.helper.widget.Layer
+        android:id="@+id/layer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="horizontalScrollView2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

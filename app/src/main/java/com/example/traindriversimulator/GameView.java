@@ -34,7 +34,7 @@ public class GameView extends View{
     Paint healthPaint = new Paint();
     float TEXT_SIZE = 120;
     int points = 0;
-    int life = 100;
+    int life = 9;
     static int dWidth, dHeight;
     Random random;
     float baseX, baseY;
@@ -60,11 +60,7 @@ public class GameView extends View{
         rectBackground = new Rect(0,0,dWidth,dHeight);
         rectBase = new Rect(0,dHeight-base.getHeight(),dWidth,dHeight);
         handler = new Handler();
-        Button bouton1 = new Button(context);
-        bouton1.setText("zizi");
-        bouton1.setVisibility(VISIBLE);
-        bouton1.setHeight(50);
-        bouton1.setWidth(100);
+
 
 
 
@@ -107,12 +103,8 @@ public class GameView extends View{
             }
             enemies.get(i).positionY += enemies.get(i).enemyVelocity;
 
-            if (enemies.get(i).getPositionY() >= baseY - base.getHeight() - 100) {
-                Explosion explosion = new Explosion(context);
-                explosion.explosionX = enemies.get(i).getPositionX();
-                explosion.explosionY = enemies.get(i).positionY;
-                explosions.add(explosion);
-                enemies.get(i).resetPosition();
+            if (enemies.get(i).getPositionY() >= baseY - base.getHeight() - 10) {
+
             }
 
         }
@@ -120,10 +112,14 @@ public class GameView extends View{
         for (int i = 0; i < enemies.size(); i++) {
             if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() >=  baseY - base.getHeight()) {
                 life--;
+                Explosion explosion = new Explosion(context);
+                explosion.explosionX = enemies.get(i).getPositionX();
+                explosion.explosionY = enemies.get(i).positionY;
+                explosions.add(explosion);
                 enemies.get(i).resetPosition();
                 if (life == 0) {
                     Intent intent = new Intent(context, GameOver.class);
-                    intent.putExtra("point", points);
+                    intent.putExtra("Tires de transports", points);
                     context.startActivity(intent);
                     ((Activity) context).finish();
                 }
@@ -138,13 +134,13 @@ public class GameView extends View{
                 explosions.remove(i);
             }
         }
-        if (life < 60) {
+        if (life <= 6 && life >3) {
             healthPaint.setColor(Color.YELLOW);
 
-        } else if (life <= 30) {
+        } else if (life <= 3) {
             healthPaint.setColor(Color.RED);
         }
-        canvas.drawRect(dWidth - 200, 30, dWidth - 200 + 60 * life, 80, healthPaint);
+        canvas.drawRect(0, dHeight - 100, (int)((dWidth)*0.1*life) , dHeight - 150, healthPaint);
         canvas.drawText("" + points, 20, TEXT_SIZE, textPaint);
         handler.postDelayed(runnable, UPADATE_MILLIS);
 
