@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class GamesActivity extends AppCompatActivity {
 
+
     private Context context;
 
     @Override
@@ -28,8 +29,6 @@ public class GamesActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
-        Game game = new Game();
-        //game.startGame();
 
     }
 
@@ -60,7 +59,7 @@ public class GamesActivity extends AppCompatActivity {
         */
 
 
-
+        ///zizizi
     }
 
 
