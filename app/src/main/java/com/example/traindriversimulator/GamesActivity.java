@@ -1,13 +1,17 @@
 package com.example.traindriversimulator;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.graphics.Canvas;
 import android.graphics.BitmapFactory;
@@ -19,18 +23,67 @@ import androidx.appcompat.app.AppCompatActivity;
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class GamesActivity extends AppCompatActivity {
 
-
+    FrameLayout gameActivity;
+    RelativeLayout GameButtons;
+    GameView gameView;
     private Context context;
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        gameView=new GameView(this);
+        gameActivity = new FrameLayout(this);
+        GameButtons = new RelativeLayout(this);
+
+        Button button1 = new Button(this);
+        button1.setText("test1");
+        button1.setId(1);
+
+        Button button2 = new Button(this);
+        button2.setText("test2");
+        button2.setId(2);
+
+
+
+        ViewGroup.LayoutParams b1= new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        ViewGroup.LayoutParams b2= new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        ViewGroup.LayoutParams params= new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+
+        GameButtons.setLayoutParams(params);
+        GameButtons.addView(button1);
+        GameButtons.addView(button2);
+
+
+        ((RelativeLayout.LayoutParams) b1).addRule(RelativeLayout.ALIGN_PARENT_RIGHT,RelativeLayout.TRUE);
+        ((RelativeLayout.LayoutParams) b1).addRule(RelativeLayout.ALIGN_PARENT_TOP,RelativeLayout.TRUE);
+        button1.setLayoutParams(b1);
+
+        ((RelativeLayout.LayoutParams) b2).addRule(RelativeLayout.ALIGN_PARENT_RIGHT,RelativeLayout.TRUE);
+        ((RelativeLayout.LayoutParams) b2).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,RelativeLayout.TRUE);
+        button2.setLayoutParams(b2);
+
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.games_activity);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        gameActivity.addView(gameView);
+        gameActivity.addView(GameButtons);
+
+
+        setContentView(gameActivity);
+
+
+
+
+
+
+
 
     }
-
+    /*
     public int GetmapX() {
         return (int) findViewById(R.id.view).getWidth();
     }
@@ -49,18 +102,18 @@ public class GamesActivity extends AppCompatActivity {
         findViewById(R.id.start).setEnabled(false);
         findViewById(R.id.start).setVisibility(View.INVISIBLE);
 
-        GameView gameView = new GameView(this);
-        setContentView(gameView, ds);
-        /*
+
+
+
         Game game = new Game();
         game.game(GetmapX(), GetmapY(), 100);
         game.spawn();
         game.startgame();
-        */
+        }
 
 
-        ///zizizi
-    }
+
+
 
 
     public void Armes(View view) {
@@ -163,5 +216,5 @@ public class GamesActivity extends AppCompatActivity {
 
 //_________________________________________________________________________Gestion graphique du jeu _________________________________________________________
 
-
+*/
 }

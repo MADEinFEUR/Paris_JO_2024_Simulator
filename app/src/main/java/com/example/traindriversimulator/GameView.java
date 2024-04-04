@@ -216,10 +216,6 @@ public class GameView extends View {
         }
         canvas.drawRect(0, dHeight - 100, (int) ((dWidth) * 0.001 * life), dHeight - 150, healthPaint);
         canvas.drawText("" + points, 20, TEXT_SIZE, textPaint);
-
-
-        canvas.drawRect( 200, dHeight - base.getHeight() - 500,dWidth - 500,base.getWidth(), healthPaint);
-
         handler.postDelayed(runnable, UPADATE_MILLIS);
 
     }
