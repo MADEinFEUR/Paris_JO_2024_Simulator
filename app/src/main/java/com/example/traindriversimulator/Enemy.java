@@ -13,7 +13,8 @@ public class Enemy {
     private int attaqueRange;
     private String name;
     private int moneyReward;
-    public int enemyVelocity;
+    public int enemyVelocityY;
+    public int enemyVelocityX;
 
     Bitmap enemy[] = new Bitmap[7];
     int enemyFrame = 0;
@@ -26,7 +27,8 @@ public class Enemy {
         this.health = health;
         this.rank = rank;
         this.attaqueRange = attaqueRange;
-        this.enemyVelocity = enemyVelocity;
+        this.enemyVelocityY = enemyVelocityY;
+
         this.rank = rank;
         this.positionX = positionX;
         this.positionY = positionY;
@@ -65,7 +67,8 @@ public class Enemy {
     public void resetPosition(){
         positionX = random.nextInt(GameView.dWidth - getEnemyWidth());
         positionY = -200 + random.nextInt(600)*-1;
-        enemyVelocity = 35 + random.nextInt(16);
+        enemyVelocityY = 5;
+        enemyVelocityX = enemyVelocityY;
     }
 
     public int getHealth() {
@@ -88,9 +91,6 @@ public class Enemy {
         return name;
     }
 
-    public void move() {
-        positionX--;
-    }
 
 
 

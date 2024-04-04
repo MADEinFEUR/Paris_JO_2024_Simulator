@@ -32,12 +32,12 @@ public class GamesActivity extends AppCompatActivity {
     }
 
     public int GetmapX() {
-        return (int) findViewById(R.id.map).getWidth();
+        return (int) findViewById(R.id.view).getWidth();
     }
 
 
     public int GetmapY() {
-        return (int) findViewById(R.id.map).getHeight();
+        return (int) findViewById(R.id.view).getHeight();
     }
 
     public int boutonjeux = 1;

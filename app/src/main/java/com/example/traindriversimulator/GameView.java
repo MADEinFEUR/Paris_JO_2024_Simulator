@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.os.Handler;
 import android.widget.Button;
+import android.util.AttributeSet;
 
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.res.ResourcesCompat;
@@ -24,25 +25,34 @@ import java.util.Random;
 
 public class GameView extends View {
 
-    Bitmap background, base, train, rail;
-    Rect rectBackground, rectBase, rectTrain, rectRail;
+    Bitmap background, base, train, rail, murT1, murT2;
+    Rect rectBackground, rectBase, rectTrain, rectRail, rectMurT1;
     Context context;
     Handler handler;
     final long UPADATE_MILLIS = 30;
     Runnable runnable;
     Paint textPaint = new Paint();
     Paint healthPaint = new Paint();
+
     float TEXT_SIZE = 120;
     int points = 0;
     int life = 1000;
     static int dWidth, dHeight;
     Random random;
-    int nb_spawn;
+    int nb_spawn, positionMurX;
     float baseX, baseY, trainX, trainY;
+
+
+    Boolean positionMurY;
     ArrayList<Enemy> enemies;
     ArrayList<Explosion> explosions;
 
     ArrayList<Tower> towers;
+
+    ArrayList<MurGrand> mursG;
+    ArrayList<MurPetit> mursP;
+    private int randMur;
+    private int mapAuto ;
 
 
     public GameView(Context context) {
@@ -52,6 +62,9 @@ public class GameView extends View {
         base = BitmapFactory.decodeResource(getResources(), R.drawable.base);
         train = BitmapFactory.decodeResource(getResources(), R.drawable.base1);
         rail = BitmapFactory.decodeResource(getResources(), R.drawable.rail);
+        murT1 = BitmapFactory.decodeResource(getResources(), R.drawable.mur_t1);
+        murT2 = BitmapFactory.decodeResource(getResources(), R.drawable.mur_t2);
+
 
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -62,7 +75,7 @@ public class GameView extends View {
         rectBase = new Rect(0, dHeight - base.getHeight(), dWidth, dHeight);
         rectTrain = new Rect(0, 0, dWidth, 200);
         rectRail = new Rect(0, 0, dWidth, 250);
-
+        rectMurT1 = new Rect(0, 0, murT1.getWidth(), murT1.getHeight());
         handler = new Handler();
 
 
@@ -73,6 +86,7 @@ public class GameView extends View {
 
             }
         };
+
         textPaint.setColor(Color.rgb(255, 165, 0));
         textPaint.setTextSize(TEXT_SIZE);
         textPaint.setTextAlign(Paint.Align.LEFT);
@@ -85,12 +99,26 @@ public class GameView extends View {
         enemies = new ArrayList<>();
         towers = new ArrayList<>();
         explosions = new ArrayList<>();
+        mursG = new ArrayList<>();
+        mursP = new ArrayList<>();
         nb_spawn = random.nextInt(500);
+        randMur = random.nextInt(200);
+        mapAuto = random.nextInt(1);
 
 
-        for (int i = 0; i < nb_spawn; i++) {
+        for (int i = 0; i < 500; i++) {
             Enemy enemy = new Enemy(context);
             enemies.add(enemy);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            MurGrand murGrand = new MurGrand(context);
+            mursG.add(murGrand);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            MurPetit murPetit = new MurPetit(context);
+            mursP.add(murPetit);
         }
     }
 
@@ -98,12 +126,35 @@ public class GameView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawBitmap(background, null, rectBackground, null);
-        canvas.drawBitmap(base, null, rectBase, null);
         canvas.drawBitmap(rail, null, rectRail, null);
         canvas.drawBitmap(train, null, rectTrain, null);
 
 
+        for (int i = 1; i < mursG.size(); i++) {
+            mursG.get(0).y = + rail.getHeight() + randMur;
+            canvas.drawBitmap(mursG.get(0).getMurGrand(mursG.get(0).murFrame), mursG.get(0).getMGX(), mursG.get(0).getMGY(), null);
+
+            mursG.get(i).y = mursP.get(i-1).y +murT1.getHeight() + 200;
+            canvas.drawBitmap(mursG.get(i).getMurGrand(mursG.get(i).murFrame), mursG.get(i).getMGX(), mursG.get(i).getMGY(), null);
+
+        }
+
+        for (int i = 1; i < mursP.size(); i++) {
+            mursP.get(0).y = rail.getHeight() + mursG.get(0).y ;
+            mursP.get(0).x = dWidth - murT2.getWidth() ;
+
+            canvas.drawBitmap(mursP.get(0).getMurPetit(mursP.get(0).murFrame), mursP.get(0).getMPX(), mursP.get(0).getMPY(), null);
+
+            mursP.get(i).y = mursG.get(i).y + murT2.getHeight() + 265;
+            mursP.get(i).x = mursP.get(0).x;
+            canvas.drawBitmap(mursP.get(i).getMurPetit(mursP.get(i).murFrame), mursP.get(i).getMPX(), mursP.get(i).getMPY(), null);
+        }
+        canvas.drawBitmap(base, null, rectBase, null);
+
+
+
 //____________________________________spawn
+
         for (int i = 0; i < enemies.size(); i++) {
             canvas.drawBitmap(enemies.get(i).getEnemy(enemies.get(i).enemyFrame), enemies.get(i).getPositionX(), enemies.get(i).getPositionY(), null);
             enemies.get(i).enemyFrame++;
@@ -111,12 +162,25 @@ public class GameView extends View {
                 enemies.get(i).enemyFrame = 0;
 
             }
-            enemies.get(i).positionY += enemies.get(i).enemyVelocity;
+            for (int j = 0; j < mursG.size(); j++) {
 
-            if (enemies.get(i).getPositionY() >= baseY - base.getHeight() - 10) {
+                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() > mursG.get(j).getMGY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() < mursG.get(j).getMGY()+murT1.getHeight() && enemies.get(i).positionX < mursG.get(j).getMGX() + murT1.getWidth() ) {
+                    enemies.get(i).positionX += enemies.get(i).enemyVelocityX;
+                    enemies.get(i).enemyVelocityY = 0;
+                }
+
+                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() > mursP.get(j).getMPY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() < mursP.get(j).getMPY()+murT2.getHeight() && enemies.get(i).positionX < mursP.get(j).getMPX() + murT2.getWidth() && enemies.get(i).positionX + enemies.get(i).getEnemyWidth() > mursP.get(j).getMPX()) {
+                    enemies.get(i).positionX += -enemies.get(i).enemyVelocityX;
+                    enemies.get(i).enemyVelocityY = 0;
+
+                }
+
+
+
 
             }
-
+            enemies.get(i).positionY += enemies.get(i).enemyVelocityY;
+            enemies.get(i).enemyVelocityY = 5;
         }
 
         for (int i = 0; i < enemies.size(); i++) {
@@ -152,12 +216,15 @@ public class GameView extends View {
         }
         canvas.drawRect(0, dHeight - 100, (int) ((dWidth) * 0.001 * life), dHeight - 150, healthPaint);
         canvas.drawText("" + points, 20, TEXT_SIZE, textPaint);
+
+
+        canvas.drawRect( 200, dHeight - base.getHeight() - 500,dWidth - 500,base.getWidth(), healthPaint);
+
         handler.postDelayed(runnable, UPADATE_MILLIS);
 
     }
 
+
+
+
 }
- //________________________________IA
-
-
-
