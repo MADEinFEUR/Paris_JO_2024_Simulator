@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.graphics.Canvas;
 import android.graphics.BitmapFactory;
@@ -20,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class GamesActivity extends AppCompatActivity {
 
+
     private Context context;
 
     @Override
@@ -27,6 +27,7 @@ public class GamesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.games_activity);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
 
 
     }
@@ -41,22 +42,25 @@ public class GamesActivity extends AppCompatActivity {
 
     public int boutonjeux = 1;
 
-
     WindowManager.LayoutParams ds = new WindowManager.LayoutParams(1,2);
 
     public void launchgame(View view) {
 
         findViewById(R.id.start).setEnabled(false);
         findViewById(R.id.start).setVisibility(View.INVISIBLE);
+
         GameView gameView = new GameView(this);
-        setContentView(gameView);
+        setContentView(gameView, ds);
+        /*
+        Game game = new Game();
+        game.game(GetmapX(), GetmapY(), 100);
+        game.spawn();
+        game.startgame();
+        */
 
-        
 
-
+        ///zizizi
     }
-
-
 
 
     public void Armes(View view) {

@@ -8,24 +8,29 @@ import java.util.Random;
 
 public class Enemy {
     private int health;
-
+    private int rank;
     private int attaque;
-    private String type;
+    private int attaqueRange;
+    private String name;
+    private int moneyReward;
+    public int enemyVelocity;
 
     Bitmap enemy[] = new Bitmap[5];
     int enemyFrame = 0;
     public int positionX;
     public int positionY;
-    public int enemyVelocity;
     Random random;
 
 
     public Enemy(Context context) {
         this.health = health;
+        this.rank = rank;
+        this.attaqueRange = attaqueRange;
         this.enemyVelocity = enemyVelocity;
+        this.rank = rank;
         this.positionX = positionX;
         this.positionY = positionY;
-        this.type = type;
+        this.name = name;
         this.attaque = attaque;
 
         enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
@@ -78,7 +83,7 @@ public class Enemy {
     }
 
     public String getType(){
-        return type;
+        return name;
     }
 
     public void move() {
