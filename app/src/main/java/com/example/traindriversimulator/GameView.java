@@ -24,8 +24,8 @@ import java.util.Random;
 
 public class GameView extends View{
 
-    Bitmap background, base, train;
-    Rect rectBackground, rectBase;
+    Bitmap background, base, train, rail;
+    Rect rectBackground, rectBase, rectTrain, rectRail;
     Context context;
     Handler handler;
     final long UPADATE_MILLIS = 30;
@@ -52,6 +52,8 @@ public class GameView extends View{
         background = BitmapFactory.decodeResource(getResources(),R.drawable.map);
         base = BitmapFactory.decodeResource(getResources(),R.drawable.base);
         train = BitmapFactory.decodeResource(getResources(),R.drawable.base1);
+        rail = BitmapFactory.decodeResource(getResources(),R.drawable.rail);
+
         Display display = ((Activity)getContext()).getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -59,6 +61,9 @@ public class GameView extends View{
         dHeight = size.y;
         rectBackground = new Rect(0,0,dWidth,dHeight);
         rectBase = new Rect(0,dHeight-base.getHeight(),dWidth,dHeight);
+        rectTrain = new Rect(0,0,0,0);
+        rectRail = new Rect(0,0,0,0);
+
         handler = new Handler();
 
 
@@ -93,11 +98,14 @@ public class GameView extends View{
         super.onDraw(canvas);
         canvas.drawBitmap(background, null, rectBackground, null);
         canvas.drawBitmap(base, null, rectBase, null);
+        canvas.drawBitmap(rail, null, rectRail, null);
+        canvas.drawBitmap(train, null, rectTrain, null);
+
 
         for (int i = 0; i < enemies.size(); i++) {
             canvas.drawBitmap(enemies.get(i).getEnemy(enemies.get(i).enemyFrame), enemies.get(i).getPositionX(), enemies.get(i).getPositionY(), null);
             enemies.get(i).enemyFrame++;
-            if (enemies.get(i).enemyFrame > 3) {
+            if (enemies.get(i).enemyFrame > 4) {
                 enemies.get(i).enemyFrame = 0;
 
             }
@@ -119,7 +127,7 @@ public class GameView extends View{
                 enemies.get(i).resetPosition();
                 if (life == 0) {
                     Intent intent = new Intent(context, GameOver.class);
-                    intent.putExtra("Tires de transports", points);
+                    intent.putExtra("Titres de transports", points);
                     context.startActivity(intent);
                     ((Activity) context).finish();
                 }

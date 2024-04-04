@@ -29,12 +29,12 @@ public class GamesActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
-
     }
 
     public int GetmapX() {
         return (int) findViewById(R.id.map).getWidth();
     }
+
 
     public int GetmapY() {
         return (int) findViewById(R.id.map).getHeight();
