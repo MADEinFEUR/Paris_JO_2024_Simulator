@@ -15,7 +15,7 @@ public class Enemy {
     private int moneyReward;
     public int enemyVelocity;
 
-    Bitmap enemy[] = new Bitmap[5];
+    Bitmap enemy[] = new Bitmap[7];
     int enemyFrame = 0;
     public int positionX;
     public int positionY;
@@ -38,6 +38,8 @@ public class Enemy {
         enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
         enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
         enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+        enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+        enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
 
         random = new Random();
         resetPosition();

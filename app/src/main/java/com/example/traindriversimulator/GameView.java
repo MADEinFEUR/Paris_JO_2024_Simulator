@@ -22,7 +22,7 @@ import androidx.core.content.res.ResourcesCompat;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameView extends View{
+public class GameView extends View {
 
     Bitmap background, base, train, rail;
     Rect rectBackground, rectBase, rectTrain, rectRail;
@@ -34,40 +34,36 @@ public class GameView extends View{
     Paint healthPaint = new Paint();
     float TEXT_SIZE = 120;
     int points = 0;
-    int life = 9;
+    int life = 1000;
     static int dWidth, dHeight;
     Random random;
-    float baseX, baseY;
+    int nb_spawn;
+    float baseX, baseY, trainX, trainY;
     ArrayList<Enemy> enemies;
     ArrayList<Explosion> explosions;
 
     ArrayList<Tower> towers;
 
 
-
-
-    public  GameView(Context context){
+    public GameView(Context context) {
         super(context);
         this.context = context;
-        background = BitmapFactory.decodeResource(getResources(),R.drawable.map);
-        base = BitmapFactory.decodeResource(getResources(),R.drawable.base);
-        train = BitmapFactory.decodeResource(getResources(),R.drawable.base1);
-        rail = BitmapFactory.decodeResource(getResources(),R.drawable.rail);
+        background = BitmapFactory.decodeResource(getResources(), R.drawable.map);
+        base = BitmapFactory.decodeResource(getResources(), R.drawable.base);
+        train = BitmapFactory.decodeResource(getResources(), R.drawable.base1);
+        rail = BitmapFactory.decodeResource(getResources(), R.drawable.rail);
 
-        Display display = ((Activity)getContext()).getWindowManager().getDefaultDisplay();
+        Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         dWidth = size.x;
         dHeight = size.y;
-        rectBackground = new Rect(0,0,dWidth,dHeight);
-        rectBase = new Rect(0,dHeight-base.getHeight(),dWidth,dHeight);
-        rectTrain = new Rect(0,0,0,0);
-        rectRail = new Rect(0,0,0,0);
+        rectBackground = new Rect(0, 0, dWidth, dHeight);
+        rectBase = new Rect(0, dHeight - base.getHeight(), dWidth, dHeight);
+        rectTrain = new Rect(0, 0, dWidth, 200);
+        rectRail = new Rect(0, 0, dWidth, 250);
 
         handler = new Handler();
-
-
-
 
 
         runnable = new Runnable() {
@@ -77,22 +73,27 @@ public class GameView extends View{
 
             }
         };
-        textPaint.setColor(Color.rgb(255,165,0));
+        textPaint.setColor(Color.rgb(255, 165, 0));
         textPaint.setTextSize(TEXT_SIZE);
         textPaint.setTextAlign(Paint.Align.LEFT);
         healthPaint.setColor(Color.GREEN);
         random = new Random();
-        baseX = 0 ;
+        baseX = 0;
         baseY = size.y;
+        trainX = 0;
+        trainY = 0;
         enemies = new ArrayList<>();
         towers = new ArrayList<>();
         explosions = new ArrayList<>();
+        nb_spawn = random.nextInt(500);
 
-        for(int i=0; i<3; i++){
+
+        for (int i = 0; i < nb_spawn; i++) {
             Enemy enemy = new Enemy(context);
             enemies.add(enemy);
         }
     }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -102,10 +103,11 @@ public class GameView extends View{
         canvas.drawBitmap(train, null, rectTrain, null);
 
 
+//____________________________________spawn
         for (int i = 0; i < enemies.size(); i++) {
             canvas.drawBitmap(enemies.get(i).getEnemy(enemies.get(i).enemyFrame), enemies.get(i).getPositionX(), enemies.get(i).getPositionY(), null);
             enemies.get(i).enemyFrame++;
-            if (enemies.get(i).enemyFrame > 4) {
+            if (enemies.get(i).enemyFrame > 6) {
                 enemies.get(i).enemyFrame = 0;
 
             }
@@ -118,7 +120,7 @@ public class GameView extends View{
         }
 
         for (int i = 0; i < enemies.size(); i++) {
-            if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() >=  baseY - base.getHeight()) {
+            if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() >= baseY - base.getHeight()) {
                 life--;
                 Explosion explosion = new Explosion(context);
                 explosion.explosionX = enemies.get(i).getPositionX();
@@ -142,18 +144,20 @@ public class GameView extends View{
                 explosions.remove(i);
             }
         }
-        if (life <= 6 && life >3) {
+        if (life <= 60 && life > 30) {
             healthPaint.setColor(Color.YELLOW);
 
-        } else if (life <= 3) {
+        } else if (life <= 30) {
             healthPaint.setColor(Color.RED);
         }
-        canvas.drawRect(0, dHeight - 100, (int)((dWidth)*0.1*life) , dHeight - 150, healthPaint);
+        canvas.drawRect(0, dHeight - 100, (int) ((dWidth) * 0.001 * life), dHeight - 150, healthPaint);
         canvas.drawText("" + points, 20, TEXT_SIZE, textPaint);
         handler.postDelayed(runnable, UPADATE_MILLIS);
 
     }
 
-
-
 }
+ //________________________________IA
+
+
+
