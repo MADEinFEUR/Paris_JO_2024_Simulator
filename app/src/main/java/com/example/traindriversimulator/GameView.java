@@ -46,6 +46,7 @@ public class GameView extends View {
     Random random;
     int nb_spawn, positionMurX;
     float baseX, baseY, trainX, trainY, doigtX, doigtY;
+    public static int timer;
 
 
     Boolean positionMurY;
@@ -57,6 +58,7 @@ public class GameView extends View {
     ArrayList<MurPetit> mursP;
     private int randMur;
     private int mapAuto ;
+    private int tirEtat;
 
     private View.OnTouchListener onTouchListener= new View.OnTouchListener() {
         @RequiresApi(api = Build.VERSION_CODES.R)
@@ -72,6 +74,7 @@ public class GameView extends View {
             return false;
         }
     };
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -103,13 +106,7 @@ public class GameView extends View {
         handler = new Handler();
 
 
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                invalidate();
 
-            }
-        };
 
         textPaint.setColor(Color.rgb(255, 165, 0));
         textPaint.setTextSize(TEXT_SIZE);
@@ -130,8 +127,18 @@ public class GameView extends View {
         mapAuto = random.nextInt(1);
 
 
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                invalidate();
 
-        for (int i = 0; i < 500; i++) {
+            }
+        };
+
+
+
+        //spawn
+        for (int i = 0; i < nb_spawn; i++) {
             Enemy enemy = new Enemy(context);
             enemies.add(enemy);
         }
@@ -153,6 +160,7 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        GestionTimer();
         canvas.drawBitmap(background, null, rectBackground, null);
         canvas.drawBitmap(rail, null, rectRail, null);
         canvas.drawBitmap(train, null, rectTrain, null);
@@ -174,15 +182,47 @@ public class GameView extends View {
 
 //____________________________________spawn
 
+        //gestion graphique des enemis
         for (int i = 0; i < enemies.size(); i++) {
             canvas.drawBitmap(enemies.get(i).getEnemy(enemies.get(i).enemyFrame), enemies.get(i).getPositionX(), enemies.get(i).getPositionY(), null);
             enemies.get(i).enemyFrame++;
             if (enemies.get(i).enemyFrame > 6) {
                 enemies.get(i).enemyFrame = 0;
+            }
+        //Gestion des bâtiments d'attaque
+            int range = 200;
+            for(int j =0; j<towers.size();j++){
+                if(towers.get(j).Tx - enemies.get(i).positionX <= range && towers.get(j).Ty - enemies.get(i).positionY <= range
+                        && enemies.get(i).positionX -towers.get(j).Tx <= range && towers.get(j).Ty - enemies.get(i).positionY <= range
+                        && towers.get(j).Tx - enemies.get(i).positionX <= range && enemies.get(i).positionY - towers.get(j).Ty <= range
+                        && enemies.get(i).positionX -towers.get(j).Tx <= range && enemies.get(i).positionY - towers.get(j).Ty <= range){
+
+
+                    if(towers.get(j).towerTimer >= 50){
+                        towers.get(j).towerFrame++;
+
+                    }
+
+                    if (towers.get(j).towerFrame > 4) {
+                       towers.get(j).towerFrame = 0;
+                        towers.get(j).towerTimer = 0;
+
+                       MortEnemy(canvas,i);
+                    }
+
+                }
+
+
+
+
 
             }
 
+
+
         //_________________________"IA"_____________________________________________________________
+            //gestion déplacement enemie sur les murs de gauche
+
             for (int j = 0; j < mursG.size(); j++) {
 
                 if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() > mursG.get(j).getMGY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() < mursG.get(j).getMGY() + murT1.getHeight() && enemies.get(i).positionX < mursG.get(j).getMGX() + murT1.getWidth()) {
@@ -191,6 +231,8 @@ public class GameView extends View {
                 }
             }
 
+
+            //gestion déplacement enemie sur les murs de droite
             for (int j = 0; j < mursP.size(); j++) {
                 if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() > mursP.get(j).getMPY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() < mursP.get(j).getMPY()+murT2.getHeight() && enemies.get(i).positionX < mursP.get(j).getMPX() + murT2.getWidth() && enemies.get(i).positionX + enemies.get(i).getEnemyWidth() > mursP.get(j).getMPX()) {
                     enemies.get(i).positionX += -enemies.get(i).enemyVelocityX;
@@ -206,14 +248,23 @@ public class GameView extends View {
             enemies.get(i).enemyVelocityY = 5;
         }
 
+
+        //Gestion des dégâts sur la base
         for (int i = 0; i < enemies.size(); i++) {
             if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() >= baseY - base.getHeight()) {
                 life--;
+                MortEnemy(canvas,i);
+                /*
+
+
                 Explosion explosion = new Explosion(context);
                 explosion.explosionX = enemies.get(i).getPositionX();
                 explosion.explosionY = enemies.get(i).positionY;
                 explosions.add(explosion);
                 enemies.get(i).resetPosition();
+                */
+
+                //Mort lancement activité GameOver
                 if (life == 0) {
                     Intent intent = new Intent(context, GameOver.class);
                     intent.putExtra("Titres de transports", points);
@@ -224,13 +275,18 @@ public class GameView extends View {
             }
         }
 
+
+
         for (int i = 0; i < explosions.size(); i++) {
             canvas.drawBitmap(explosions.get(i).getExplosion(explosions.get(i).explosionFrame), explosions.get(i).explosionX, explosions.get(i).explosionY, null);
             explosions.get(i).explosionFrame++;
+
             if (explosions.get(i).explosionFrame >= 8) {
                 explosions.remove(i);
             }
         }
+
+        //_________________________Gestion barre de vie
         if (life <= 750 && life > 500) {
             healthPaint.setColor(Color.YELLOW);
             base = BitmapFactory.decodeResource(getResources(), R.drawable.base);
@@ -288,6 +344,27 @@ public class GameView extends View {
                 canvas.drawBitmap(base, null, rectBase, null);
             break;
         }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void GestionTimer(){
+        timer++;
+        for (int i=0;i<towers.size();i++){
+            towers.get(i).towerTimer++;
+        }
+
+    }
+
+    public void MortEnemy(Canvas canvas, int enemyi){
+        Explosion explosion = new Explosion(context);
+        explosion.explosionX = enemies.get(enemyi).getPositionX();
+        explosion.explosionY = enemies.get(enemyi).positionY;
+        explosions.add(explosion);
+        enemies.get(enemyi).resetPosition();
+
+
+
     }
 
 

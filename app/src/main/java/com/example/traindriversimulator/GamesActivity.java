@@ -465,9 +465,16 @@ public class GamesActivity extends AppCompatActivity {
         float X = motionEvent.getX();
         float Y = motionEvent.getY();
         System.out.println(X +""+Y);
-        Tower tower = new Tower(gameView.getContext(), (int) X, (int) Y);
-        towers.add(tower);
-        System.out.println("tour construit");
+
+        //spawn tourelle au clic lorsqu'elle est choisi
+        if(choisi == "T1 choisie"){
+                Tower tower = new Tower(gameView.getContext(), (int) X, (int) Y, 0);
+                towers.add(tower);
+                System.out.println("tour construit");
+
+
+        }
+
 
     }
 

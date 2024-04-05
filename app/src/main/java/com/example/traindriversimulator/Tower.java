@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 class Tower {
     private int damage;
     private int range;
+    public int towerTimer;
     public int Tx;
     public int Ty;
 
@@ -18,11 +19,12 @@ class Tower {
         return tower[towerFrame];
     }
 
-    public Tower(Context context, int Tx, int Ty) {
+    public Tower(Context context, int Tx, int Ty,int towerTimer) {
         this.damage = damage;
         this.range = range;
         this.Tx = Tx;
         this.Ty = Ty;
+        this.towerTimer = towerTimer;
 
         tower[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.tower0);
         tower[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.tower1);
