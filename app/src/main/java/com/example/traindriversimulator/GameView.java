@@ -110,8 +110,7 @@ public class GameView extends View {
             Enemy enemy = new Enemy(context);
             enemies.add(enemy);
         }
-
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             MurGrand murGrand = new MurGrand(context);
             mursG.add(murGrand);
         }
@@ -120,6 +119,8 @@ public class GameView extends View {
             MurPetit murPetit = new MurPetit(context);
             mursP.add(murPetit);
         }
+
+
     }
 
     @Override
@@ -130,26 +131,14 @@ public class GameView extends View {
         canvas.drawBitmap(train, null, rectTrain, null);
 
 
-        for (int i = 1; i < mursG.size(); i++) {
-            mursG.get(0).y = + rail.getHeight() + randMur;
-            canvas.drawBitmap(mursG.get(0).getMurGrand(mursG.get(0).murFrame), mursG.get(0).getMGX(), mursG.get(0).getMGY(), null);
+    //=================appel mode de jeu====================
 
-            mursG.get(i).y = mursP.get(i-1).y +murT1.getHeight() + 200;
-            canvas.drawBitmap(mursG.get(i).getMurGrand(mursG.get(i).murFrame), mursG.get(i).getMGX(), mursG.get(i).getMGY(), null);
 
-        }
+    //=================appel choix de la map================
 
-        for (int i = 1; i < mursP.size(); i++) {
-            mursP.get(0).y = rail.getHeight() + mursG.get(0).y ;
-            mursP.get(0).x = dWidth - murT2.getWidth() ;
+        ChoixMap(canvas, MenuActivity.mapChoisi);
 
-            canvas.drawBitmap(mursP.get(0).getMurPetit(mursP.get(0).murFrame), mursP.get(0).getMPX(), mursP.get(0).getMPY(), null);
 
-            mursP.get(i).y = mursG.get(i).y + murT2.getHeight() + 265;
-            mursP.get(i).x = mursP.get(0).x;
-            canvas.drawBitmap(mursP.get(i).getMurPetit(mursP.get(i).murFrame), mursP.get(i).getMPX(), mursP.get(i).getMPY(), null);
-        }
-        canvas.drawBitmap(base, null, rectBase, null);
 
 
 
@@ -162,13 +151,17 @@ public class GameView extends View {
                 enemies.get(i).enemyFrame = 0;
 
             }
+
+        //_________________________"IA"_____________________________________________________________
             for (int j = 0; j < mursG.size(); j++) {
 
-                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() > mursG.get(j).getMGY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() < mursG.get(j).getMGY()+murT1.getHeight() && enemies.get(i).positionX < mursG.get(j).getMGX() + murT1.getWidth() ) {
+                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() > mursG.get(j).getMGY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() < mursG.get(j).getMGY() + murT1.getHeight() && enemies.get(i).positionX < mursG.get(j).getMGX() + murT1.getWidth()) {
                     enemies.get(i).positionX += enemies.get(i).enemyVelocityX;
                     enemies.get(i).enemyVelocityY = 0;
                 }
+            }
 
+            for (int j = 0; j < mursP.size(); j++) {
                 if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() > mursP.get(j).getMPY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() < mursP.get(j).getMPY()+murT2.getHeight() && enemies.get(i).positionX < mursP.get(j).getMPX() + murT2.getWidth() && enemies.get(i).positionX + enemies.get(i).getEnemyWidth() > mursP.get(j).getMPX()) {
                     enemies.get(i).positionX += -enemies.get(i).enemyVelocityX;
                     enemies.get(i).enemyVelocityY = 0;
@@ -220,7 +213,40 @@ public class GameView extends View {
 
     }
 
+    public void ChoixMap(Canvas canvas, int mapChoisi){
 
+
+
+        switch (mapChoisi) {
+            default:
+                break;
+
+            case 1:
+
+                for (int i = 1; i < mursG.size(); i++) {
+                    mursG.get(0).y = +rail.getHeight() + randMur;
+                    canvas.drawBitmap(mursG.get(0).getMurGrand(mursG.get(0).murFrame), mursG.get(0).getMGX(), mursG.get(0).getMGY(), null);
+
+                    mursG.get(i).y = mursP.get(i - 1).y + murT2.getHeight() + 100;
+                    canvas.drawBitmap(mursG.get(i).getMurGrand(mursG.get(i).murFrame), mursG.get(i).getMGX(), mursG.get(i).getMGY(), null);
+
+                }
+
+                for (int i = 1; i < mursP.size(); i++) {
+                    mursP.get(0).y = rail.getHeight() + mursG.get(0).y;
+                    mursP.get(0).x = dWidth - murT2.getWidth();
+
+                    canvas.drawBitmap(mursP.get(0).getMurPetit(mursP.get(0).murFrame), mursP.get(0).getMPX(), mursP.get(0).getMPY(), null);
+
+                    mursP.get(i).y = mursG.get(i).y + murT1.getHeight() + 100;
+                    mursP.get(i).x = mursP.get(0).x;
+                    canvas.drawBitmap(mursP.get(i).getMurPetit(mursP.get(i).murFrame), mursP.get(i).getMPX(), mursP.get(i).getMPY(), null);
+                }
+
+                canvas.drawBitmap(base, null, rectBase, null);
+            break;
+        }
+    }
 
 
 }

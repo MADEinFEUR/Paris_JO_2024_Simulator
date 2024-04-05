@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MenuActivity extends AppCompatActivity {
 
 
+    public static int mapChoisi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
