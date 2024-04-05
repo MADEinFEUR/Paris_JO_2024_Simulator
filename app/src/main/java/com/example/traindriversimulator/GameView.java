@@ -1,5 +1,8 @@
 package com.example.traindriversimulator;
 
+import static com.example.traindriversimulator.GamesActivity.towers;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.os.Build;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +21,7 @@ import android.os.Handler;
 import android.widget.Button;
 import android.util.AttributeSet;
 
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -25,7 +30,7 @@ import java.util.Random;
 
 public class GameView extends View {
 
-    Bitmap background, base, train, rail, murT1, murT2;
+    Bitmap background, base, train, rail, murT1, murT2,tourT1;
     Rect rectBackground, rectBase, rectTrain, rectRail, rectMurT1;
     Context context;
     Handler handler;
@@ -40,21 +45,36 @@ public class GameView extends View {
     static int dWidth, dHeight;
     Random random;
     int nb_spawn, positionMurX;
-    float baseX, baseY, trainX, trainY;
+    float baseX, baseY, trainX, trainY, doigtX, doigtY;
 
 
     Boolean positionMurY;
     ArrayList<Enemy> enemies;
     ArrayList<Explosion> explosions;
 
-    ArrayList<Tower> towers;
 
     ArrayList<MurGrand> mursG;
     ArrayList<MurPetit> mursP;
     private int randMur;
     private int mapAuto ;
 
+    private View.OnTouchListener onTouchListener= new View.OnTouchListener() {
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
 
+
+
+
+
+
+
+            return false;
+        }
+    };
+
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public GameView(Context context) {
         super(context);
         this.context = context;
@@ -64,6 +84,10 @@ public class GameView extends View {
         rail = BitmapFactory.decodeResource(getResources(), R.drawable.rail);
         murT1 = BitmapFactory.decodeResource(getResources(), R.drawable.mur_t1);
         murT2 = BitmapFactory.decodeResource(getResources(), R.drawable.mur_t2);
+        tourT1 = BitmapFactory.decodeResource(getResources(), R.drawable.tower0);
+
+
+
 
 
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
@@ -106,6 +130,7 @@ public class GameView extends View {
         mapAuto = random.nextInt(1);
 
 
+
         for (int i = 0; i < 500; i++) {
             Enemy enemy = new Enemy(context);
             enemies.add(enemy);
@@ -123,6 +148,8 @@ public class GameView extends View {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    @SuppressLint("DrawAllocation")
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -136,7 +163,10 @@ public class GameView extends View {
 
     //=================appel choix de la map================
 
-        ChoixMap(canvas, MenuActivity.mapChoisi);
+        ChoixMap(canvas, /*MenuActivity.mapChoisi*/1);
+
+
+
 
 
 
@@ -201,18 +231,25 @@ public class GameView extends View {
                 explosions.remove(i);
             }
         }
-        if (life <= 60 && life > 30) {
+        if (life <= 750 && life > 500) {
             healthPaint.setColor(Color.YELLOW);
+            base = BitmapFactory.decodeResource(getResources(), R.drawable.base);
 
-        } else if (life <= 30) {
+        } else if (life <= 500 && life > 250) {
+            healthPaint.setColor(Color.rgb(255,127,0));
+            base = BitmapFactory.decodeResource(getResources(), R.drawable.base);
+        }else if (life <= 250) {
             healthPaint.setColor(Color.RED);
+            base = BitmapFactory.decodeResource(getResources(), R.drawable.base_casse);
+
         }
-        canvas.drawRect(0, dHeight - 100, (int) ((dWidth) * 0.001 * life), dHeight - 150, healthPaint);
+        canvas.drawRect( (int)(dWidth*0.001*(1000-life)), dHeight - 9*dHeight/60, (int) ( dWidth*0.001 * life), dHeight - 9*dHeight/60 - 10, healthPaint);
         canvas.drawText("" + points, 20, TEXT_SIZE, textPaint);
         handler.postDelayed(runnable, UPADATE_MILLIS);
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public void ChoixMap(Canvas canvas, int mapChoisi){
 
 
@@ -243,10 +280,17 @@ public class GameView extends View {
                     canvas.drawBitmap(mursP.get(i).getMurPetit(mursP.get(i).murFrame), mursP.get(i).getMPX(), mursP.get(i).getMPY(), null);
                 }
 
+                for (int i=0; i < towers.size();i++){
+                    canvas.drawBitmap(towers.get(i).getTower(towers.get(i).towerFrame),towers.get(i).getTX() - tourT1.getWidth()/2 ,towers.get(i).getTY() - 4*tourT1.getHeight()/5 ,null);
+
+                }
+
                 canvas.drawBitmap(base, null, rectBase, null);
             break;
         }
     }
+
+
 
 
 }

@@ -7,8 +7,8 @@ import android.graphics.BitmapFactory;
 class Tower {
     private int damage;
     private int range;
-    private int Tx;
-    private int Ty;
+    public int Tx;
+    public int Ty;
 
     Bitmap tower[] = new Bitmap[5];
     int towerFrame = 0;
@@ -18,7 +18,7 @@ class Tower {
         return tower[towerFrame];
     }
 
-    public Tower(Context context) {
+    public Tower(Context context, int Tx, int Ty) {
         this.damage = damage;
         this.range = range;
         this.Tx = Tx;
