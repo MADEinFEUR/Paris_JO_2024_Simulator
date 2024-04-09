@@ -18,19 +18,15 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.os.Handler;
-import android.widget.Button;
-import android.util.AttributeSet;
 
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class GameView extends View {
 
-    Bitmap background, base, train, rail, murT1, murT2,tourT1;
+    Bitmap background, base, train, rail, murT1, murT2,tourT1,mineT1;
     Rect rectBackground, rectBase, rectTrain, rectRail, rectMurT1;
     Context context;
     Handler handler;
@@ -52,10 +48,10 @@ public class GameView extends View {
     Boolean positionMurY;
     ArrayList<Enemy> enemies;
     ArrayList<Explosion> explosions;
-
-
+    ArrayList<Mine> mines;
     ArrayList<MurGrand> mursG;
     ArrayList<MurPetit> mursP;
+
     private int randMur;
     private int mapAuto ;
     private int tirEtat;
@@ -87,7 +83,9 @@ public class GameView extends View {
         rail = BitmapFactory.decodeResource(getResources(), R.drawable.rail);
         murT1 = BitmapFactory.decodeResource(getResources(), R.drawable.mur_t1);
         murT2 = BitmapFactory.decodeResource(getResources(), R.drawable.mur_t2);
-        tourT1 = BitmapFactory.decodeResource(getResources(), R.drawable.tower0);
+        tourT1 = BitmapFactory.decodeResource(getResources(), R.drawable.towert10);
+        mineT1 = BitmapFactory.decodeResource(getResources(), R.drawable.minet10);
+
 
 
 
@@ -120,6 +118,7 @@ public class GameView extends View {
         enemies = new ArrayList<>();
         towers = new ArrayList<>();
         explosions = new ArrayList<>();
+        mines= new ArrayList<>();
         mursG = new ArrayList<>();
         mursP = new ArrayList<>();
         nb_spawn = random.nextInt(500);
@@ -138,8 +137,8 @@ public class GameView extends View {
 
 
         //spawn
-        for (int i = 0; i < nb_spawn; i++) {
-            Enemy enemy = new Enemy(context);
+        for (int i = 0; i < 1; i++) {
+            Enemy enemy = new Enemy(context,"davidLeLent");
             enemies.add(enemy);
         }
         for (int i = 0; i < 3; i++) {
@@ -190,33 +189,50 @@ public class GameView extends View {
                 enemies.get(i).enemyFrame = 0;
             }
         //Gestion des bâtiments d'attaque
-            int range = 200;
+
+            //tourelle
             for(int j =0; j<towers.size();j++){
-                if(towers.get(j).Tx - enemies.get(i).positionX <= range && towers.get(j).Ty - enemies.get(i).positionY <= range
-                        && enemies.get(i).positionX -towers.get(j).Tx <= range && towers.get(j).Ty - enemies.get(i).positionY <= range
-                        && towers.get(j).Tx - enemies.get(i).positionX <= range && enemies.get(i).positionY - towers.get(j).Ty <= range
-                        && enemies.get(i).positionX -towers.get(j).Tx <= range && enemies.get(i).positionY - towers.get(j).Ty <= range){
+                if(towers.get(j).Tx - enemies.get(i).positionX <= towers.get(j).getRange() && towers.get(j).Ty - enemies.get(i).positionY <= towers.get(j).getRange()
+                        && enemies.get(i).positionX -towers.get(j).Tx <= towers.get(j).getRange() && towers.get(j).Ty - enemies.get(i).positionY <= towers.get(j).getRange()
+                        && towers.get(j).Tx - enemies.get(i).positionX <= towers.get(j).getRange() && enemies.get(i).positionY - towers.get(j).Ty <= towers.get(j).getRange()
+                        && enemies.get(i).positionX -towers.get(j).Tx <= towers.get(j).getRange() && enemies.get(i).positionY - towers.get(j).Ty <= towers.get(j).getRange()){
 
 
-                    if(towers.get(j).towerTimer >= 50){
+                    if(towers.get(j).towerTimer >= towers.get(j).towerCoolDownLimit){
                         towers.get(j).towerFrame++;
 
                     }
 
                     if (towers.get(j).towerFrame > 4) {
-                       towers.get(j).towerFrame = 0;
+                        towers.get(j).towerFrame = 0;
                         towers.get(j).towerTimer = 0;
 
-                       MortEnemy(canvas,i);
+                       MortEnemy(canvas,i,towers.get(j).getDamage());
                     }
 
                 }
 
+            }
+            //mine
+            for(int j =0; j<mines.size();j++){
+                if(mines.get(j).x - enemies.get(i).positionX <= mines.get(j).getRange() && mines.get(j).y - enemies.get(i).positionY <= mines.get(j).getRange()
+                        && enemies.get(i).positionX -mines.get(j).x <= mines.get(j).getRange() && mines.get(j).y - enemies.get(i).positionY <= mines.get(j).getRange()
+                        && mines.get(j).x - enemies.get(i).positionX <= mines.get(j).getRange() && enemies.get(i).positionY - mines.get(j).y <= mines.get(j).getRange()
+                        && enemies.get(i).positionX -mines.get(j).x <= mines.get(j).getRange() && enemies.get(i).positionY - mines.get(j).y <= mines.get(j).getRange()){
+                        mines.get(j).mineFrame++;
 
 
 
+                    if (mines.get(j).mineFrame > 6) {
+                        mines.remove(j);
+
+                        MortEnemy(canvas,i,mines.get(j).getDamage());
+                    }
+
+                }
 
             }
+
 
 
 
@@ -225,7 +241,7 @@ public class GameView extends View {
 
             for (int j = 0; j < mursG.size(); j++) {
 
-                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() > mursG.get(j).getMGY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() < mursG.get(j).getMGY() + murT1.getHeight() && enemies.get(i).positionX < mursG.get(j).getMGX() + murT1.getWidth()) {
+                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + 50 > mursG.get(j).getMGY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() +50  < mursG.get(j).getMGY() + murT1.getHeight() && enemies.get(i).positionX - 50 < mursG.get(j).getMGX() + murT1.getWidth()) {
                     enemies.get(i).positionX += enemies.get(i).enemyVelocityX;
                     enemies.get(i).enemyVelocityY = 0;
                 }
@@ -234,7 +250,7 @@ public class GameView extends View {
 
             //gestion déplacement enemie sur les murs de droite
             for (int j = 0; j < mursP.size(); j++) {
-                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() > mursP.get(j).getMPY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() < mursP.get(j).getMPY()+murT2.getHeight() && enemies.get(i).positionX < mursP.get(j).getMPX() + murT2.getWidth() && enemies.get(i).positionX + enemies.get(i).getEnemyWidth() > mursP.get(j).getMPX()) {
+                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + 50  > mursP.get(j).getMPY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + 50 < mursP.get(j).getMPY()+murT2.getHeight() && enemies.get(i).positionX  +50  < mursP.get(j).getMPX() + murT2.getWidth() && enemies.get(i).positionX + enemies.get(i).getEnemyWidth() +50 > mursP.get(j).getMPX()) {
                     enemies.get(i).positionX += -enemies.get(i).enemyVelocityX;
                     enemies.get(i).enemyVelocityY = 0;
 
@@ -249,20 +265,11 @@ public class GameView extends View {
         }
 
 
-        //Gestion des dégâts sur la base
+        //Gestion des suicides sur la base
         for (int i = 0; i < enemies.size(); i++) {
             if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() >= baseY - base.getHeight()) {
                 life--;
-                MortEnemy(canvas,i);
-                /*
-
-
-                Explosion explosion = new Explosion(context);
-                explosion.explosionX = enemies.get(i).getPositionX();
-                explosion.explosionY = enemies.get(i).positionY;
-                explosions.add(explosion);
-                enemies.get(i).resetPosition();
-                */
+                MortEnemy(canvas,i,10);
 
                 //Mort lancement activité GameOver
                 if (life == 0) {
@@ -340,6 +347,10 @@ public class GameView extends View {
                     canvas.drawBitmap(towers.get(i).getTower(towers.get(i).towerFrame),towers.get(i).getTX() - tourT1.getWidth()/2 ,towers.get(i).getTY() - 4*tourT1.getHeight()/5 ,null);
 
                 }
+                for (int i=0; i < mines.size();i++){
+                    canvas.drawBitmap(mines.get(i).getMine(mines.get(i).mineFrame),mines.get(i).x - mineT1.getWidth()/2 ,mines.get(i).y - mineT1.getHeight()/2 ,null);
+
+                }
 
                 canvas.drawBitmap(base, null, rectBase, null);
             break;
@@ -356,12 +367,16 @@ public class GameView extends View {
 
     }
 
-    public void MortEnemy(Canvas canvas, int enemyi){
-        Explosion explosion = new Explosion(context);
-        explosion.explosionX = enemies.get(enemyi).getPositionX();
-        explosion.explosionY = enemies.get(enemyi).positionY;
-        explosions.add(explosion);
-        enemies.get(enemyi).resetPosition();
+    public void MortEnemy(Canvas canvas, int enemyi, int damage){
+        enemies.get(enemyi).setHealth(enemies.get(enemyi).getHealth() - damage);
+        if(enemies.get(enemyi).getHealth()  <= 0){
+            Explosion explosion = new Explosion(context);
+            explosion.explosionX = enemies.get(enemyi).getPositionX();
+            explosion.explosionY = enemies.get(enemyi).positionY;
+            explosions.add(explosion);
+            enemies.get(enemyi).resetPosition();
+            points++;
+        }
 
 
 

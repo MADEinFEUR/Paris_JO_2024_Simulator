@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.graphics.Canvas;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class GamesActivity extends AppCompatActivity {
 
+
+
     FrameLayout gameActivity;
     RelativeLayout GameButtons;
     GameView gameView;
@@ -38,12 +41,14 @@ public class GamesActivity extends AppCompatActivity {
 
     public int boutonjeux = 1;
 
-    public static String choisi;
+    public static String choisi = "T1 choisie";
 
     public static float doigtX;
     public static float doigtY;
 
     public static ArrayList<Tower> towers;
+    public static ArrayList<Mine> mines;
+    private Mine mine;
 
     private Button button1;
     private Button button2;
@@ -68,11 +73,13 @@ public class GamesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         gameView=new GameView(this);
         gameActivity = new FrameLayout(this);
         GameButtons = new RelativeLayout(this);
 
-
+        mines = new ArrayList<Mine>();
 
         gameActivity.setOnTouchListener(onTouchListener);
 
@@ -394,8 +401,6 @@ public class GamesActivity extends AppCompatActivity {
                 button1.setBackgroundColor(Color.GREEN);
                 button3.setBackgroundResource(R.drawable.lacrymogene);
                 button2.setBackgroundResource(R.drawable.lanceur_lbd);
-
-
                 break;
         }
 
@@ -467,10 +472,112 @@ public class GamesActivity extends AppCompatActivity {
         System.out.println(X +""+Y);
 
         //spawn tourelle au clic lorsqu'elle est choisi
-        if(choisi == "T1 choisie"){
-                Tower tower = new Tower(gameView.getContext(), (int) X, (int) Y, 0);
-                towers.add(tower);
-                System.out.println("tour construit");
+
+        switch (choisi){
+            case "T1 choisie":
+                    if(Y > GameView.dHeight/6) {
+                        Tower tower = new Tower(gameView.getContext(), (int) X, (int) Y, 0,"t1");
+                        towers.add(tower);
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Impossible de construire aussi haut", Toast.LENGTH_SHORT).show();
+                    }
+                break;
+
+            case "T2 choisie":
+                    if(Y > GameView.dHeight/6) {
+                        mine = new Mine(gameView.getContext(), (int) X, (int) Y,"t1");
+                        mines.add(mine);
+                        System.out.println("constreuir");
+                    }
+                break;
+
+            case "Destruction choisie" :
+                        for(int j=0;j<towers.size();j++){
+                            if(towers.get(j).Tx - X <= 50 && towers.get(j).Ty - Y <= 50
+                                    && X -towers.get(j).Tx <= 50 && towers.get(j).Ty - Y <= 50
+                                    && towers.get(j).Tx - X <= 50 && Y - towers.get(j).Ty <= 50
+                                    && X -towers.get(j).Tx <= 50 && Y - towers.get(j).Ty <= 50){
+                                towers.remove(j);
+                            }
+                        }
+                        for(int j=0;j<mines.size();j++){
+                            if(mines.get(j).x - X <= 50 && mines.get(j).y - Y <= 50
+                                    && X -mines.get(j).x <= 50 && mines.get(j).y - Y <= 50
+                                    && mines.get(j).x - X <= 50 && Y - mines.get(j).y <= 50
+                                    && X -mines.get(j).x <= 50 && Y - mines.get(j).y <= 50){
+                                mines.remove(j);
+                            }
+                        }
+                break;
+
+            case "Amélioration choisie" :
+                for(int j=0;j<towers.size();j++){
+                    if(towers.get(j).Tx - X <= 50 && towers.get(j).Ty - Y <= 50
+                            && X -towers.get(j).Tx <= 50 && towers.get(j).Ty - Y <= 50
+                            && towers.get(j).Tx - X <= 50 && Y - towers.get(j).Ty <= 50
+                            && X -towers.get(j).Tx <= 50 && Y - towers.get(j).Ty <= 50){
+
+                        switch (towers.get(j).name){
+                            case "t1":
+                                Tower tower = new Tower(gameView.getContext(), (int) X, (int) Y, 0,"t2");
+                                towers.remove(j) ;
+                                towers.add(tower);
+                                System.out.println("Amélioré");
+                            break;
+
+                            case "t2":
+                                tower = new Tower(gameView.getContext(), (int) X, (int) Y, 0,"t3");
+                                towers.remove(j) ;
+                                towers.add(tower);
+                                System.out.println("Amélioré");
+                                break;
+
+                            case "t3":
+                                    Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
+                                break;
+
+
+
+                        }
+
+                    }
+                }
+                for(int j=0;j<mines.size();j++){
+                    if(mines.get(j).x - X <= 50 && mines.get(j).y - Y <= 50
+                            && X -mines.get(j).x <= 50 && mines.get(j).y - Y <= 50
+                            && mines.get(j).x - X <= 50 && Y - mines.get(j).y <= 50
+                            && X -mines.get(j).x <= 50 && Y - mines.get(j).y <= 50){
+
+                        switch (mines.get(j).name){
+                            case "t1":
+                                mine = new Mine(gameView.getContext(), (int) X, (int) Y,"t2");
+                                mines.remove(j) ;
+                                mines.add(mine);
+                                System.out.println("Amélioré");
+                                break;
+
+                            case "t2":
+                                mine = new Mine(gameView.getContext(), (int) X, (int) Y,"t3");
+                                mines.remove(j) ;
+                                mines.add(mine);
+                                System.out.println("Amélioré");
+                                break;
+
+                            case "t3":
+                                Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
+                                break;
+
+
+
+                        }
+
+                    }
+                }
+
+                break;
+
+
+
 
 
         }

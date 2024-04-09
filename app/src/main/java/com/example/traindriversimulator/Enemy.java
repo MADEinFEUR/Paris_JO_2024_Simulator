@@ -23,7 +23,7 @@ public class Enemy {
     Random random;
 
 
-    public Enemy(Context context) {
+    public Enemy(Context context,String name) {
         this.health = health;
         this.rank = rank;
         this.attaqueRange = attaqueRange;
@@ -42,9 +42,48 @@ public class Enemy {
         enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
         enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
         enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-
         random = new Random();
         resetPosition();
+
+
+        switch (name){
+            case"davidLeLent":
+                enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+
+                attaque = 10;
+                health=30;
+                enemyVelocityY = 4;
+
+                break;
+
+            case "joseLetreLent":
+                enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+
+                attaque = 30;
+                health=50;
+                enemyVelocityY = 2;
+
+                break;
+
+
+
+
+        }
+
+
+
 
 
 
@@ -73,6 +112,9 @@ public class Enemy {
 
     public int getHealth() {
         return health;
+    }
+    public void setHealth(int newHealth) {
+        health = newHealth;
     }
 
     public int getAttaque(){
