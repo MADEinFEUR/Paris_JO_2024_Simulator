@@ -137,7 +137,7 @@ public class GameView extends View {
 
 
         //spawn
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < nb_spawn; i++) {
             Enemy enemy = new Enemy(context,"davidLeLent");
             enemies.add(enemy);
         }
@@ -208,6 +208,7 @@ public class GameView extends View {
                         towers.get(j).towerTimer = 0;
 
                        MortEnemy(canvas,i,towers.get(j).getDamage());
+                       points++;
                     }
 
                 }
@@ -241,7 +242,9 @@ public class GameView extends View {
 
             for (int j = 0; j < mursG.size(); j++) {
 
-                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + 50 > mursG.get(j).getMGY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() +50  < mursG.get(j).getMGY() + murT1.getHeight() && enemies.get(i).positionX - 50 < mursG.get(j).getMGX() + murT1.getWidth()) {
+                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + 50 > mursG.get(j).getMGY()
+                        && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() +50  < mursG.get(j).getMGY() + murT1.getHeight()
+                        && enemies.get(i).positionX - 50 < mursG.get(j).getMGX() + murT1.getWidth()) {
                     enemies.get(i).positionX += enemies.get(i).enemyVelocityX;
                     enemies.get(i).enemyVelocityY = 0;
                 }
@@ -375,7 +378,6 @@ public class GameView extends View {
             explosion.explosionY = enemies.get(enemyi).positionY;
             explosions.add(explosion);
             enemies.get(enemyi).resetPosition();
-            points++;
         }
 
 

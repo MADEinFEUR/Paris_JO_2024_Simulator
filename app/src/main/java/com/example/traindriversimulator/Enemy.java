@@ -28,22 +28,10 @@ public class Enemy {
         this.rank = rank;
         this.attaqueRange = attaqueRange;
         this.enemyVelocityY = enemyVelocityY;
-
-        this.rank = rank;
         this.positionX = positionX;
         this.positionY = positionY;
         this.name = name;
         this.attaque = attaque;
-
-        enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-        enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-        enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-        enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-        enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-        enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-        enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-        random = new Random();
-        resetPosition();
 
 
         switch (name){
@@ -81,6 +69,10 @@ public class Enemy {
 
 
         }
+        random = new Random();
+
+        resetPosition();
+
 
 
 
