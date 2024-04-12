@@ -226,10 +226,7 @@ public class GamesActivity extends AppCompatActivity {
         ((RelativeLayout.LayoutParams) b6).addRule(RelativeLayout.ALIGN_TOP,RelativeLayout.TRUE);
         button6.setLayoutParams(b6);
 
-        ViewGroup.LayoutParams t1= new RelativeLayout.LayoutParams(350,200);
-        ((RelativeLayout.LayoutParams) t1).addRule(RelativeLayout.RIGHT_OF,RelativeLayout.TRUE);
-        ((RelativeLayout.LayoutParams) t1).addRule(RelativeLayout.ALIGN_TOP,RelativeLayout.TRUE);
-        txt.setLayoutParams(t1);
+
 
 
 
@@ -272,7 +269,6 @@ public class GamesActivity extends AppCompatActivity {
 
         GameButtons.setLayoutParams(params);
         GameButtons.addView(linearLayout3);
-        GameButtons.addView(txt);
 
 
 
@@ -378,7 +374,6 @@ public class GamesActivity extends AppCompatActivity {
             case 1:
                 switch (GameView.constructionPossible){
                     case 1:
-                        txt.setText("T1 choisie");
                         choisi = "T1 choisie";
                         button1.setBackgroundColor(Color.GREEN);
                         button3.setBackgroundResource(R.drawable.t3);
@@ -395,7 +390,6 @@ public class GamesActivity extends AppCompatActivity {
             case 2:
                 switch (GameView.outilPossible){
                     case 1:
-                        txt.setText("Réparation choisie");
                         choisi = "Réparation choisie";
                         button1.setBackgroundColor(Color.GREEN);
                         button3.setBackgroundResource(R.drawable.destruction);
@@ -412,7 +406,6 @@ public class GamesActivity extends AppCompatActivity {
             case 3:
                 switch (GameView.pouvoirPossible){
                     case 1:
-                        txt.setText("Force syndicale choisie");
                         choisi = "Force syndicale choisie";
                         button1.setBackgroundColor(Color.GREEN);
                         button3.setBackgroundResource(R.drawable.lacrymogene);
@@ -436,7 +429,6 @@ public class GamesActivity extends AppCompatActivity {
             case 1:
                 switch (GameView.constructionPossible){
                     case 1:
-                        txt.setText("T3 choisie");
                         choisi = "T3 choisie";
                         button3.setBackgroundColor(Color.GREEN);
                         button2.setBackgroundResource(R.drawable.t2);
@@ -453,7 +445,6 @@ public class GamesActivity extends AppCompatActivity {
             case 2:
                 switch (GameView.outilPossible){
                     case 1:
-                        txt.setText("Destruction choisie");
                         choisi = "Destruction choisie";
                         button3.setBackgroundColor(Color.GREEN);
                         button2.setBackgroundResource(R.drawable.amelioration);
@@ -470,7 +461,6 @@ public class GamesActivity extends AppCompatActivity {
             case 3:
                 switch (GameView.pouvoirPossible){
                     case 1:
-                        txt.setText("Lacrymogène choisie");
 
                         choisi = "Lacrymogène choisie";
                         button3.setBackgroundColor(Color.GREEN);
@@ -495,7 +485,6 @@ public class GamesActivity extends AppCompatActivity {
             case 1:
                 switch (GameView.constructionPossible){
                     case 1:
-                        txt.setText("T2 choisie");
                         choisi = "T2 choisie";
                         button2.setBackgroundColor(Color.GREEN);
                         button3.setBackgroundResource(R.drawable.t3);
@@ -512,7 +501,6 @@ public class GamesActivity extends AppCompatActivity {
             case 2:
                 switch (GameView.outilPossible){
                     case 1:
-                        txt.setText("Amélioration choisie");
                         choisi = "Amélioration choisie";
                         button2.setBackgroundColor(Color.GREEN);
                         button3.setBackgroundResource(R.drawable.destruction);
@@ -529,7 +517,6 @@ public class GamesActivity extends AppCompatActivity {
             case 3:
                 switch (GameView.pouvoirPossible){
                     case 1:
-                        txt.setText("Lanceur LBD choisie");
                         choisi = "Lanceur LBD choisie";
                         button2.setBackgroundColor(Color.GREEN);
                         button3.setBackgroundResource(R.drawable.lacrymogene);
