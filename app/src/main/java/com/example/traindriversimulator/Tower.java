@@ -3,6 +3,7 @@ package com.example.traindriversimulator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
 class Tower {
     private int damage;
@@ -13,8 +14,11 @@ class Tower {
     public int towerCoolDownLimit;
     public int Tx;
     public int Ty;
+    public int nb_rotation;
 
     public String name;
+
+    public static Enemy cible = null;
 
     Bitmap tower[] = new Bitmap[5];
     int towerFrame = 0;
@@ -24,6 +28,7 @@ class Tower {
         return tower[towerFrame];
     }
 
+
     public Tower(Context context, int Tx, int Ty,int towerTimer, String name) {
         this.damage = damage;
         this.range = range;
@@ -32,6 +37,8 @@ class Tower {
         this.Ty = Ty;
         this.towerTimer = towerTimer;
         this.name = name;
+        this.cible = cible;
+
         this.towerCoolDownLimit = towerCoolDownLimit;
 
 
@@ -101,4 +108,5 @@ class Tower {
     public int getTY() {
         return Ty;
     }
+
 }

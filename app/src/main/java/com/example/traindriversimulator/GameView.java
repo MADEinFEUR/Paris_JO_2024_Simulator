@@ -1,7 +1,5 @@
 package com.example.traindriversimulator;
 
-import static com.example.traindriversimulator.GamesActivity.towers;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -26,50 +25,47 @@ import java.util.Random;
 
 public class GameView extends View {
 
-    Bitmap background, base, train, rail, murT1, murT2,tourT1,mineT1;
-    Rect rectBackground, rectBase, rectTrain, rectRail, rectMurT1;
-    Context context;
+    Bitmap background, base, train, rail, murT1, murT2,tourT1,mineT1,titreTransport;
+    Rect rectBackground, rectBase, rectTrain, rectRail, rectMurT1,rectTitreTransport;
+    public static Context context;
     Handler handler;
     final long UPADATE_MILLIS = 30;
     Runnable runnable;
     Paint textPaint = new Paint();
+    Paint textPaint2 = new Paint();
     Paint healthPaint = new Paint();
 
-    float TEXT_SIZE = 120;
     int points = 0;
-    int life = 1000;
+    int animTrain=0;
+    int life = 10000;
     static int dWidth, dHeight;
     Random random;
-    int nb_spawn, positionMurX;
-    float baseX, baseY, trainX, trainY, doigtX, doigtY;
-    public static int timer;
+    int  positionMurX;
+    public static int nb_spawn;
+    float baseX, baseY, trainX= -850, trainY, doigtX, doigtY,angle;
+    public static int timerMancheAttaque=0;
+    public static int timerMancheDefense=0;
+    private int timerseconde=0;
+    public static int globalTimer;
+    private int etatPartie = 0;
+    public static int constructionPossible = 1;
+    public static int nb_manche = 0;
+    public static int pouvoirPossible = 0;
+    public static int outilPossible = 1;
 
 
     Boolean positionMurY;
-    ArrayList<Enemy> enemies;
+    public  static ArrayList<Enemy> enemies;
     ArrayList<Explosion> explosions;
-    ArrayList<Mine> mines;
+    public static ArrayList<Tower> towers;
+    public static ArrayList<Mine> mines;
     ArrayList<MurGrand> mursG;
     ArrayList<MurPetit> mursP;
 
     private int randMur;
     private int mapAuto ;
     private int tirEtat;
-
-    private View.OnTouchListener onTouchListener= new View.OnTouchListener() {
-        @RequiresApi(api = Build.VERSION_CODES.R)
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-
-
-
-
-
-
-
-            return false;
-        }
-    };
+    private Matrix matrix = new Matrix();
 
 
 
@@ -83,7 +79,10 @@ public class GameView extends View {
         rail = BitmapFactory.decodeResource(getResources(), R.drawable.rail);
         murT1 = BitmapFactory.decodeResource(getResources(), R.drawable.mur_t1);
         murT2 = BitmapFactory.decodeResource(getResources(), R.drawable.mur_t2);
+        titreTransport = BitmapFactory.decodeResource(getResources(), R.drawable.titre_de_transport);
+
         tourT1 = BitmapFactory.decodeResource(getResources(), R.drawable.towert10);
+
         mineT1 = BitmapFactory.decodeResource(getResources(), R.drawable.minet10);
 
 
@@ -98,30 +97,34 @@ public class GameView extends View {
         dHeight = size.y;
         rectBackground = new Rect(0, 0, dWidth, dHeight);
         rectBase = new Rect(0, dHeight - base.getHeight(), dWidth, dHeight);
-        rectTrain = new Rect(0, 0, dWidth, 200);
+        rectTrain = new Rect((int) trainX, 0, (int) (train.getWidth()+ trainX), 200);
         rectRail = new Rect(0, 0, dWidth, 250);
         rectMurT1 = new Rect(0, 0, murT1.getWidth(), murT1.getHeight());
+        rectTitreTransport = new Rect(10, 10, titreTransport.getWidth()+10, titreTransport.getHeight()+10);
         handler = new Handler();
 
 
 
 
         textPaint.setColor(Color.rgb(255, 165, 0));
-        textPaint.setTextSize(TEXT_SIZE);
+        textPaint.setTextSize(50);
         textPaint.setTextAlign(Paint.Align.LEFT);
+
+        textPaint2.setColor(Color.rgb(255, 0, 0));
+        textPaint2.setTextSize(50);
+        textPaint2.setTextAlign(Paint.Align.CENTER);
+
         healthPaint.setColor(Color.GREEN);
         random = new Random();
         baseX = 0;
         baseY = size.y;
-        trainX = 0;
         trainY = 0;
         enemies = new ArrayList<>();
         towers = new ArrayList<>();
         explosions = new ArrayList<>();
-        mines= new ArrayList<>();
+        mines = new ArrayList<>();
         mursG = new ArrayList<>();
         mursP = new ArrayList<>();
-        nb_spawn = random.nextInt(500);
         randMur = random.nextInt(200);
         mapAuto = random.nextInt(1);
 
@@ -134,13 +137,6 @@ public class GameView extends View {
             }
         };
 
-
-
-        //spawn
-        for (int i = 0; i < nb_spawn; i++) {
-            Enemy enemy = new Enemy(context,"davidLeLent");
-            enemies.add(enemy);
-        }
         for (int i = 0; i < 3; i++) {
             MurGrand murGrand = new MurGrand(context);
             mursG.add(murGrand);
@@ -150,9 +146,9 @@ public class GameView extends View {
             MurPetit murPetit = new MurPetit(context);
             mursP.add(murPetit);
         }
-
-
     }
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @SuppressLint("DrawAllocation")
@@ -160,16 +156,18 @@ public class GameView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         GestionTimer();
+
         canvas.drawBitmap(background, null, rectBackground, null);
         canvas.drawBitmap(rail, null, rectRail, null);
         canvas.drawBitmap(train, null, rectTrain, null);
+        canvas.drawBitmap(titreTransport,null,rectTitreTransport,null);
 
 
-    //=================appel mode de jeu====================
+        //=================appel mode de jeu====================
+        QuickPlay(canvas);
 
 
-    //=================appel choix de la map================
-
+        //=================appel choix de la map================
         ChoixMap(canvas, /*MenuActivity.mapChoisi*/1);
 
 
@@ -179,56 +177,92 @@ public class GameView extends View {
 
 
 
-//____________________________________spawn
+//____________________________________spawn_________________
+        if(animTrain==1 && trainX + train.getWidth() < dWidth - 100 ){
+            trainX = trainX + 4;
+            rectTrain.set((int) trainX, 0, (int) (train.getWidth()+ trainX), 200);
+        }
 
-        //gestion graphique des enemis
+        if((etatPartie==0 && 200- timerseconde < 30 )|| (etatPartie==1 && nb_spawn < 5*nb_manche)){
+            trainX = trainX + 12;
+            rectTrain.set((int) trainX, 0, (int) (train.getWidth()+ trainX), 200);
+        }
+
+
+
+
+
+
+        //gestion des enemis__________________________________________________________________
+
         for (int i = 0; i < enemies.size(); i++) {
             canvas.drawBitmap(enemies.get(i).getEnemy(enemies.get(i).enemyFrame), enemies.get(i).getPositionX(), enemies.get(i).getPositionY(), null);
             enemies.get(i).enemyFrame++;
             if (enemies.get(i).enemyFrame > 6) {
                 enemies.get(i).enemyFrame = 0;
             }
-        //Gestion des bâtiments d'attaque
+            //Gestion des bâtiments en fonction de la position des enemies_______________________________________________________________
 
             //tourelle
             for(int j =0; j<towers.size();j++){
                 if(towers.get(j).Tx - enemies.get(i).positionX <= towers.get(j).getRange() && towers.get(j).Ty - enemies.get(i).positionY <= towers.get(j).getRange()
                         && enemies.get(i).positionX -towers.get(j).Tx <= towers.get(j).getRange() && towers.get(j).Ty - enemies.get(i).positionY <= towers.get(j).getRange()
                         && towers.get(j).Tx - enemies.get(i).positionX <= towers.get(j).getRange() && enemies.get(i).positionY - towers.get(j).Ty <= towers.get(j).getRange()
-                        && enemies.get(i).positionX -towers.get(j).Tx <= towers.get(j).getRange() && enemies.get(i).positionY - towers.get(j).Ty <= towers.get(j).getRange()){
+                        && enemies.get(i).positionX -towers.get(j).Tx <= towers.get(j).getRange() && enemies.get(i).positionY - towers.get(j).Ty <= towers.get(j).getRange()
+                        &&enemies.get(i).getEtat()==1){
 
+                    if (towers.get(j).cible==null) {
+                            towers.get(j).cible = enemies.get(i);
+                    }
 
                     if(towers.get(j).towerTimer >= towers.get(j).towerCoolDownLimit){
                         towers.get(j).towerFrame++;
-
+                        //canvas.drawLine(towers.get((j)).Tx,towers.get((j)).Ty,towers.get(j).cible.positionX,towers.get(j).cible.positionY,null);
                     }
 
-                    if (towers.get(j).towerFrame > 4) {
+                    if (towers.get(j).towerFrame >= 4) {
                         towers.get(j).towerFrame = 0;
                         towers.get(j).towerTimer = 0;
 
                        MortEnemy(canvas,i,towers.get(j).getDamage());
-                       points++;
+                       System.out.println( towers.get(j).cible.getHealth());
+                       if(towers.get(j).cible.getHealth() <= 0) {
+                           towers.get(j).cible = null;
+                       }
+
+
                     }
 
                 }
 
             }
+
             //mine
             for(int j =0; j<mines.size();j++){
+
                 if(mines.get(j).x - enemies.get(i).positionX <= mines.get(j).getRange() && mines.get(j).y - enemies.get(i).positionY <= mines.get(j).getRange()
                         && enemies.get(i).positionX -mines.get(j).x <= mines.get(j).getRange() && mines.get(j).y - enemies.get(i).positionY <= mines.get(j).getRange()
                         && mines.get(j).x - enemies.get(i).positionX <= mines.get(j).getRange() && enemies.get(i).positionY - mines.get(j).y <= mines.get(j).getRange()
                         && enemies.get(i).positionX -mines.get(j).x <= mines.get(j).getRange() && enemies.get(i).positionY - mines.get(j).y <= mines.get(j).getRange()){
-                        mines.get(j).mineFrame++;
 
 
 
-                    if (mines.get(j).mineFrame > 6) {
-                        mines.remove(j);
+                    switch (mines.get(j).mineFrame) {
 
-                        MortEnemy(canvas,i,mines.get(j).getDamage());
+                        default:
+                            mines.get(j).mineFrame++;
+                            break;
+
+
+                        case 4:
+                            MortEnemy(canvas,i,mines.get(j).getDamage());
+                            mines.get(j).mineFrame = 0;
+                            mines.remove(j);
+                            break;
+
                     }
+
+
 
                 }
 
@@ -245,6 +279,7 @@ public class GameView extends View {
                 if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + 50 > mursG.get(j).getMGY()
                         && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() +50  < mursG.get(j).getMGY() + murT1.getHeight()
                         && enemies.get(i).positionX - 50 < mursG.get(j).getMGX() + murT1.getWidth()) {
+
                     enemies.get(i).positionX += enemies.get(i).enemyVelocityX;
                     enemies.get(i).enemyVelocityY = 0;
                 }
@@ -263,15 +298,17 @@ public class GameView extends View {
 
 
             }
-            enemies.get(i).positionY += enemies.get(i).enemyVelocityY;
-            enemies.get(i).enemyVelocityY = 5;
+            if(enemies.get(i).getEtat() !=0) {
+                enemies.get(i).positionY += enemies.get(i).enemyVelocityY;
+                enemies.get(i).resetEnemyVelocity();
+            }
         }
 
 
         //Gestion des suicides sur la base
         for (int i = 0; i < enemies.size(); i++) {
-            if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() >= baseY - base.getHeight()) {
-                life--;
+            if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() >= baseY - base.getHeight() && enemies.get(i).getEtat() == 1) {
+                life = life - enemies.get(i).getAttaque();
                 MortEnemy(canvas,i,10);
 
                 //Mort lancement activité GameOver
@@ -283,6 +320,13 @@ public class GameView extends View {
                 }
 
             }
+        }
+
+        if (nb_manche > 5) {
+            Intent intent = new Intent(context, GGezWin.class);
+            intent.putExtra("Titres de transports", points);
+            context.startActivity(intent);
+            ((Activity) context).finish();
         }
 
 
@@ -310,8 +354,21 @@ public class GameView extends View {
 
         }
         canvas.drawRect( (int)(dWidth*0.001*(1000-life)), dHeight - 9*dHeight/60, (int) ( dWidth*0.001 * life), dHeight - 9*dHeight/60 - 10, healthPaint);
-        canvas.drawText("" + points, 20, TEXT_SIZE, textPaint);
+        canvas.drawText("" + points, titreTransport.getWidth()+20, 45, textPaint);
+        switch (etatPartie){
+            case 0:
+                canvas.drawText(" "+(30 - timerseconde)+" sec ||"+" Préparation ||",dWidth/2,45,textPaint2);
+                //canvas.drawText("Préparation",dWidth/2,50*2,textPaint2);
+                break;
+            case 1:
+                canvas.drawText(""+(300 - timerseconde)+"sec ||"+" Manche " + nb_manche + "||",dWidth/2,45,textPaint2);
+                //canvas.drawText("Manche " + nb_manche,dWidth/2,50*2,textPaint2);
+                break;
+        }
         handler.postDelayed(runnable, UPADATE_MILLIS);
+
+
+
 
     }
 
@@ -347,15 +404,21 @@ public class GameView extends View {
                 }
 
                 for (int i=0; i < towers.size();i++){
-                    canvas.drawBitmap(towers.get(i).getTower(towers.get(i).towerFrame),towers.get(i).getTX() - tourT1.getWidth()/2 ,towers.get(i).getTY() - 4*tourT1.getHeight()/5 ,null);
+                        canvas.drawBitmap(towers.get(i).getTower(towers.get(i).towerFrame), towers.get(i).getTX() - tourT1.getWidth() / 2, towers.get(i).getTY() - 4 * tourT1.getHeight() / 5, null);
+
 
                 }
+
+
+
                 for (int i=0; i < mines.size();i++){
                     canvas.drawBitmap(mines.get(i).getMine(mines.get(i).mineFrame),mines.get(i).x - mineT1.getWidth()/2 ,mines.get(i).y - mineT1.getHeight()/2 ,null);
 
                 }
 
                 canvas.drawBitmap(base, null, rectBase, null);
+
+
             break;
         }
     }
@@ -363,26 +426,116 @@ public class GameView extends View {
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void GestionTimer(){
-        timer++;
+        globalTimer++;
+
+        switch(etatPartie){
+            case 0:
+                timerMancheDefense++;
+                timerMancheAttaque=0;
+                if(timerMancheDefense >= 25){
+                    timerseconde++;
+                    timerMancheDefense=0;
+                }
+                break;
+            case 1:
+                timerMancheAttaque++;
+                timerMancheDefense=0;
+                if(timerMancheAttaque >= 25){
+                    timerseconde++;
+                    timerMancheAttaque=0;
+                }
+                break;
+        }
+
         for (int i=0;i<towers.size();i++){
             towers.get(i).towerTimer++;
         }
 
     }
 
-    public void MortEnemy(Canvas canvas, int enemyi, int damage){
+    public void MortEnemy(Canvas canvas, int enemyi, int damage) {
         enemies.get(enemyi).setHealth(enemies.get(enemyi).getHealth() - damage);
-        if(enemies.get(enemyi).getHealth()  <= 0){
+        if (enemies.get(enemyi).getHealth() <= 0) {
             Explosion explosion = new Explosion(context);
             explosion.explosionX = enemies.get(enemyi).getPositionX();
             explosion.explosionY = enemies.get(enemyi).positionY;
             explosions.add(explosion);
-            enemies.get(enemyi).resetPosition();
+            enemies.get(enemyi).enemyTuer();
+            nb_spawn--;
+            points++;
+        }
+
+
+    }
+
+    private void spawnEnemy(int nb_spawn,String name){
+        for (int i = 0; i < nb_spawn; i++) {
+            Enemy enemy = new Enemy(context,name);
+            enemies.add(enemy);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void QuickPlay(Canvas canvas){
+        // pendant 30 secondes le joueur build les defenses
+        switch (etatPartie){
+            case 0 : //Round préparation
+
+                constructionPossible=1;
+                pouvoirPossible=0;
+                outilPossible=1;
+
+
+
+
+                if(30 - timerseconde == 0){
+                    timerseconde=0;
+                    etatPartie = 1;
+                    nb_manche++;
+                    animTrain=0;
+
+                    VagueEnemyMaker.Spawn(nb_manche);
+                    System.out.println(enemies.size());
+                    GamesActivity.choisi="Rien pour le moment";
+                }
+
+                if(30 - timerseconde <= 10){
+                    animTrain=1;
+
+
+                }
+
+                break;
+            case 1: //Round de defense
+                constructionPossible=0;
+                pouvoirPossible=1;
+                outilPossible=0;
+
+
+
+
+
+                if(300 - timerseconde==0 || nb_spawn <= 0){
+                    timerseconde=0;
+                    etatPartie = 0;
+                    trainX = -850;
+                }
+
+                break;
+
         }
 
 
 
+
+
+
+
+
+
     }
+
+
 
 
 

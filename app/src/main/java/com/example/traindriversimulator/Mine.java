@@ -90,4 +90,5 @@ class Mine {
     public int getY() {
         return y;
     }
+
 }

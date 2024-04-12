@@ -39,15 +39,13 @@ public class GamesActivity extends AppCompatActivity {
     private Context context;
 
 
-    public int boutonjeux = 1;
+    public int boutonjeux;
 
-    public static String choisi = "T1 choisie";
+    public static String choisi = "zizi";
 
     public static float doigtX;
     public static float doigtY;
 
-    public static ArrayList<Tower> towers;
-    public static ArrayList<Mine> mines;
     private Mine mine;
 
     private Button button1;
@@ -74,18 +72,14 @@ public class GamesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-
         gameView=new GameView(this);
         gameActivity = new FrameLayout(this);
         GameButtons = new RelativeLayout(this);
 
-        mines = new ArrayList<Mine>();
-
         gameActivity.setOnTouchListener(onTouchListener);
 
 
-        txt = new TextView(this);
-        txt.setId(50);
+
 
         LinearLayout linearLayout1 = new LinearLayout(this);
         linearLayout1.setOrientation(LinearLayout.HORIZONTAL);
@@ -114,7 +108,7 @@ public class GamesActivity extends AppCompatActivity {
 
         //bouton
 
-        button1.setBackgroundResource(R.drawable.t1);
+        //button1.setBackgroundResource(R.drawable.t1);
         button1.setId(1);
         button1.setWidth(200);
         button1.setHeight(50);
@@ -129,7 +123,7 @@ public class GamesActivity extends AppCompatActivity {
         });
 
 
-        button2.setBackgroundResource(R.drawable.t2);
+        //button2.setBackgroundResource(R.drawable.t2);
         button2.setId(2);
         button2.setWidth(200);
         button2.setHeight(50);
@@ -143,7 +137,7 @@ public class GamesActivity extends AppCompatActivity {
 
 
 
-        button3.setBackgroundResource(R.drawable.t3);
+        //button3.setBackgroundResource(R.drawable.t3);
         button3.setId(3);
         button3.setWidth(200);
 
@@ -382,25 +376,55 @@ public class GamesActivity extends AppCompatActivity {
 
         switch (boutonjeux) {
             case 1:
-                txt.setText("T1 choisie");
-                choisi = "T1 choisie";
-                button1.setBackgroundColor(Color.GREEN);
-                button3.setBackgroundResource(R.drawable.t3);
-                button2.setBackgroundResource(R.drawable.t2);
+                switch (GameView.constructionPossible){
+                    case 1:
+                        txt.setText("T1 choisie");
+                        choisi = "T1 choisie";
+                        button1.setBackgroundColor(Color.GREEN);
+                        button3.setBackgroundResource(R.drawable.t3);
+                        button2.setBackgroundResource(R.drawable.t2);
+                        break;
+                    default:
+                        button1.setBackgroundResource(R.drawable.desactiver);
+                        button3.setBackgroundResource(R.drawable.t3);
+                        button2.setBackgroundResource(R.drawable.t2);
+                        break;
+                }
+
                 break;
             case 2:
-                txt.setText("Réparation choisie");
-                choisi = "Réparation choisie";
-                button1.setBackgroundColor(Color.GREEN);
-                button3.setBackgroundResource(R.drawable.destruction);
-                button2.setBackgroundResource(R.drawable.amelioration);
+                switch (GameView.outilPossible){
+                    case 1:
+                        txt.setText("Réparation choisie");
+                        choisi = "Réparation choisie";
+                        button1.setBackgroundColor(Color.GREEN);
+                        button3.setBackgroundResource(R.drawable.destruction);
+                        button2.setBackgroundResource(R.drawable.amelioration);
+                        break;
+                    default:
+                        button1.setBackgroundResource(R.drawable.desactiver);
+                        button3.setBackgroundResource(R.drawable.destruction);
+                        button2.setBackgroundResource(R.drawable.amelioration);
+                        break;
+                }
+
                 break;
             case 3:
-                txt.setText("Force syndicale choisie");
-                choisi = "Force syndicale choisie";
-                button1.setBackgroundColor(Color.GREEN);
-                button3.setBackgroundResource(R.drawable.lacrymogene);
-                button2.setBackgroundResource(R.drawable.lanceur_lbd);
+                switch (GameView.pouvoirPossible){
+                    case 1:
+                        txt.setText("Force syndicale choisie");
+                        choisi = "Force syndicale choisie";
+                        button1.setBackgroundColor(Color.GREEN);
+                        button3.setBackgroundResource(R.drawable.lacrymogene);
+                        button2.setBackgroundResource(R.drawable.lanceur_lbd);
+                        break;
+                    default:
+                        button1.setBackgroundResource(R.drawable.desactiver);
+                        button3.setBackgroundResource(R.drawable.lacrymogene);
+                        button2.setBackgroundResource(R.drawable.lanceur_lbd);
+                        break;
+                }
+
                 break;
         }
 
@@ -410,26 +434,56 @@ public class GamesActivity extends AppCompatActivity {
 
         switch (boutonjeux) {
             case 1:
-                txt.setText("T3 choisie");
-                choisi = "T3 choisie";
-                button3.setBackgroundColor(Color.GREEN);
-                button2.setBackgroundResource(R.drawable.t2);
-                button1.setBackgroundResource(R.drawable.t1);
+                switch (GameView.constructionPossible){
+                    case 1:
+                        txt.setText("T3 choisie");
+                        choisi = "T3 choisie";
+                        button3.setBackgroundColor(Color.GREEN);
+                        button2.setBackgroundResource(R.drawable.t2);
+                        button1.setBackgroundResource(R.drawable.t1);
+                        break;
+                    default:
+                        button3.setBackgroundResource(R.drawable.desactiver);
+                        button2.setBackgroundResource(R.drawable.t2);
+                        button1.setBackgroundResource(R.drawable.t1);
+                        break;
+                }
+
                 break;
             case 2:
-                txt.setText("Destruction choisie");
-                choisi = "Destruction choisie";
-                button3.setBackgroundColor(Color.GREEN);
-                button2.setBackgroundResource(R.drawable.amelioration);
-                button1.setBackgroundResource(R.drawable.construction);
+                switch (GameView.outilPossible){
+                    case 1:
+                        txt.setText("Destruction choisie");
+                        choisi = "Destruction choisie";
+                        button3.setBackgroundColor(Color.GREEN);
+                        button2.setBackgroundResource(R.drawable.amelioration);
+                        button1.setBackgroundResource(R.drawable.construction);
+                        break;
+                    default:
+                        button3.setBackgroundResource(R.drawable.desactiver);
+                        button2.setBackgroundResource(R.drawable.amelioration);
+                        button1.setBackgroundResource(R.drawable.construction);
+                        break;
+                }
+
                 break;
             case 3:
-                txt.setText("Lacrymogène choisie");
+                switch (GameView.pouvoirPossible){
+                    case 1:
+                        txt.setText("Lacrymogène choisie");
 
-                choisi = "Lacrymogène choisie";
-                button3.setBackgroundColor(Color.GREEN);
-                button2.setBackgroundResource(R.drawable.lanceur_lbd);
-                button1.setBackgroundResource(R.drawable.force_syndicale);
+                        choisi = "Lacrymogène choisie";
+                        button3.setBackgroundColor(Color.GREEN);
+                        button2.setBackgroundResource(R.drawable.lanceur_lbd);
+                        button1.setBackgroundResource(R.drawable.force_syndicale);
+                        break;
+                    default:
+                        button3.setBackgroundResource(R.drawable.desactiver);
+                        button2.setBackgroundResource(R.drawable.lanceur_lbd);
+                        button1.setBackgroundResource(R.drawable.force_syndicale);
+                        break;
+                }
+
                 break;
         }
 
@@ -439,28 +493,55 @@ public class GamesActivity extends AppCompatActivity {
 
         switch (boutonjeux) {
             case 1:
-                txt.setText("T2 choisie");
-                choisi = "T2 choisie";
-                button2.setBackgroundColor(Color.GREEN);
-                button3.setBackgroundResource(R.drawable.t3);
-                button1.setBackgroundResource(R.drawable.t1);
-
+                switch (GameView.constructionPossible){
+                    case 1:
+                        txt.setText("T2 choisie");
+                        choisi = "T2 choisie";
+                        button2.setBackgroundColor(Color.GREEN);
+                        button3.setBackgroundResource(R.drawable.t3);
+                        button1.setBackgroundResource(R.drawable.t1);
+                        break;
+                    default:
+                        button2.setBackgroundResource(R.drawable.desactiver);
+                        button3.setBackgroundResource(R.drawable.t3);
+                        button1.setBackgroundResource(R.drawable.t1);
+                        break;
+                }
 
                 break;
             case 2:
-                txt.setText("Amélioration choisie");
-                choisi = "Amélioration choisie";
-                button2.setBackgroundColor(Color.GREEN);
-                button3.setBackgroundResource(R.drawable.destruction);
-                button1.setBackgroundResource(R.drawable.construction);
+                switch (GameView.outilPossible){
+                    case 1:
+                        txt.setText("Amélioration choisie");
+                        choisi = "Amélioration choisie";
+                        button2.setBackgroundColor(Color.GREEN);
+                        button3.setBackgroundResource(R.drawable.destruction);
+                        button1.setBackgroundResource(R.drawable.construction);
+                        break;
+                    default:
+                        button2.setBackgroundResource(R.drawable.desactiver);
+                        button3.setBackgroundResource(R.drawable.destruction);
+                        button1.setBackgroundResource(R.drawable.construction);
+                        break;
+                }
+
                 break;
             case 3:
-                txt.setText("Lanceur LBD choisie");
+                switch (GameView.pouvoirPossible){
+                    case 1:
+                        txt.setText("Lanceur LBD choisie");
+                        choisi = "Lanceur LBD choisie";
+                        button2.setBackgroundColor(Color.GREEN);
+                        button3.setBackgroundResource(R.drawable.lacrymogene);
+                        button1.setBackgroundResource(R.drawable.force_syndicale);
+                        break;
+                    default:
+                        button2.setBackgroundResource(R.drawable.desactiver);
+                        button3.setBackgroundResource(R.drawable.lacrymogene);
+                        button1.setBackgroundResource(R.drawable.force_syndicale);
+                        break;
+                }
 
-                choisi = "Lanceur LBD choisie";
-                button2.setBackgroundColor(Color.GREEN);
-                button3.setBackgroundResource(R.drawable.lacrymogene);
-                button1.setBackgroundResource(R.drawable.force_syndicale);
                 break;
         }
 
@@ -477,7 +558,7 @@ public class GamesActivity extends AppCompatActivity {
             case "T1 choisie":
                     if(Y > GameView.dHeight/6) {
                         Tower tower = new Tower(gameView.getContext(), (int) X, (int) Y, 0,"t1");
-                        towers.add(tower);
+                        GameView.towers.add(tower);
                     }else{
                         Toast.makeText(getApplicationContext(), "Impossible de construire aussi haut", Toast.LENGTH_SHORT).show();
                     }
@@ -486,49 +567,46 @@ public class GamesActivity extends AppCompatActivity {
             case "T2 choisie":
                     if(Y > GameView.dHeight/6) {
                         mine = new Mine(gameView.getContext(), (int) X, (int) Y,"t1");
-                        mines.add(mine);
                         System.out.println("constreuir");
+                        GameView.mines.add(mine);
+
                     }
                 break;
 
             case "Destruction choisie" :
-                        for(int j=0;j<towers.size();j++){
-                            if(towers.get(j).Tx - X <= 50 && towers.get(j).Ty - Y <= 50
-                                    && X -towers.get(j).Tx <= 50 && towers.get(j).Ty - Y <= 50
-                                    && towers.get(j).Tx - X <= 50 && Y - towers.get(j).Ty <= 50
-                                    && X -towers.get(j).Tx <= 50 && Y - towers.get(j).Ty <= 50){
-                                towers.remove(j);
+                        for(int j=0;j<GameView.towers.size();j++){
+                            if(GameView.towers.get(j).Tx - X <= 50 && GameView.towers.get(j).Ty - Y <= 50
+                                    && X -GameView.towers.get(j).Tx <= 50 && GameView.towers.get(j).Ty - Y <= 50
+                                    && GameView.towers.get(j).Tx - X <= 50 && Y - GameView.towers.get(j).Ty <= 50
+                                    && X -GameView.towers.get(j).Tx <= 50 && Y - GameView.towers.get(j).Ty <= 50){
+                                GameView.towers.remove(j);
                             }
                         }
-                        for(int j=0;j<mines.size();j++){
-                            if(mines.get(j).x - X <= 50 && mines.get(j).y - Y <= 50
-                                    && X -mines.get(j).x <= 50 && mines.get(j).y - Y <= 50
-                                    && mines.get(j).x - X <= 50 && Y - mines.get(j).y <= 50
-                                    && X -mines.get(j).x <= 50 && Y - mines.get(j).y <= 50){
-                                mines.remove(j);
+                        for(int j=0;j<GameView.mines.size();j++){
+                            if(GameView.mines.get(j).x - X <= 50 && GameView.mines.get(j).y - Y <= 50
+                                    && X -GameView.mines.get(j).x <= 50 && GameView.mines.get(j).y - Y <= 50
+                                    && GameView.mines.get(j).x - X <= 50 && Y - GameView.mines.get(j).y <= 50
+                                    && X -GameView.mines.get(j).x <= 50 && Y - GameView.mines.get(j).y <= 50){
+                                GameView.mines.remove(j);
                             }
                         }
                 break;
 
             case "Amélioration choisie" :
-                for(int j=0;j<towers.size();j++){
-                    if(towers.get(j).Tx - X <= 50 && towers.get(j).Ty - Y <= 50
-                            && X -towers.get(j).Tx <= 50 && towers.get(j).Ty - Y <= 50
-                            && towers.get(j).Tx - X <= 50 && Y - towers.get(j).Ty <= 50
-                            && X -towers.get(j).Tx <= 50 && Y - towers.get(j).Ty <= 50){
+                for(int j=0;j<GameView.towers.size();j++){
+                    if(GameView.towers.get(j).Tx - X <= 50 && GameView.towers.get(j).Ty - Y <= 50
+                            && X -GameView.towers.get(j).Tx <= 50 && GameView.towers.get(j).Ty - Y <= 50
+                            && GameView.towers.get(j).Tx - X <= 50 && Y - GameView.towers.get(j).Ty <= 50
+                            && X -GameView.towers.get(j).Tx <= 50 && Y - GameView.towers.get(j).Ty <= 50){
 
-                        switch (towers.get(j).name){
+                        switch (GameView.towers.get(j).name){
                             case "t1":
-                                Tower tower = new Tower(gameView.getContext(), (int) X, (int) Y, 0,"t2");
-                                towers.remove(j) ;
-                                towers.add(tower);
+                                GameView.towers.get(j).name = "t2";
                                 System.out.println("Amélioré");
                             break;
 
                             case "t2":
-                                tower = new Tower(gameView.getContext(), (int) X, (int) Y, 0,"t3");
-                                towers.remove(j) ;
-                                towers.add(tower);
+                                GameView.towers.get(j).name = "t3";
                                 System.out.println("Amélioré");
                                 break;
 
@@ -542,24 +620,20 @@ public class GamesActivity extends AppCompatActivity {
 
                     }
                 }
-                for(int j=0;j<mines.size();j++){
-                    if(mines.get(j).x - X <= 50 && mines.get(j).y - Y <= 50
-                            && X -mines.get(j).x <= 50 && mines.get(j).y - Y <= 50
-                            && mines.get(j).x - X <= 50 && Y - mines.get(j).y <= 50
-                            && X -mines.get(j).x <= 50 && Y - mines.get(j).y <= 50){
+                for(int j=0;j<GameView.mines.size();j++){
+                    if(GameView.mines.get(j).x - X <= 50 && GameView.mines.get(j).y - Y <= 50
+                            && X -GameView.mines.get(j).x <= 50 && GameView.mines.get(j).y - Y <= 50
+                            && GameView.mines.get(j).x - X <= 50 && Y - GameView.mines.get(j).y <= 50
+                            && X -GameView.mines.get(j).x <= 50 && Y - GameView.mines.get(j).y <= 50){
 
-                        switch (mines.get(j).name){
+                        switch (GameView.mines.get(j).name){
                             case "t1":
-                                mine = new Mine(gameView.getContext(), (int) X, (int) Y,"t2");
-                                mines.remove(j) ;
-                                mines.add(mine);
+                                GameView.mines.get(j).name = "t2";
                                 System.out.println("Amélioré");
                                 break;
 
                             case "t2":
-                                mine = new Mine(gameView.getContext(), (int) X, (int) Y,"t3");
-                                mines.remove(j) ;
-                                mines.add(mine);
+                                GameView.mines.get(j).name = "t3";
                                 System.out.println("Amélioré");
                                 break;
 

@@ -8,6 +8,8 @@ import java.util.Random;
 
 public class Enemy {
     private int health;
+
+    private int etat = 1;
     private int rank;
     private int attaque;
     private int attaqueRange;
@@ -23,6 +25,7 @@ public class Enemy {
     Random random;
 
 
+
     public Enemy(Context context,String name) {
         this.health = health;
         this.rank = rank;
@@ -35,7 +38,7 @@ public class Enemy {
 
 
         switch (name){
-            case"davidLeLent":
+            case /*davidLeLent*/"t1" :
                 enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
                 enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
                 enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
@@ -46,11 +49,13 @@ public class Enemy {
 
                 attaque = 10;
                 health=30;
+
                 enemyVelocityY = 4;
+                enemyVelocityX = enemyVelocityY;
 
                 break;
 
-            case "joseLetreLent":
+            case /*joseLetreLent*/ "t2":
                 enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
                 enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
                 enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
@@ -61,7 +66,41 @@ public class Enemy {
 
                 attaque = 30;
                 health=50;
+
                 enemyVelocityY = 2;
+                enemyVelocityX = enemyVelocityY;
+
+                break;
+            case /*joseLetreLent*/ "t3":
+                enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+
+                attaque = 50;
+                health=150;
+
+                enemyVelocityY = 2;
+                enemyVelocityX = enemyVelocityY;
+
+                break;
+            case /*joseLetreLent*/ "boss":
+                enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+
+                attaque = 200;
+                health=700;
+
+                enemyVelocityY = 1;
+                enemyVelocityX = enemyVelocityY;
 
                 break;
 
@@ -70,9 +109,7 @@ public class Enemy {
 
         }
         random = new Random();
-
-        resetPosition();
-
+        spawnRandom();
 
 
 
@@ -95,15 +132,35 @@ public class Enemy {
         return  enemy[0].getHeight();
     }
 
-    public void resetPosition(){
+    public void spawnRandom(){
         positionX = random.nextInt(GameView.dWidth - getEnemyWidth());
         positionY = -200 + random.nextInt(600)*-1;
-        enemyVelocityY = 5;
-        enemyVelocityX = enemyVelocityY;
+    }
+    public void resetEnemyVelocity(){
+        switch (name){
+            case "t1":
+                enemyVelocityY = 4;
+                break;
+            case "t2":
+                enemyVelocityY = 2;
+                break;
+
+            }
+
+    }
+    public void enemyTuer(){
+        positionY=-100;
+        positionX=-100;
+        enemyVelocityY = 0;
+        enemyVelocityX = 0;
+        etat=0;
     }
 
     public int getHealth() {
         return health;
+    }
+    public int getEtat() {
+        return etat;
     }
     public void setHealth(int newHealth) {
         health = newHealth;
@@ -124,9 +181,6 @@ public class Enemy {
     public String getType(){
         return name;
     }
-
-
-
 
     public void takeDamage(int damage) {
         health -= damage;
