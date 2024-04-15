@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SNCF ROYAL DEFENSE"
+rootProject.name = "Paris_JO2024_Simulator"
 include(":app")
  

@@ -106,7 +106,6 @@ public class Enemy {
 
 
 
-
         }
         random = new Random();
         spawnRandom();
