@@ -34,6 +34,7 @@ public class GameView extends View {
     Paint textPaint = new Paint();
     Paint textPaint2 = new Paint();
     Paint healthPaint = new Paint();
+    Paint infoTopPaint = new Paint();
 
     int points = 0;
     int animTrain=0;
@@ -115,6 +116,7 @@ public class GameView extends View {
         textPaint2.setTextAlign(Paint.Align.CENTER);
 
         healthPaint.setColor(Color.GREEN);
+        infoTopPaint.setColor(Color.GRAY);
         random = new Random();
         baseX = 0;
         baseY = size.y;
@@ -354,6 +356,7 @@ public class GameView extends View {
 
         }
         canvas.drawRect( (int)(dWidth*0.001*(1000-life)), dHeight - 9*dHeight/60, (int) ( dWidth*0.001 * life), dHeight - 9*dHeight/60 - 10, healthPaint);
+        canvas.drawRect(10,5,dWidth-5,45+55,infoTopPaint );
         canvas.drawText("" + points, titreTransport.getWidth()+20, 45, textPaint);
         switch (etatPartie){
             case 0:
@@ -361,7 +364,8 @@ public class GameView extends View {
                 //canvas.drawText("Préparation",dWidth/2,50*2,textPaint2);
                 break;
             case 1:
-                canvas.drawText(""+(300 - timerseconde)+"sec ||"+" Manche " + nb_manche + "||",dWidth/2,45,textPaint2);
+                canvas.drawText("||"+" Manche " + nb_manche + "||",dWidth/2,45,textPaint2);
+                canvas.drawText("// "+nb_spawn+" Ennemie restant "+"\\",dWidth/2,45 + 50,textPaint2);
                 //canvas.drawText("Manche " + nb_manche,dWidth/2,50*2,textPaint2);
                 break;
         }
@@ -515,7 +519,7 @@ public class GameView extends View {
 
 
 
-                if(300 - timerseconde==0 || nb_spawn <= 0){
+                if(nb_spawn <= 0){
                     timerseconde=0;
                     etatPartie = 0;
                     trainX = -850;
