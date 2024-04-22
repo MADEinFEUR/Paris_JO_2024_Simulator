@@ -560,6 +560,15 @@ public class GamesActivity extends AppCompatActivity {
                     }
                 break;
 
+            case "T3 choisie":
+                if(Y > GameView.dHeight/6) {
+                    Catapult catapult = new Catapult(gameView.getContext(), (int) X, (int) Y, 0, 1);
+                    System.out.println("constreuir");
+                    GameView.catapults.add(catapult);
+
+                }
+                break;
+
             case "Destruction choisie" :
                         for(int j=0;j<GameView.towers.size();j++){
                             if(GameView.towers.get(j).Tx - X <= 50 && GameView.towers.get(j).Ty - Y <= 50
@@ -569,12 +578,21 @@ public class GamesActivity extends AppCompatActivity {
                                 GameView.towers.remove(j);
                             }
                         }
+
                         for(int j=0;j<GameView.mines.size();j++){
                             if(GameView.mines.get(j).x - X <= 50 && GameView.mines.get(j).y - Y <= 50
                                     && X -GameView.mines.get(j).x <= 50 && GameView.mines.get(j).y - Y <= 50
                                     && GameView.mines.get(j).x - X <= 50 && Y - GameView.mines.get(j).y <= 50
                                     && X -GameView.mines.get(j).x <= 50 && Y - GameView.mines.get(j).y <= 50){
                                 GameView.mines.remove(j);
+                            }
+                        }
+                        for(int j=0;j<GameView.catapults.size();j++){
+                            if(GameView.catapults.get(j).Tx - X <= 50 && GameView.catapults.get(j).Ty - Y <= 50
+                                    && X -GameView.catapults.get(j).Tx <= 50 && GameView.catapults.get(j).Ty - Y <= 50
+                                    && GameView.catapults.get(j).Tx - X <= 50 && Y - GameView.catapults.get(j).Ty <= 50
+                                    && X -GameView.catapults.get(j).Tx <= 50 && Y - GameView.catapults.get(j).Ty <= 50){
+                                GameView.catapults.remove(j);
                             }
                         }
                 break;
@@ -630,6 +648,35 @@ public class GamesActivity extends AppCompatActivity {
                             case 2:
                                 GameView.mines.get(j).name = 3;
                                 GameView.mines.get(j).setDamage(100);
+                                System.out.println("Amélioré");
+                                break;
+
+                            case 3:
+                                Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
+                                break;
+
+
+
+                        }
+
+                    }
+                }
+                for(int j=0;j<GameView.catapults.size();j++){
+                    if(GameView.catapults.get(j).Tx - X <= 50 && GameView.catapults.get(j).Ty - Y <= 50
+                            && X -GameView.catapults.get(j).Tx <= 50 && GameView.catapults.get(j).Ty - Y <= 50
+                            && GameView.catapults.get(j).Tx - X <= 50 && Y - GameView.catapults.get(j).Ty <= 50
+                            && X -GameView.catapults.get(j).Tx <= 50 && Y - GameView.catapults.get(j).Ty <= 50){
+
+                        switch (GameView.catapults.get(j).name){
+                            case 1:
+                                GameView.catapults.get(j).name = 2;
+                                GameView.catapults.get(j).setDamage(70);
+                                System.out.println("Amélioré");
+                                break;
+
+                            case 2:
+                                GameView.catapults.get(j).name = 3;
+                                GameView.catapults.get(j).setDamage(100);
                                 System.out.println("Amélioré");
                                 break;
 

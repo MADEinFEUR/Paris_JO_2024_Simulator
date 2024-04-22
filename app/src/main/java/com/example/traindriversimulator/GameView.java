@@ -25,7 +25,7 @@ import java.util.Random;
 
 public class GameView extends View {
 
-    Bitmap background, base, train, rail, murT1, murT2,tourT1,mineT1,titreTransport;
+    Bitmap background, base, train, rail, murT1, murT2,tourT1,mineT1,titreTransport,cataT1;
     Rect rectBackground, rectBase, rectTrain, rectRail, rectMurT1,rectTitreTransport;
     public static Context context;
     Handler handler;
@@ -36,10 +36,12 @@ public class GameView extends View {
     Paint healthPaint = new Paint();
     Paint infoTopPaint = new Paint();
     Paint projectilePiant = new Paint();
+    Paint projectilePiantCatapult = new Paint();
 
     int points = 0;
     int animTrain=0;
     int life = 10000;
+    int range_munition = 70;
     static int dWidth, dHeight;
     Random random;
     int  positionMurX;
@@ -61,6 +63,7 @@ public class GameView extends View {
     ArrayList<Explosion> explosions;
     public static ArrayList<Tower> towers;
     public static ArrayList<Mine> mines;
+    public static ArrayList<Catapult> catapults;
     ArrayList<MurGrand> mursG;
     ArrayList<MurPetit> mursP;
 
@@ -81,6 +84,7 @@ public class GameView extends View {
         rail = BitmapFactory.decodeResource(getResources(), R.drawable.rail);
         murT1 = BitmapFactory.decodeResource(getResources(), R.drawable.mur_t1);
         murT2 = BitmapFactory.decodeResource(getResources(), R.drawable.mur_t2);
+        cataT1 = BitmapFactory.decodeResource(getResources(), R.drawable.t3);
         titreTransport = BitmapFactory.decodeResource(getResources(), R.drawable.titre_de_transport);
 
         tourT1 = BitmapFactory.decodeResource(getResources(), R.drawable.towert10);
@@ -118,6 +122,9 @@ public class GameView extends View {
 
 
         projectilePiant.setColor(Color.CYAN);
+        projectilePiantCatapult.setColor(Color.RED);
+        projectilePiant.setStrokeWidth(10);
+        projectilePiantCatapult.setStrokeWidth(10);
         healthPaint.setColor(Color.GREEN);
         infoTopPaint.setColor(Color.GRAY);
         random = new Random();
@@ -127,6 +134,7 @@ public class GameView extends View {
         enemies = new ArrayList<>();
         towers = new ArrayList<>();
         explosions = new ArrayList<>();
+        catapults = new ArrayList<>();
         mines = new ArrayList<>();
         mursG = new ArrayList<>();
         mursP = new ArrayList<>();
@@ -230,7 +238,7 @@ public class GameView extends View {
 
             }
 
-            //mine
+            //pétard de voie
             for(int j =0; j<mines.size();j++){
 
                 if(mines.get(j).x - enemies.get(i).positionX <= mines.get(j).getRange() && mines.get(j).y - enemies.get(i).positionY <= mines.get(j).getRange()
@@ -243,17 +251,68 @@ public class GameView extends View {
                     switch (mines.get(j).mineFrame) {
 
                         default:
-                            mines.get(j).mineFrame++;
+                            mines.get(j).mineFrame=1;
+                            mines.get(j).mineFrame=2;
+                            mines.get(j).mineFrame=3;
+                            mines.get(j).mineFrame=4;
+                            mines.get(j).mineFrame=5;
                             break;
 
 
-                        case 4:
-                            MortEnemy(canvas,i,mines.get(j).getDamage());
+                        case 5:
+                            for(int e=0; e<enemies.size(); e++) {
+                                if(mines.get(j).x - enemies.get(e).positionX <= mines.get(j).getRange()+100 && mines.get(j).y - enemies.get(e).positionY <= mines.get(j).getRange()+100
+                                        && enemies.get(e).positionX -mines.get(j).x <= mines.get(j).getRange()+100 && mines.get(j).y - enemies.get(e).positionY <= mines.get(j).getRange()+100
+                                        && mines.get(j).x - enemies.get(e).positionX <= mines.get(j).getRange()+100 && enemies.get(e).positionY - mines.get(j).y <= mines.get(j).getRange()+100
+                                        && enemies.get(e).positionX -mines.get(j).x <= mines.get(j).getRange()+100 && enemies.get(e).positionY - mines.get(j).y <= mines.get(j).getRange()+100) {
+                                    MortEnemy(canvas, e, mines.get(j).getDamage());
+                                }
+                            }
+
                             Explosion(i);
                             mines.get(j).mineFrame = 0;
                             mines.remove(j);
                             break;
 
+                    }
+
+
+
+                }
+
+            }
+
+            //catapult
+            for(int j =0; j<catapults.size();j++){
+
+                if(catapults.get(j).Tx - enemies.get(i).positionX <= catapults.get(j).getRange() && catapults.get(j).Ty - enemies.get(i).positionY <= catapults.get(j).getRange()
+                        && enemies.get(i).positionX -catapults.get(j).Tx <= catapults.get(j).getRange() && catapults.get(j).Ty - enemies.get(i).positionY <= catapults.get(j).getRange()
+                        && catapults.get(j).Tx - enemies.get(i).positionX <= catapults.get(j).getRange() && enemies.get(i).positionY - catapults.get(j).Ty <= catapults.get(j).getRange()
+                        && enemies.get(i).positionX -catapults.get(j).Tx <= catapults.get(j).getRange() && enemies.get(i).positionY - catapults.get(j).Ty <= catapults.get(j).getRange()){
+
+
+                    System.out.println(catapults.get(j).catapultTimer);
+                    if(catapults.get(j).catapultTimer >= catapults.get(j).catapultCoolDownLimit){
+                        catapults.get(j).catapultFrame=1;
+                        canvas.drawLine(catapults.get((j)).Tx,catapults.get((j)).Ty,enemies.get(i).positionX,enemies.get(i).positionY,projectilePiantCatapult);
+
+
+                        for(int e=0; e<enemies.size(); e++) {
+                            if(enemies.get(i).positionX - enemies.get(e).positionX <= range_munition && enemies.get(i).positionY - enemies.get(e).positionY <= range_munition
+                                    && enemies.get(e).positionX -enemies.get(i).positionX <= range_munition && enemies.get(i).positionY - enemies.get(e).positionY <= range_munition
+                                    && enemies.get(i).positionX - enemies.get(e).positionX <= range_munition && enemies.get(e).positionY - enemies.get(i).positionY <= range_munition
+                                    && enemies.get(e).positionX -enemies.get(i).positionX <= range_munition && enemies.get(e).positionY - enemies.get(i).positionY <= range_munition) {
+                                MortEnemy(canvas, e, catapults.get(j).getDamage());
+
+
+                                Explosion(e);
+                                MortEnemy(canvas,i,catapults.get(j).getDamage());
+                            }
+                        }
+
+
+                        catapults.get(j).catapultFrame=0;
+                        catapults.get(j).catapultTimer = 0;
                     }
 
 
@@ -347,7 +406,7 @@ public class GameView extends View {
             base = BitmapFactory.decodeResource(getResources(), R.drawable.base_casse);
 
         }
-        canvas.drawRect( (int)(dWidth*0.001*(1000-life)), dHeight - 9*dHeight/60, (int) ( dWidth*0.001 * life), dHeight - 9*dHeight/60 - 10, healthPaint);
+        canvas.drawRect( (int)(dWidth*0.001*(1000-life)), dHeight - 9*dHeight/60, (int) ( dWidth*0.0001 * life), dHeight - 9*dHeight/60 - 10, healthPaint);
         canvas.drawRect(0,0,dWidth,45+55,infoTopPaint );
         canvas.drawText("" + points, titreTransport.getWidth()+20, 45, textPaint);
         canvas.drawBitmap(titreTransport,null,rectTitreTransport,null);
@@ -401,21 +460,24 @@ public class GameView extends View {
                     canvas.drawBitmap(mursP.get(i).getMurPetit(mursP.get(i).murFrame), mursP.get(i).getMPX(), mursP.get(i).getMPY(), null);
                 }
 
+                //graphique bâtiment
+                canvas.drawBitmap(base, null, rectBase, null);
+
                 for (int i=0; i < towers.size();i++){
                         canvas.drawBitmap(towers.get(i).getTower(towers.get(i).towerFrame), towers.get(i).getTX() - tourT1.getWidth() / 2, towers.get(i).getTY() - 4 * tourT1.getHeight() / 5, null);
 
 
                 }
+                for (int i=0; i < catapults.size();i++){
+                    canvas.drawBitmap(catapults.get(i).getCatapult(catapults.get(i).catapultFrame),catapults.get(i).Tx - cataT1.getWidth()/2 ,catapults.get(i).Ty - cataT1.getHeight()/2 ,null);
 
+                }
 
 
                 for (int i=0; i < mines.size();i++){
                     canvas.drawBitmap(mines.get(i).getMine(mines.get(i).mineFrame),mines.get(i).x - mineT1.getWidth()/2 ,mines.get(i).y - mineT1.getHeight()/2 ,null);
 
                 }
-
-                canvas.drawBitmap(base, null, rectBase, null);
-
 
             break;
         }
@@ -447,6 +509,9 @@ public class GameView extends View {
 
         for (int i=0;i<towers.size();i++){
             towers.get(i).towerTimer++;
+        }
+        for (int i=0;i<catapults.size();i++){
+            catapults.get(i).catapultTimer++;
         }
 
     }

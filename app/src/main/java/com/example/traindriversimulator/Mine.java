@@ -43,7 +43,7 @@ class Mine {
                     mine[5] = decodeResource(context.getResources(),R.drawable.minet15);
 
                     damage = 50;
-                    range = 70;
+                    range = 90;
 
                 break;
             case 2:
@@ -55,7 +55,7 @@ class Mine {
                 mine[5] = decodeResource(context.getResources(),R.drawable.minet15);
 
                     damage = 70;
-                    range = 70;
+                    range = 90;
                 break;
 
             case 3:
@@ -67,7 +67,7 @@ class Mine {
                 mine[5] = decodeResource(context.getResources(),R.drawable.minet15);
 
                     damage = 100;
-                    range = 70;
+                    range = 90;
                 break;
 
         }

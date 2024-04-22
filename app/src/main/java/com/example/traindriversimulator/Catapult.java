@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-class catapult {
+class Catapult {
     private int damage;
     private int range;
 
@@ -19,16 +19,16 @@ class catapult {
 
     public static Enemy cible = null;
 
-    Bitmap catapult[] = new Bitmap[5];
+    Bitmap catapult[] = new Bitmap[2];
     int catapultFrame = 0;
 
 
-    public Bitmap catapult(int towerFrame){
+    public Bitmap getCatapult(int towerFrame){
         return catapult[towerFrame];
     }
 
 
-    public catapult(Context context, int Tx, int Ty, int towerTimer, int name) {
+    public Catapult(Context context, int Tx, int Ty, int catapultTimer, int name) {
         this.damage = damage;
         this.range = range;
         this.life = life;
@@ -46,33 +46,33 @@ class catapult {
         switch (name){
             case 1:
                 catapult[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t3);
-                catapult[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t3);
+                catapult[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t3_1);
 
 
 
-                range = 600;
+                range = 900;
                 damage = 150;
                 life = 100;
-                catapultCoolDownLimit = 200;
+                catapultCoolDownLimit = 150;
 
                 break;
             case 2:
                 catapult[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t3);
-                catapult[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t3);
+                catapult[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t3_1);
 
-                range = 600;
+                range = 900;
                 damage = 170;
                 life = 200;
-                catapultCoolDownLimit = 150;
+                catapultCoolDownLimit = 100;
                 break;
             case 3:
                 catapult[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t3);
-                catapult[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t3);
+                catapult[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t3_1);
 
-                range = 600;
+                range = 900;
                 damage = 200;
                 life = 400;
-                catapultCoolDownLimit = 100;
+                catapultCoolDownLimit = 50;
                 break;
 
         }

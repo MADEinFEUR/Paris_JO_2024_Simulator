@@ -43,6 +43,8 @@ public class VagueEnemyMaker {
                     GameView.nb_spawn++;
                 }
                 GameView.enemies.add(new Enemy(GameView.context,"boss"));
+                GameView.nb_spawn++;
+
                 break;
         }
 
