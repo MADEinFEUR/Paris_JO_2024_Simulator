@@ -3,7 +3,6 @@ package com.example.traindriversimulator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 
 class Tower {
     private int damage;
@@ -16,7 +15,7 @@ class Tower {
     public int Ty;
     public int nb_rotation;
 
-    public String name;
+    public int name;
 
     public static Enemy cible = null;
 
@@ -29,7 +28,7 @@ class Tower {
     }
 
 
-    public Tower(Context context, int Tx, int Ty,int towerTimer, String name) {
+    public Tower(Context context, int Tx, int Ty,int towerTimer, int name) {
         this.damage = damage;
         this.range = range;
         this.life = life;
@@ -38,26 +37,30 @@ class Tower {
         this.towerTimer = towerTimer;
         this.name = name;
         this.cible = cible;
-
         this.towerCoolDownLimit = towerCoolDownLimit;
 
+        ChangementLvlTower(context,name);
+    }
 
+    public void ChangementLvlTower(Context context,int newLvl){
         switch (name){
-            case "t1":
-                tower[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert10);
-                tower[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert11);
-                tower[2] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert12);
-                tower[3] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert13);
-                tower[4] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert14);
+            case 1:
+                tower[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t1);
+                tower[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t1);
+                tower[2] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t1);
+                tower[3] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t1);
+                tower[4] = BitmapFactory.decodeResource(context.getResources(),R.drawable.t1);
+
 
 
                 range = 200;
                 damage = 10;
                 life = 100;
                 towerCoolDownLimit = 50;
+                System.out.println("ici c'est t1");
 
                 break;
-            case "t2":
+            case 2:
                 tower[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert10);
                 tower[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert11);
                 tower[2] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert12);
@@ -68,8 +71,9 @@ class Tower {
                 damage = 30;
                 life = 200;
                 towerCoolDownLimit = 30;
+                System.out.println("passage t2");
                 break;
-            case "t3":
+            case 3:
                 tower[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert10);
                 tower[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert11);
                 tower[2] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert12);
@@ -94,8 +98,11 @@ class Tower {
     public int getRange() {
         return range;
     }
-    public void setName(String newName) {
+    public void setName(int newName) {
         name = newName;
+    }
+    public void setDamage(int newDamage) {
+        damage = newDamage;
     }
     public int getLife() {
         return life;

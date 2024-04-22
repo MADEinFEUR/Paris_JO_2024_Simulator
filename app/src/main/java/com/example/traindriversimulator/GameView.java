@@ -35,6 +35,7 @@ public class GameView extends View {
     Paint textPaint2 = new Paint();
     Paint healthPaint = new Paint();
     Paint infoTopPaint = new Paint();
+    Paint projectilePiant = new Paint();
 
     int points = 0;
     int animTrain=0;
@@ -50,7 +51,7 @@ public class GameView extends View {
     public static int globalTimer;
     private int etatPartie = 0;
     public static int constructionPossible = 1;
-    public static int nb_manche = 0;
+    public static int nb_manche = 1;
     public static int pouvoirPossible = 0;
     public static int outilPossible = 1;
 
@@ -115,6 +116,8 @@ public class GameView extends View {
         textPaint2.setTextSize(50);
         textPaint2.setTextAlign(Paint.Align.CENTER);
 
+
+        projectilePiant.setColor(Color.CYAN);
         healthPaint.setColor(Color.GREEN);
         infoTopPaint.setColor(Color.GRAY);
         random = new Random();
@@ -162,7 +165,6 @@ public class GameView extends View {
         canvas.drawBitmap(background, null, rectBackground, null);
         canvas.drawBitmap(rail, null, rectRail, null);
         canvas.drawBitmap(train, null, rectTrain, null);
-        canvas.drawBitmap(titreTransport,null,rectTitreTransport,null);
 
 
         //=================appel mode de jeu====================
@@ -213,26 +215,15 @@ public class GameView extends View {
                         && enemies.get(i).positionX -towers.get(j).Tx <= towers.get(j).getRange() && enemies.get(i).positionY - towers.get(j).Ty <= towers.get(j).getRange()
                         &&enemies.get(i).getEtat()==1){
 
-                    if (towers.get(j).cible==null) {
-                            towers.get(j).cible = enemies.get(i);
-                    }
 
                     if(towers.get(j).towerTimer >= towers.get(j).towerCoolDownLimit){
-                        towers.get(j).towerFrame++;
-                        //canvas.drawLine(towers.get((j)).Tx,towers.get((j)).Ty,towers.get(j).cible.positionX,towers.get(j).cible.positionY,null);
-                    }
-
-                    if (towers.get(j).towerFrame >= 4) {
-                        towers.get(j).towerFrame = 0;
+                        towers.get(j).towerFrame=3;
+                        System.out.println(towers.get(j).towerCoolDownLimit);
+                        Explosion(i);
+                        canvas.drawLine(towers.get((j)).Tx,towers.get((j)).Ty,enemies.get(i).positionX,enemies.get(i).positionY,projectilePiant);
                         towers.get(j).towerTimer = 0;
-
-                       MortEnemy(canvas,i,towers.get(j).getDamage());
-                       System.out.println( towers.get(j).cible.getHealth());
-                       if(towers.get(j).cible.getHealth() <= 0) {
-                           towers.get(j).cible = null;
-                       }
-
-
+                        MortEnemy(canvas,i,towers.get(j).getDamage());
+                        towers.get(j).towerFrame = 0;
                     }
 
                 }
@@ -258,6 +249,7 @@ public class GameView extends View {
 
                         case 4:
                             MortEnemy(canvas,i,mines.get(j).getDamage());
+                            Explosion(i);
                             mines.get(j).mineFrame = 0;
                             mines.remove(j);
                             break;
@@ -324,7 +316,7 @@ public class GameView extends View {
             }
         }
 
-        if (nb_manche > 5) {
+        if (nb_manche > 6) {
             Intent intent = new Intent(context, GGezWin.class);
             intent.putExtra("Titres de transports", points);
             context.startActivity(intent);
@@ -356,8 +348,10 @@ public class GameView extends View {
 
         }
         canvas.drawRect( (int)(dWidth*0.001*(1000-life)), dHeight - 9*dHeight/60, (int) ( dWidth*0.001 * life), dHeight - 9*dHeight/60 - 10, healthPaint);
-        canvas.drawRect(10,5,dWidth-5,45+55,infoTopPaint );
+        canvas.drawRect(0,0,dWidth,45+55,infoTopPaint );
         canvas.drawText("" + points, titreTransport.getWidth()+20, 45, textPaint);
+        canvas.drawBitmap(titreTransport,null,rectTitreTransport,null);
+
         switch (etatPartie){
             case 0:
                 canvas.drawText(" "+(30 - timerseconde)+" sec ||"+" Préparation ||",dWidth/2,45,textPaint2);
@@ -460,16 +454,19 @@ public class GameView extends View {
     public void MortEnemy(Canvas canvas, int enemyi, int damage) {
         enemies.get(enemyi).setHealth(enemies.get(enemyi).getHealth() - damage);
         if (enemies.get(enemyi).getHealth() <= 0) {
-            Explosion explosion = new Explosion(context);
-            explosion.explosionX = enemies.get(enemyi).getPositionX();
-            explosion.explosionY = enemies.get(enemyi).positionY;
-            explosions.add(explosion);
             enemies.get(enemyi).enemyTuer();
             nb_spawn--;
             points++;
         }
 
 
+    }
+
+    private void Explosion(int enemyi){
+        Explosion explosion = new Explosion(context);
+        explosion.explosionX = enemies.get(enemyi).getPositionX();
+        explosion.explosionY = enemies.get(enemyi).positionY;
+        explosions.add(explosion);
     }
 
     private void spawnEnemy(int nb_spawn,String name){
@@ -495,7 +492,7 @@ public class GameView extends View {
                 if(30 - timerseconde == 0){
                     timerseconde=0;
                     etatPartie = 1;
-                    nb_manche++;
+
                     animTrain=0;
 
                     VagueEnemyMaker.Spawn(nb_manche);
@@ -523,6 +520,7 @@ public class GameView extends View {
                     timerseconde=0;
                     etatPartie = 0;
                     trainX = -850;
+                    nb_manche++;
                 }
 
                 break;

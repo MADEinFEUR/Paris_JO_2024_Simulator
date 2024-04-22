@@ -39,13 +39,13 @@ public class Enemy {
 
         switch (name){
             case /*davidLeLent*/"t1" :
-                enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.crs_t1);
+                enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.crs_t1);
+                enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.crs_t1);
+                enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.crs_t1);
+                enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.crs_t1);
+                enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.crs_t1);
+                enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.crs_t1);
 
                 attaque = 10;
                 health=30;
@@ -56,13 +56,13 @@ public class Enemy {
                 break;
 
             case /*joseLetreLent*/ "t2":
-                enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.policier);
+                enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.policier);
+                enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.policier);
+                enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.policier);
+                enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.policier);
+                enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.policier);
+                enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.policier);
 
                 attaque = 30;
                 health=50;
@@ -72,13 +72,13 @@ public class Enemy {
 
                 break;
             case /*joseLetreLent*/ "t3":
-                enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bravm);
+                enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bravm);
+                enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bravm);
+                enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bravm);
+                enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bravm);
+                enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bravm);
+                enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bravm);
 
                 attaque = 50;
                 health=150;

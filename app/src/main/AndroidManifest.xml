@@ -26,6 +26,10 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".GGezWin"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".App"
             android:exported="true"
             android:screenOrientation="portrait">

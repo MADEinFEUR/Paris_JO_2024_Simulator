@@ -544,7 +544,7 @@ public class GamesActivity extends AppCompatActivity {
         switch (choisi){
             case "T1 choisie":
                     if(Y > GameView.dHeight/6) {
-                        Tower tower = new Tower(gameView.getContext(), (int) X, (int) Y, 0,"t1");
+                        Tower tower = new Tower(gameView.getContext(), (int) X, (int) Y, 0,1);
                         GameView.towers.add(tower);
                     }else{
                         Toast.makeText(getApplicationContext(), "Impossible de construire aussi haut", Toast.LENGTH_SHORT).show();
@@ -587,17 +587,24 @@ public class GamesActivity extends AppCompatActivity {
                             && X -GameView.towers.get(j).Tx <= 50 && Y - GameView.towers.get(j).Ty <= 50){
 
                         switch (GameView.towers.get(j).name){
-                            case "t1":
-                                GameView.towers.get(j).name = "t2";
-                                System.out.println("Amélioré");
+                            case 1:
+                                GameView.towers.get(j).name=2;
+                                GameView.towers.get(j).towerCoolDownLimit=30;
+                                GameView.towers.get(j).setDamage(30);
+
+                                System.out.println(GameView.towers.get(j).name );
+                                System.out.println(GameView.towers.get(j).towerCoolDownLimit );
                             break;
 
-                            case "t2":
-                                GameView.towers.get(j).name = "t3";
+                            case 2:
+                                GameView.towers.get(j).name=3;
+                                GameView.towers.get(j).towerCoolDownLimit=10;
+                                GameView.towers.get(j).setDamage(50);
+
                                 System.out.println("Amélioré");
                                 break;
 
-                            case "t3":
+                            case 3:
                                     Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
                                 break;
 
