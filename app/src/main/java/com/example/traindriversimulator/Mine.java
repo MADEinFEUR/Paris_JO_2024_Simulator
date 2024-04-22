@@ -13,7 +13,7 @@ class Mine {
     public int x;
     public int y;
 
-    public String name;
+    public int name;
 
     Bitmap mine[] = new Bitmap[6];
     int mineFrame = 0;
@@ -23,7 +23,7 @@ class Mine {
         return mine[mineFrame];
     }
 
-    public Mine(Context context, int x, int y, String name) {
+    public Mine(Context context, int x, int y, int name) {
         this.damage = damage;
         this.range = range;
         this.x = x;
@@ -33,7 +33,7 @@ class Mine {
 
 
         switch (name){
-            case "t1":
+            case 1:
 
                     mine[0] = decodeResource(context.getResources(),R.drawable.minet10);
                     mine[1] = decodeResource(context.getResources(),R.drawable.minet11);
@@ -46,7 +46,7 @@ class Mine {
                     range = 70;
 
                 break;
-            case "t2":
+            case 2:
                 mine[0] = decodeResource(context.getResources(),R.drawable.minet10);
                 mine[1] = decodeResource(context.getResources(),R.drawable.minet11);
                 mine[2] = decodeResource(context.getResources(),R.drawable.minet12);
@@ -58,7 +58,7 @@ class Mine {
                     range = 70;
                 break;
 
-            case "t3":
+            case 3:
                 mine[0] = decodeResource(context.getResources(),R.drawable.minet10);
                 mine[1] = decodeResource(context.getResources(),R.drawable.minet11);
                 mine[2] = decodeResource(context.getResources(),R.drawable.minet12);
@@ -81,6 +81,9 @@ class Mine {
 
     public int getRange() {
         return range;
+    }
+    public void setDamage(int newDamage) {
+        damage = newDamage;
     }
 
     public int getX() {

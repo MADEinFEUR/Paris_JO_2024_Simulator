@@ -553,7 +553,7 @@ public class GamesActivity extends AppCompatActivity {
 
             case "T2 choisie":
                     if(Y > GameView.dHeight/6) {
-                        mine = new Mine(gameView.getContext(), (int) X, (int) Y,"t1");
+                        mine = new Mine(gameView.getContext(), (int) X, (int) Y,1);
                         System.out.println("constreuir");
                         GameView.mines.add(mine);
 
@@ -621,17 +621,19 @@ public class GamesActivity extends AppCompatActivity {
                             && X -GameView.mines.get(j).x <= 50 && Y - GameView.mines.get(j).y <= 50){
 
                         switch (GameView.mines.get(j).name){
-                            case "t1":
-                                GameView.mines.get(j).name = "t2";
+                            case 1:
+                                GameView.mines.get(j).name = 2;
+                                GameView.mines.get(j).setDamage(70);
                                 System.out.println("Amélioré");
                                 break;
 
-                            case "t2":
-                                GameView.mines.get(j).name = "t3";
+                            case 2:
+                                GameView.mines.get(j).name = 3;
+                                GameView.mines.get(j).setDamage(100);
                                 System.out.println("Amélioré");
                                 break;
 
-                            case "t3":
+                            case 3:
                                 Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
                                 break;
 

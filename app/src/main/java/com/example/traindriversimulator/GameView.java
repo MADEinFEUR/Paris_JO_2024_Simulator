@@ -316,7 +316,7 @@ public class GameView extends View {
             }
         }
 
-        if (nb_manche > 6) {
+        if (nb_manche > 15) {
             Intent intent = new Intent(context, GGezWin.class);
             intent.putExtra("Titres de transports", points);
             context.startActivity(intent);
