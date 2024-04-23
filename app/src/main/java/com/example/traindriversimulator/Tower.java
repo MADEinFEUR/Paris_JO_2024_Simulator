@@ -54,7 +54,7 @@ class Tower {
 
 
                 range = 200;
-                damage = 10;
+                damage = 5;
                 life = 100;
                 towerCoolDownLimit = 50;
                 System.out.println("ici c'est t1");

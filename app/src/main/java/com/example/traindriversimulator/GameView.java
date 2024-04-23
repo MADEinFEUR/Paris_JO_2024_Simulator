@@ -53,7 +53,7 @@ public class GameView extends View {
     public static int globalTimer;
     private int etatPartie = 0;
     public static int constructionPossible = 1;
-    public static int nb_manche = 1;
+    public static int nb_manche = 13;
     public static int pouvoirPossible = 0;
     public static int outilPossible = 1;
 
@@ -124,7 +124,7 @@ public class GameView extends View {
         projectilePiant.setColor(Color.CYAN);
         projectilePiantCatapult.setColor(Color.RED);
         projectilePiant.setStrokeWidth(10);
-        projectilePiantCatapult.setStrokeWidth(10);
+        projectilePiantCatapult.setStrokeWidth(30);
         healthPaint.setColor(Color.GREEN);
         infoTopPaint.setColor(Color.GRAY);
         random = new Random();
@@ -296,7 +296,10 @@ public class GameView extends View {
                         catapults.get(j).catapultFrame=1;
                         canvas.drawLine(catapults.get((j)).Tx,catapults.get((j)).Ty,enemies.get(i).positionX,enemies.get(i).positionY,projectilePiantCatapult);
 
+                        Explosion(i);
+                        MortEnemy(canvas,i,catapults.get(j).getDamage());
 
+                        /*
                         for(int e=0; e<enemies.size(); e++) {
                             if(enemies.get(i).positionX - enemies.get(e).positionX <= range_munition && enemies.get(i).positionY - enemies.get(e).positionY <= range_munition
                                     && enemies.get(e).positionX -enemies.get(i).positionX <= range_munition && enemies.get(i).positionY - enemies.get(e).positionY <= range_munition
@@ -308,7 +311,7 @@ public class GameView extends View {
                                 Explosion(e);
                                 MortEnemy(canvas,i,catapults.get(j).getDamage());
                             }
-                        }
+                        }*/
 
 
                         catapults.get(j).catapultFrame=0;
@@ -375,12 +378,6 @@ public class GameView extends View {
             }
         }
 
-        if (nb_manche > 15) {
-            Intent intent = new Intent(context, GGezWin.class);
-            intent.putExtra("Titres de transports", points);
-            context.startActivity(intent);
-            ((Activity) context).finish();
-        }
 
 
 
@@ -419,6 +416,10 @@ public class GameView extends View {
             case 1:
                 canvas.drawText("||"+" Manche " + nb_manche + "||",dWidth/2,45,textPaint2);
                 canvas.drawText("// "+nb_spawn+" Ennemie restant "+"\\",dWidth/2,45 + 50,textPaint2);
+                //canvas.drawText("Manche " + nb_manche,dWidth/2,50*2,textPaint2);
+                break;
+            case 2:
+                canvas.drawText("|| VICTOIRE ||",dWidth/2,dHeight/2,textPaint2);
                 //canvas.drawText("Manche " + nb_manche,dWidth/2,50*2,textPaint2);
                 break;
         }
@@ -505,6 +506,14 @@ public class GameView extends View {
                     timerMancheAttaque=0;
                 }
                 break;
+            case 2:
+                timerMancheAttaque++;
+                timerMancheDefense=0;
+                if(timerMancheAttaque >= 25){
+                    timerseconde++;
+                    timerMancheAttaque=0;
+                }
+                break;
         }
 
         for (int i=0;i<towers.size();i++){
@@ -555,6 +564,7 @@ public class GameView extends View {
 
 
                 if(30 - timerseconde == 0){
+                    nb_manche++;
                     timerseconde=0;
                     etatPartie = 1;
 
@@ -569,6 +579,9 @@ public class GameView extends View {
                     animTrain=1;
 
 
+                }
+                if(nb_manche==15){
+                    etatPartie=2;
                 }
 
                 break;
@@ -585,8 +598,22 @@ public class GameView extends View {
                     timerseconde=0;
                     etatPartie = 0;
                     trainX = -850;
-                    nb_manche++;
                 }
+
+                break;
+            case 2:
+                constructionPossible=0;
+                pouvoirPossible=1;
+                outilPossible=0;
+
+                if(nb_spawn <= 0){
+                    Intent intent = new Intent(context, GGezWin.class);
+                    intent.putExtra("Titres de transports", points);
+                    context.startActivity(intent);
+                    ((Activity) context).finish();
+
+                }
+
 
                 break;
 

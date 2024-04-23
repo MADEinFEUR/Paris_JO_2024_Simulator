@@ -48,7 +48,7 @@ public class Enemy {
                 enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.crs_t1);
 
                 attaque = 10;
-                health=30;
+                health=50;
 
                 enemyVelocityY = 4;
                 enemyVelocityX = enemyVelocityY;
@@ -65,9 +65,9 @@ public class Enemy {
                 enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.policier);
 
                 attaque = 30;
-                health=50;
+                health=70;
 
-                enemyVelocityY = 2;
+                enemyVelocityY = 3;
                 enemyVelocityX = enemyVelocityY;
 
                 break;
@@ -83,7 +83,7 @@ public class Enemy {
                 attaque = 50;
                 health=150;
 
-                enemyVelocityY = 2;
+                enemyVelocityY = 3;
                 enemyVelocityX = enemyVelocityY;
 
                 break;
@@ -99,7 +99,7 @@ public class Enemy {
                 attaque = 200;
                 health=700;
 
-                enemyVelocityY = 1;
+                enemyVelocityY = 3;
                 enemyVelocityX = enemyVelocityY;
 
                 break;
@@ -141,6 +141,12 @@ public class Enemy {
                 enemyVelocityY = 4;
                 break;
             case "t2":
+                enemyVelocityY = 3;
+                break;
+            case "t3":
+                enemyVelocityY = 3;
+                break;
+            case "boss":
                 enemyVelocityY = 2;
                 break;
 
@@ -148,7 +154,7 @@ public class Enemy {
 
     }
     public void enemyTuer(){
-        positionY=-100;
+        positionY=-10000;
         positionX=-100;
         enemyVelocityY = 0;
         enemyVelocityX = 0;

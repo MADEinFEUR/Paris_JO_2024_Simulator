@@ -42,7 +42,7 @@ class Mine {
                     mine[4] = decodeResource(context.getResources(),R.drawable.minet14);
                     mine[5] = decodeResource(context.getResources(),R.drawable.minet15);
 
-                    damage = 50;
+                    damage = 10;
                     range = 90;
 
                 break;

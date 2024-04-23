@@ -608,7 +608,7 @@ public class GamesActivity extends AppCompatActivity {
                             case 1:
                                 GameView.towers.get(j).name=2;
                                 GameView.towers.get(j).towerCoolDownLimit=30;
-                                GameView.towers.get(j).setDamage(30);
+                                GameView.towers.get(j).setDamage(5);
 
                                 System.out.println(GameView.towers.get(j).name );
                                 System.out.println(GameView.towers.get(j).towerCoolDownLimit );
@@ -617,13 +617,20 @@ public class GamesActivity extends AppCompatActivity {
                             case 2:
                                 GameView.towers.get(j).name=3;
                                 GameView.towers.get(j).towerCoolDownLimit=10;
-                                GameView.towers.get(j).setDamage(50);
+                                GameView.towers.get(j).setDamage(5);
 
                                 System.out.println("Amélioré");
                                 break;
 
                             case 3:
-                                    Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
+                                GameView.towers.get(j).name=4;
+                                GameView.towers.get(j).towerCoolDownLimit=5;
+                                GameView.towers.get(j).setDamage(5);
+
+                                System.out.println("Amélioré");
+                                break;
+                            case 4:
+                                Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
                                 break;
 
 
@@ -670,13 +677,13 @@ public class GamesActivity extends AppCompatActivity {
                         switch (GameView.catapults.get(j).name){
                             case 1:
                                 GameView.catapults.get(j).name = 2;
-                                GameView.catapults.get(j).setDamage(70);
+                                GameView.catapults.get(j).setDamage(150);
                                 System.out.println("Amélioré");
                                 break;
 
                             case 2:
                                 GameView.catapults.get(j).name = 3;
-                                GameView.catapults.get(j).setDamage(100);
+                                GameView.catapults.get(j).setDamage(170);
                                 System.out.println("Amélioré");
                                 break;
 
