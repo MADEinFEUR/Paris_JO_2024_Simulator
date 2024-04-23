@@ -21,6 +21,7 @@ public class Enemy {
     Bitmap enemy[] = new Bitmap[7];
     int enemyFrame = 0;
     public int positionX;
+    public int rdm_deplacement;
     public int positionY;
     Random random;
 
@@ -35,6 +36,7 @@ public class Enemy {
         this.positionY = positionY;
         this.name = name;
         this.attaque = attaque;
+        this.rdm_deplacement = rdm_deplacement;
 
 
         switch (name){

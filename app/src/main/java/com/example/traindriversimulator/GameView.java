@@ -71,7 +71,7 @@ public class GameView extends View {
     private int mapAuto ;
     private int tirEtat;
     private Matrix matrix = new Matrix();
-
+    private int rdm_deplacement;
 
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -86,10 +86,8 @@ public class GameView extends View {
         murT2 = BitmapFactory.decodeResource(getResources(), R.drawable.mur_t2);
         cataT1 = BitmapFactory.decodeResource(getResources(), R.drawable.t3);
         titreTransport = BitmapFactory.decodeResource(getResources(), R.drawable.titre_de_transport);
-
-        tourT1 = BitmapFactory.decodeResource(getResources(), R.drawable.towert10);
-
-        mineT1 = BitmapFactory.decodeResource(getResources(), R.drawable.minet10);
+        tourT1 = BitmapFactory.decodeResource(getResources(), R.drawable.t1);
+        mineT1 = BitmapFactory.decodeResource(getResources(), R.drawable.mine1_ground);
 
 
 
@@ -208,6 +206,7 @@ public class GameView extends View {
         //gestion des enemis__________________________________________________________________
 
         for (int i = 0; i < enemies.size(); i++) {
+            enemies.get(i).rdm_deplacement =random.nextInt(70);
             canvas.drawBitmap(enemies.get(i).getEnemy(enemies.get(i).enemyFrame), enemies.get(i).getPositionX(), enemies.get(i).getPositionY(), null);
             enemies.get(i).enemyFrame++;
             if (enemies.get(i).enemyFrame > 6) {
@@ -228,7 +227,7 @@ public class GameView extends View {
                         towers.get(j).towerFrame=3;
                         System.out.println(towers.get(j).towerCoolDownLimit);
                         Explosion(i);
-                        canvas.drawLine(towers.get((j)).Tx,towers.get((j)).Ty,enemies.get(i).positionX,enemies.get(i).positionY,projectilePiant);
+                        canvas.drawLine(towers.get((j)).Tx,towers.get((j)).Ty - 6*tourT1.getHeight()/10,enemies.get(i).positionX,enemies.get(i).positionY,projectilePiant);
                         towers.get(j).towerTimer = 0;
                         MortEnemy(canvas,i,towers.get(j).getDamage());
                         towers.get(j).towerFrame = 0;
@@ -294,7 +293,7 @@ public class GameView extends View {
                     System.out.println(catapults.get(j).catapultTimer);
                     if(catapults.get(j).catapultTimer >= catapults.get(j).catapultCoolDownLimit){
                         catapults.get(j).catapultFrame=1;
-                        canvas.drawLine(catapults.get((j)).Tx,catapults.get((j)).Ty,enemies.get(i).positionX,enemies.get(i).positionY,projectilePiantCatapult);
+                        canvas.drawLine(catapults.get((j)).Tx,catapults.get((j)).Ty - 6*cataT1.getHeight()/10,enemies.get(i).positionX,enemies.get(i).positionY,projectilePiantCatapult);
 
                         Explosion(i);
                         MortEnemy(canvas,i,catapults.get(j).getDamage());
@@ -332,9 +331,9 @@ public class GameView extends View {
 
             for (int j = 0; j < mursG.size(); j++) {
 
-                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + 50 > mursG.get(j).getMGY()
-                        && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() +50  < mursG.get(j).getMGY() + murT1.getHeight()
-                        && enemies.get(i).positionX - 50 < mursG.get(j).getMGX() + murT1.getWidth()) {
+                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement > mursG.get(j).getMGY()
+                        && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement  < mursG.get(j).getMGY() + murT1.getHeight()
+                        && enemies.get(i).positionX -  enemies.get(i).rdm_deplacement < mursG.get(j).getMGX() + murT1.getWidth()) {
 
                     enemies.get(i).positionX += enemies.get(i).enemyVelocityX;
                     enemies.get(i).enemyVelocityY = 0;
@@ -344,7 +343,11 @@ public class GameView extends View {
 
             //gestion déplacement enemie sur les murs de droite
             for (int j = 0; j < mursP.size(); j++) {
-                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + 50  > mursP.get(j).getMPY() && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + 50 < mursP.get(j).getMPY()+murT2.getHeight() && enemies.get(i).positionX  +50  < mursP.get(j).getMPX() + murT2.getWidth() && enemies.get(i).positionX + enemies.get(i).getEnemyWidth() +50 > mursP.get(j).getMPX()) {
+                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement  > mursP.get(j).getMPY()
+                        && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement < mursP.get(j).getMPY()+murT2.getHeight()
+                        && enemies.get(i).positionX  + enemies.get(i).rdm_deplacement  < mursP.get(j).getMPX() + murT2.getWidth()
+                        && enemies.get(i).positionX + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement > mursP.get(j).getMPX()) {
+
                     enemies.get(i).positionX += -enemies.get(i).enemyVelocityX;
                     enemies.get(i).enemyVelocityY = 0;
 
@@ -470,7 +473,7 @@ public class GameView extends View {
 
                 }
                 for (int i=0; i < catapults.size();i++){
-                    canvas.drawBitmap(catapults.get(i).getCatapult(catapults.get(i).catapultFrame),catapults.get(i).Tx - cataT1.getWidth()/2 ,catapults.get(i).Ty - cataT1.getHeight()/2 ,null);
+                    canvas.drawBitmap(catapults.get(i).getCatapult(catapults.get(i).catapultFrame),catapults.get(i).Tx - cataT1.getWidth()/2 ,catapults.get(i).Ty - 3*cataT1.getHeight()/4 ,null);
 
                 }
 

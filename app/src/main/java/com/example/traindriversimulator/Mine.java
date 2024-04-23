@@ -16,6 +16,7 @@ class Mine {
     public int name;
 
     Bitmap mine[] = new Bitmap[6];
+
     int mineFrame = 0;
 
 
@@ -35,7 +36,7 @@ class Mine {
         switch (name){
             case 1:
 
-                    mine[0] = decodeResource(context.getResources(),R.drawable.minet10);
+                    mine[0] = decodeResource(context.getResources(),R.drawable.mine1_ground);
                     mine[1] = decodeResource(context.getResources(),R.drawable.minet11);
                     mine[2] = decodeResource(context.getResources(),R.drawable.minet12);
                     mine[3] = decodeResource(context.getResources(),R.drawable.minet13);
@@ -47,7 +48,7 @@ class Mine {
 
                 break;
             case 2:
-                mine[0] = decodeResource(context.getResources(),R.drawable.minet10);
+                mine[0] = decodeResource(context.getResources(),R.drawable.mine2_ground);
                 mine[1] = decodeResource(context.getResources(),R.drawable.minet11);
                 mine[2] = decodeResource(context.getResources(),R.drawable.minet12);
                 mine[3] = decodeResource(context.getResources(),R.drawable.minet13);
@@ -59,7 +60,7 @@ class Mine {
                 break;
 
             case 3:
-                mine[0] = decodeResource(context.getResources(),R.drawable.minet10);
+                mine[0] = decodeResource(context.getResources(),R.drawable.mine3_ground);
                 mine[1] = decodeResource(context.getResources(),R.drawable.minet11);
                 mine[2] = decodeResource(context.getResources(),R.drawable.minet12);
                 mine[3] = decodeResource(context.getResources(),R.drawable.minet13);
@@ -84,6 +85,9 @@ class Mine {
     }
     public void setDamage(int newDamage) {
         damage = newDamage;
+    }
+    public void setNewSkin(Bitmap bitmap) {
+        mine[0] = bitmap;
     }
 
     public int getX() {

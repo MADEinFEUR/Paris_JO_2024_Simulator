@@ -61,7 +61,7 @@ class Tower {
 
                 break;
             case 2:
-                tower[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert10);
+                tower[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towerlvl2);
                 tower[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert11);
                 tower[2] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert12);
                 tower[3] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert13);
@@ -74,7 +74,7 @@ class Tower {
                 System.out.println("passage t2");
                 break;
             case 3:
-                tower[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert10);
+                tower[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towerlvl3);
                 tower[1] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert11);
                 tower[2] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert12);
                 tower[3] = BitmapFactory.decodeResource(context.getResources(),R.drawable.towert13);

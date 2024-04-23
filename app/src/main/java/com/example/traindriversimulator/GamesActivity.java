@@ -1,5 +1,7 @@
 package com.example.traindriversimulator;
 
+import static android.graphics.BitmapFactory.decodeResource;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -25,6 +27,8 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
 
@@ -544,7 +548,7 @@ public class GamesActivity extends AppCompatActivity {
         switch (choisi){
             case "T1 choisie":
                     if(Y > GameView.dHeight/6) {
-                        Tower tower = new Tower(gameView.getContext(), (int) X, (int) Y, 0,1);
+                        Tower tower = new Tower(gameView.getContext(), (int) X , (int) Y, 0,1);
                         GameView.towers.add(tower);
                     }else{
                         Toast.makeText(getApplicationContext(), "Impossible de construire aussi haut", Toast.LENGTH_SHORT).show();
@@ -608,6 +612,7 @@ public class GamesActivity extends AppCompatActivity {
                             case 1:
                                 GameView.towers.get(j).name=2;
                                 GameView.towers.get(j).towerCoolDownLimit=30;
+                                GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl2);
                                 GameView.towers.get(j).setDamage(5);
 
                                 System.out.println(GameView.towers.get(j).name );
@@ -617,6 +622,7 @@ public class GamesActivity extends AppCompatActivity {
                             case 2:
                                 GameView.towers.get(j).name=3;
                                 GameView.towers.get(j).towerCoolDownLimit=10;
+                                GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl3);
                                 GameView.towers.get(j).setDamage(5);
 
                                 System.out.println("Amélioré");
@@ -625,6 +631,7 @@ public class GamesActivity extends AppCompatActivity {
                             case 3:
                                 GameView.towers.get(j).name=4;
                                 GameView.towers.get(j).towerCoolDownLimit=5;
+                                GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl4);
                                 GameView.towers.get(j).setDamage(5);
 
                                 System.out.println("Amélioré");
@@ -648,17 +655,26 @@ public class GamesActivity extends AppCompatActivity {
                         switch (GameView.mines.get(j).name){
                             case 1:
                                 GameView.mines.get(j).name = 2;
+                                GameView.mines.get(j).setNewSkin(decodeResource(gameView.getContext().getResources(), R.drawable.mine2_ground)) ;
                                 GameView.mines.get(j).setDamage(70);
                                 System.out.println("Amélioré");
                                 break;
 
                             case 2:
                                 GameView.mines.get(j).name = 3;
-                                GameView.mines.get(j).setDamage(100);
+                                GameView.mines.get(j).mine[0] = decodeResource(gameView.getContext().getResources(), R.drawable.mine3_ground);
+                                GameView.mines.get(j).setDamage(90);
                                 System.out.println("Amélioré");
                                 break;
 
                             case 3:
+                                GameView.mines.get(j).name = 4;
+                                GameView.mines.get(j).mine[0] = decodeResource(gameView.getContext().getResources(), R.drawable.mine4_ground);
+                                GameView.mines.get(j).setDamage(110);
+                                System.out.println("Amélioré");
+                                break;
+                            case 4:
+
                                 Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
                                 break;
 
@@ -677,18 +693,33 @@ public class GamesActivity extends AppCompatActivity {
                         switch (GameView.catapults.get(j).name){
                             case 1:
                                 GameView.catapults.get(j).name = 2;
+                                GameView.catapults.get(j).catapultCoolDownLimit=110;
                                 GameView.catapults.get(j).setDamage(150);
+                                GameView.catapults.get(j).catapult[0] = decodeResource(gameView.getContext().getResources(), R.drawable.catapultlvl2);
                                 System.out.println("Amélioré");
                                 break;
 
                             case 2:
                                 GameView.catapults.get(j).name = 3;
                                 GameView.catapults.get(j).setDamage(170);
+                                GameView.catapults.get(j).catapultCoolDownLimit=80;
+
+                                GameView.catapults.get(j).catapult[0] = decodeResource(gameView.getContext().getResources(), R.drawable.catapultlvl3);
+
                                 System.out.println("Amélioré");
                                 break;
 
                             case 3:
+                                GameView.catapults.get(j).name = 4;
+                                GameView.catapults.get(j).setDamage(190);
+                                GameView.catapults.get(j).catapultCoolDownLimit=50;
+
+                                GameView.catapults.get(j).catapult[0] = decodeResource(gameView.getContext().getResources(), R.drawable.catapultlvl4);
+
+                                break;
+                            case 4:
                                 Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
+
                                 break;
 
 
