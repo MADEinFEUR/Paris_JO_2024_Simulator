@@ -1,5 +1,8 @@
 package com.example.traindriversimulator;
 
+import static com.example.traindriversimulator.GamesActivity.X;
+import static com.example.traindriversimulator.GamesActivity.longclick;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -25,8 +28,8 @@ import java.util.Random;
 
 public class GameView extends View {
 
-    Bitmap background, base, train, rail, murT1, murT2,tourT1,mineT1,titreTransport,cataT1;
-    Rect rectBackground, rectBase, rectTrain, rectRail, rectMurT1,rectTitreTransport;
+    Bitmap background, base, train, rail, murT1, murT2,tourT1,mineT1,titreTransport,cataT1,emplacmentConstru,constru1,constru2,constru3,constru4;
+    Rect rectBackground, rectBase, rectTrain, rectRail, rectMurT1,rectTitreTransport,rectEmplacementConstru,rectB1,rectB2,rectB3,rectB4;
     public static Context context;
     Handler handler;
     final long UPADATE_MILLIS = 30;
@@ -40,6 +43,7 @@ public class GameView extends View {
     Paint projectilePiantCatapult = new Paint();
 
     int points = 0;
+    public static int etatConstruction=0;
     int animTrain=0;
     int life = 3000;
     private int lifeInit = 3000;
@@ -74,6 +78,8 @@ public class GameView extends View {
     private int tirEtat;
     private Matrix matrix = new Matrix();
     private int rdm_deplacement;
+    private int choixConstru;
+    private int choixEmplacement;
 
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -90,6 +96,12 @@ public class GameView extends View {
         titreTransport = BitmapFactory.decodeResource(getResources(), R.drawable.titre_de_transport);
         tourT1 = BitmapFactory.decodeResource(getResources(), R.drawable.t1);
         mineT1 = BitmapFactory.decodeResource(getResources(), R.drawable.mine1_ground);
+        emplacmentConstru = BitmapFactory.decodeResource(getResources(), R.drawable.construction);
+        constru1 = BitmapFactory.decodeResource(getResources(), R.drawable.bat1);
+        constru2 = BitmapFactory.decodeResource(getResources(), R.drawable.bat2);
+        constru3= BitmapFactory.decodeResource(getResources(), R.drawable.bat3);
+        constru4= BitmapFactory.decodeResource(getResources(), R.drawable.bat4);
+
 
 
 
@@ -103,10 +115,18 @@ public class GameView extends View {
         dHeight = size.y;
         rectBackground = new Rect(0, 0, dWidth, dHeight);
         rectBase = new Rect(0, dHeight - base.getHeight(), dWidth, dHeight);
+        rectB1 = new Rect(0, dHeight - base.getHeight(), dWidth, dHeight);
+        rectB4 = new Rect(0, dHeight - base.getHeight(), dWidth, dHeight);
+        rectB3 = new Rect(0, dHeight - base.getHeight(), dWidth, dHeight);
+        rectB2 = new Rect(0, dHeight - base.getHeight(), dWidth, dHeight);
         rectTrain = new Rect((int) trainX, 0, (int) (train.getWidth()+ trainX), 200);
         rectRail = new Rect(0, 0, dWidth, 250);
         rectMurT1 = new Rect(0, 0, murT1.getWidth(), murT1.getHeight());
         rectTitreTransport = new Rect(10, 10, titreTransport.getWidth()+10, titreTransport.getHeight()+10);
+        rectEmplacementConstru = new Rect(10, 10, titreTransport.getWidth()+10, titreTransport.getHeight()+10);
+
+
+
         handler = new Handler();
 
 
@@ -170,10 +190,10 @@ public class GameView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         GestionTimer();
-
         canvas.drawBitmap(background, null, rectBackground, null);
         canvas.drawBitmap(rail, null, rectRail, null);
         canvas.drawBitmap(train, null, rectTrain, null);
+
 
 
         //=================appel mode de jeu====================
@@ -186,6 +206,20 @@ public class GameView extends View {
 
 
 
+
+
+        //Fonction importante
+        switch (etatPartie){
+            case 0:switch (etatConstruction){
+                case 1:
+                    Construction(canvas);
+                    break;
+            }
+                break;
+        }
+
+
+        //construction détection click
 
 
 
@@ -218,8 +252,7 @@ public class GameView extends View {
 
             //gestion vie graphique ennemi
 
-
-            canvas.drawRect(enemies.get(i).positionX, enemies.get(i).positionY,(int)(enemies.get(i).positionX +  ((enemies.get(i).getHealth()/enemies.get(i).healthInit)*100)*0.5), enemies.get(i).positionY + 5, ennemiHeath);
+            canvas.drawRect(enemies.get(i).positionX, enemies.get(i).positionY,(int)(enemies.get(i).positionX +  ((enemies.get(i).getHealth()*100/enemies.get(i).healthInit))*0.5), enemies.get(i).positionY + 5, ennemiHeath);
 
 
 
@@ -452,6 +485,10 @@ public class GameView extends View {
 
     }
 
+
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void ChoixMap(Canvas canvas, int mapChoisi){
 
@@ -470,6 +507,10 @@ public class GameView extends View {
                     mursG.get(i).y = mursP.get(i - 1).y + murT2.getHeight() + 100;
                     canvas.drawBitmap(mursG.get(i).getMurGrand(mursG.get(i).murFrame), mursG.get(i).getMGX(), mursG.get(i).getMGY(), null);
 
+                    //emplacement construction
+                    //canvas.drawBitmap(emplacmentConstru,mursG.get(i).getMGX() + 10,mursG.get(i).getMGY() - murT1.getHeight() - emplacmentConstru.getHeight() + 50 ,null);
+
+
                 }
 
                 for (int i = 1; i < mursP.size(); i++) {
@@ -481,6 +522,10 @@ public class GameView extends View {
                     mursP.get(i).y = mursG.get(i).y + murT1.getHeight() + 100;
                     mursP.get(i).x = mursP.get(0).x;
                     canvas.drawBitmap(mursP.get(i).getMurPetit(mursP.get(i).murFrame), mursP.get(i).getMPX(), mursP.get(i).getMPY(), null);
+
+                    //emplacement contruction
+                    //canvas.drawBitmap(emplacmentConstru,mursP.get(i).getMPX() - 10 + 2*emplacmentConstru.getWidth(),mursP.get(i).getMPY()  - murT1.getHeight() - emplacmentConstru.getHeight() + 50 ,null);
+
                 }
 
                 //graphique bâtiment
@@ -507,9 +552,11 @@ public class GameView extends View {
     }
 
 
+
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void GestionTimer(){
         globalTimer++;
+
 
         switch(etatPartie){
             case 0:
@@ -552,10 +599,98 @@ public class GameView extends View {
         if (enemies.get(enemyi).getHealth() <= 0) {
             enemies.get(enemyi).enemyTuer();
             nb_spawn--;
-            points++;
+
         }
 
 
+    }
+
+    public class MyLongClickListener implements View.OnLongClickListener {
+        @RequiresApi(api = Build.VERSION_CODES.R)
+        @Override
+        public boolean onLongClick(View v) {
+            switch (etatConstruction){
+                case 1:
+
+
+
+                    break;
+            }
+
+            return false;
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void Construction(Canvas canvas){
+        for (int i = 1; i < mursP.size(); i++) {
+            rectEmplacementConstru.set(mursP.get(i).getMPX() +360,mursP.get(i).getMPY() -300  ,mursP.get(i).getMPX()+ emplacmentConstru.getWidth() +360 ,mursP.get(i).getMPY()-300 + emplacmentConstru.getHeight());
+            canvas.drawBitmap(emplacmentConstru,null,rectEmplacementConstru,null);
+
+            if (rectEmplacementConstru.contains((int)GamesActivity.X,(int)GamesActivity.Y )|| choixConstru==1){
+                contruBatGraphique(canvas);
+                choixEmplacement=10+i;
+                choixConstru=1;
+
+
+
+
+            }
+       }
+        for (int i = 1; i < mursG.size(); i++) {
+            rectEmplacementConstru.set(mursG.get(i).getMGX() + dWidth/40,mursG.get(i).getMGY() - murT1.getHeight() - emplacmentConstru.getHeight() +dWidth/40,mursG.get(i).getMGX() + dWidth/40 + 1*emplacmentConstru.getWidth(),mursG.get(i).getMGY() - murT1.getHeight() - emplacmentConstru.getHeight() +dWidth/40 + emplacmentConstru.getHeight());
+            canvas.drawBitmap(emplacmentConstru,null,rectEmplacementConstru,null);
+
+            if (rectEmplacementConstru.contains((int)GamesActivity.X,(int)GamesActivity.Y )|| choixConstru==1 ){
+                contruBatGraphique(canvas);
+                choixEmplacement=i;
+                choixConstru=1;
+
+            }
+        }
+
+        if(rectB1.contains((int)GamesActivity.X,(int)GamesActivity.Y) &&choixConstru==1){
+            System.out.println("bat1");
+            choixConstru=0;
+        } else if (rectB2.contains((int)GamesActivity.X,(int)GamesActivity.Y)&&choixConstru==1) {
+            System.out.println("bat2");
+            choixConstru=0;
+        } else if (rectB3.contains((int)GamesActivity.X,(int)GamesActivity.Y)&&choixConstru==1) {
+            System.out.println("bat3");
+            choixConstru=0;
+        } else if (rectB4.contains((int)GamesActivity.X,(int)GamesActivity.Y)&&choixConstru==1) {
+            choixConstru=0;
+            System.out.println("bat4");
+            
+        }
+
+
+        switch (choixEmplacement){
+            case 1:
+                break;
+            case 2:
+                break;
+            case 11:
+                break;
+        }
+
+
+
+
+
+    }
+
+    private void contruBatGraphique(Canvas canvas){
+        rectB1.set(dWidth/2 -200,dHeight/2- constru1.getWidth()/2 ,dWidth/2+constru1.getWidth()- constru1.getWidth()/2-200,dHeight/2+ constru1.getHeight()- constru1.getWidth()/2);
+        rectB2.set(dWidth/2 +200,dHeight/2 - constru1.getWidth()/2,dWidth/2+constru1.getWidth()- constru1.getWidth()/2+200,dHeight/2+ constru1.getHeight()- constru1.getWidth()/2);
+        rectB3.set(dWidth/2- constru1.getWidth()/2,dHeight/2 - constru1.getWidth()/2-200,dWidth/2+constru1.getWidth()- constru1.getWidth()/2,dHeight/2+ constru1.getHeight()- constru1.getWidth()/2-200);
+        rectB4.set(dWidth/2- constru1.getWidth()/2,dHeight/2- constru1.getWidth()/2+200 ,dWidth/2+constru1.getWidth()- constru1.getWidth()/2,dHeight/2 + constru1.getHeight()- constru1.getWidth()/+200);
+
+        canvas.drawBitmap(constru1,null,rectB1,null);
+        canvas.drawBitmap(constru2,null,rectB2,null);
+        canvas.drawBitmap(constru3,null,rectB3,null);
+        canvas.drawBitmap(constru4,null,rectB4,null);
     }
 
     private void Explosion(int enemyi){

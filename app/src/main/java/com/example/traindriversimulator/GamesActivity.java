@@ -36,11 +36,13 @@ import java.util.ArrayList;
 public class GamesActivity extends AppCompatActivity {
 
 
-
+    public static float X=0;
+    public static float Y=0;
     FrameLayout gameActivity;
     RelativeLayout GameButtons;
     GameView gameView;
     private Context context;
+    public static int longclick;
 
 
     public int boutonjeux;
@@ -67,6 +69,8 @@ public class GamesActivity extends AppCompatActivity {
             return false;
         }
     };
+
+
 
     private TextView txt;
 
@@ -391,6 +395,7 @@ public class GamesActivity extends AppCompatActivity {
                         button1.setBackgroundColor(Color.GREEN);
                         button3.setBackgroundResource(R.drawable.t3);
                         button2.setBackgroundResource(R.drawable.t2);
+                        GameView.etatConstruction = 0;
                         break;
                     default:
                         button1.setBackgroundResource(R.drawable.desactiver);
@@ -407,6 +412,7 @@ public class GamesActivity extends AppCompatActivity {
                         button1.setBackgroundColor(Color.GREEN);
                         button3.setBackgroundResource(R.drawable.destruction);
                         button2.setBackgroundResource(R.drawable.amelioration);
+                        GameView.etatConstruction = 1;
                         break;
                     default:
                         button1.setBackgroundResource(R.drawable.desactiver);
@@ -423,6 +429,7 @@ public class GamesActivity extends AppCompatActivity {
                         button1.setBackgroundColor(Color.GREEN);
                         button3.setBackgroundResource(R.drawable.lacrymogene);
                         button2.setBackgroundResource(R.drawable.lanceur_lbd);
+                        GameView.etatConstruction = 0;
                         break;
                     default:
                         button1.setBackgroundResource(R.drawable.desactiver);
@@ -446,6 +453,7 @@ public class GamesActivity extends AppCompatActivity {
                         button3.setBackgroundColor(Color.GREEN);
                         button2.setBackgroundResource(R.drawable.t2);
                         button1.setBackgroundResource(R.drawable.t1);
+                        GameView.etatConstruction = 0;
                         break;
                     default:
                         button3.setBackgroundResource(R.drawable.desactiver);
@@ -462,6 +470,7 @@ public class GamesActivity extends AppCompatActivity {
                         button3.setBackgroundColor(Color.GREEN);
                         button2.setBackgroundResource(R.drawable.amelioration);
                         button1.setBackgroundResource(R.drawable.construction);
+                        GameView.etatConstruction = 0;
                         break;
                     default:
                         button3.setBackgroundResource(R.drawable.desactiver);
@@ -479,6 +488,7 @@ public class GamesActivity extends AppCompatActivity {
                         button3.setBackgroundColor(Color.GREEN);
                         button2.setBackgroundResource(R.drawable.lanceur_lbd);
                         button1.setBackgroundResource(R.drawable.force_syndicale);
+                        GameView.etatConstruction = 0;
                         break;
                     default:
                         button3.setBackgroundResource(R.drawable.desactiver);
@@ -502,6 +512,7 @@ public class GamesActivity extends AppCompatActivity {
                         button2.setBackgroundColor(Color.GREEN);
                         button3.setBackgroundResource(R.drawable.t3);
                         button1.setBackgroundResource(R.drawable.t1);
+                        GameView.etatConstruction = 0;
                         break;
                     default:
                         button2.setBackgroundResource(R.drawable.desactiver);
@@ -518,6 +529,7 @@ public class GamesActivity extends AppCompatActivity {
                         button2.setBackgroundColor(Color.GREEN);
                         button3.setBackgroundResource(R.drawable.destruction);
                         button1.setBackgroundResource(R.drawable.construction);
+                        GameView.etatConstruction = 0;
                         break;
                     default:
                         button2.setBackgroundResource(R.drawable.desactiver);
@@ -534,6 +546,7 @@ public class GamesActivity extends AppCompatActivity {
                         button2.setBackgroundColor(Color.GREEN);
                         button3.setBackgroundResource(R.drawable.lacrymogene);
                         button1.setBackgroundResource(R.drawable.force_syndicale);
+                        GameView.etatConstruction = 0;
                         break;
                     default:
                         button2.setBackgroundResource(R.drawable.desactiver);
@@ -548,8 +561,8 @@ public class GamesActivity extends AppCompatActivity {
     }
 
     public void onClick(MotionEvent motionEvent){
-        float X = motionEvent.getX();
-        float Y = motionEvent.getY();
+         X = motionEvent.getX();
+         Y = motionEvent.getY();
         System.out.println(X +""+Y);
 
         //spawn tourelle au clic lorsqu'elle est choisi
@@ -739,6 +752,8 @@ public class GamesActivity extends AppCompatActivity {
                 }
 
                 break;
+
+
 
 
 
