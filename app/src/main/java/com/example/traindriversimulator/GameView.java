@@ -32,6 +32,7 @@ public class GameView extends View {
     final long UPADATE_MILLIS = 30;
     Runnable runnable;
     Paint textPaint = new Paint();
+    Paint ennemiHeath = new Paint();
     Paint textPaint2 = new Paint();
     Paint healthPaint = new Paint();
     Paint infoTopPaint = new Paint();
@@ -40,7 +41,8 @@ public class GameView extends View {
 
     int points = 0;
     int animTrain=0;
-    int life = 10000;
+    int life = 3000;
+    private int lifeInit = 3000;
     int range_munition = 70;
     static int dWidth, dHeight;
     Random random;
@@ -53,7 +55,7 @@ public class GameView extends View {
     public static int globalTimer;
     private int etatPartie = 0;
     public static int constructionPossible = 1;
-    public static int nb_manche = 13;
+    public static int nb_manche = 0;
     public static int pouvoirPossible = 0;
     public static int outilPossible = 1;
 
@@ -124,6 +126,7 @@ public class GameView extends View {
         projectilePiant.setStrokeWidth(10);
         projectilePiantCatapult.setStrokeWidth(30);
         healthPaint.setColor(Color.GREEN);
+        ennemiHeath.setColor(Color.GREEN);
         infoTopPaint.setColor(Color.GRAY);
         random = new Random();
         baseX = 0;
@@ -203,7 +206,7 @@ public class GameView extends View {
 
 
 
-        //gestion des enemis__________________________________________________________________
+        //gestion des ennemi__________________________________________________________________
 
         for (int i = 0; i < enemies.size(); i++) {
             enemies.get(i).rdm_deplacement =random.nextInt(70);
@@ -212,6 +215,17 @@ public class GameView extends View {
             if (enemies.get(i).enemyFrame > 6) {
                 enemies.get(i).enemyFrame = 0;
             }
+
+            //gestion vie graphique ennemi
+
+
+            canvas.drawRect(enemies.get(i).positionX, enemies.get(i).positionY,(int)(enemies.get(i).positionX +  ((enemies.get(i).getHealth()/enemies.get(i).healthInit)*100)*0.5), enemies.get(i).positionY + 5, ennemiHeath);
+
+
+
+
+
+
             //Gestion des bâtiments en fonction de la position des enemies_______________________________________________________________
 
             //tourelle
@@ -278,7 +292,6 @@ public class GameView extends View {
 
 
                 }
-
             }
 
             //catapult
@@ -393,20 +406,26 @@ public class GameView extends View {
             }
         }
 
+
         //_________________________Gestion barre de vie
-        if (life <= 750 && life > 500) {
+        if ((float) (((life*100)/lifeInit)) <= 75 && (float) (((life*100)/lifeInit))> 50) {
             healthPaint.setColor(Color.YELLOW);
             base = BitmapFactory.decodeResource(getResources(), R.drawable.base);
 
-        } else if (life <= 500 && life > 250) {
+        } else if ((float) (((life*100)/lifeInit)) <= 50 && (float) (((life*100)/lifeInit)) > 25) {
             healthPaint.setColor(Color.rgb(255,127,0));
             base = BitmapFactory.decodeResource(getResources(), R.drawable.base);
-        }else if (life <= 250) {
+        }else if ((float) (((life*100)/lifeInit)) <= 25) {
             healthPaint.setColor(Color.RED);
             base = BitmapFactory.decodeResource(getResources(), R.drawable.base_casse);
 
         }
-        canvas.drawRect( (int)(dWidth*0.001*(1000-life)), dHeight - 9*dHeight/60, (int) ( dWidth*0.0001 * life), dHeight - 9*dHeight/60 - 10, healthPaint);
+
+        System.out.println((float) (((life*100)/lifeInit)));
+
+
+
+        canvas.drawRect( 50, dHeight - 9*dHeight/60, (float) ( (dWidth - 50 )*(((life*100)/lifeInit)*0.1)), dHeight - 9*dHeight/60 - 10, healthPaint);
         canvas.drawRect(0,0,dWidth,45+55,infoTopPaint );
         canvas.drawText("" + points, titreTransport.getWidth()+20, 45, textPaint);
         canvas.drawBitmap(titreTransport,null,rectTitreTransport,null);

@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class Enemy {
     private int health;
+    public int healthInit;
 
     private int etat = 1;
     private int rank;
@@ -29,6 +30,7 @@ public class Enemy {
 
     public Enemy(Context context,String name) {
         this.health = health;
+        this.healthInit = healthInit;
         this.rank = rank;
         this.attaqueRange = attaqueRange;
         this.enemyVelocityY = enemyVelocityY;
@@ -50,7 +52,9 @@ public class Enemy {
                 enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.crs_t1);
 
                 attaque = 10;
-                health=50;
+                healthInit=50;
+                health=healthInit;
+
 
                 enemyVelocityY = 4;
                 enemyVelocityX = enemyVelocityY;
@@ -67,7 +71,9 @@ public class Enemy {
                 enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.policier);
 
                 attaque = 30;
-                health=70;
+                healthInit=70;
+                health=healthInit;
+
 
                 enemyVelocityY = 3;
                 enemyVelocityX = enemyVelocityY;
@@ -83,7 +89,9 @@ public class Enemy {
                 enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.bravm);
 
                 attaque = 50;
-                health=150;
+                healthInit=150;
+                health=healthInit;
+
 
                 enemyVelocityY = 3;
                 enemyVelocityX = enemyVelocityY;
@@ -99,7 +107,9 @@ public class Enemy {
                 enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
 
                 attaque = 200;
-                health=700;
+                healthInit=700;
+                health=healthInit;
+
 
                 enemyVelocityY = 3;
                 enemyVelocityX = enemyVelocityY;
