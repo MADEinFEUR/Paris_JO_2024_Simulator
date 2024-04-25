@@ -85,6 +85,8 @@ public class GamesActivity extends AppCompatActivity {
 
 
 
+
+
         LinearLayout linearLayout1 = new LinearLayout(this);
         linearLayout1.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout1.setMinimumWidth(GameView.dWidth);
@@ -98,6 +100,11 @@ public class GamesActivity extends AppCompatActivity {
 
         LinearLayout linearLayout3 = new LinearLayout(this);
         linearLayout3.setOrientation(LinearLayout.VERTICAL);
+
+
+
+
+
 
 
         button1 = new Button(this);
@@ -198,34 +205,32 @@ public class GamesActivity extends AppCompatActivity {
 
 
 
-        ViewGroup.LayoutParams b1= new RelativeLayout.LayoutParams(350,150);
+        ViewGroup.LayoutParams b1= new RelativeLayout.LayoutParams(GameView.dWidth/3,GameView.dHeight/11);
         ((RelativeLayout.LayoutParams) b1).addRule(RelativeLayout.RIGHT_OF,RelativeLayout.TRUE);
         ((RelativeLayout.LayoutParams) b1).addRule(RelativeLayout.ALIGN_TOP,RelativeLayout.TRUE);
         button1.setLayoutParams(b1);
 
-        ViewGroup.LayoutParams b2= new RelativeLayout.LayoutParams(350,150);
+        ViewGroup.LayoutParams b2= new RelativeLayout.LayoutParams(GameView.dWidth/3,GameView.dHeight/11);
         ((RelativeLayout.LayoutParams) b2).addRule(RelativeLayout.RIGHT_OF,RelativeLayout.TRUE);
         ((RelativeLayout.LayoutParams) b2).addRule(RelativeLayout.ALIGN_TOP,RelativeLayout.TRUE);
         button2.setLayoutParams(b2);
 
-        ViewGroup.LayoutParams b3= new RelativeLayout.LayoutParams(350,150);
+        ViewGroup.LayoutParams b3= new RelativeLayout.LayoutParams(GameView.dWidth/3,GameView.dHeight/11);
         ((RelativeLayout.LayoutParams) b3).addRule(RelativeLayout.RIGHT_OF,RelativeLayout.TRUE);
         ((RelativeLayout.LayoutParams) b3).addRule(RelativeLayout.ALIGN_TOP,RelativeLayout.TRUE);
         button3.setLayoutParams(b3);
 
-
-
-        ViewGroup.LayoutParams b4= new RelativeLayout.LayoutParams(350,200);
+        ViewGroup.LayoutParams b4= new RelativeLayout.LayoutParams(GameView.dWidth/3,GameView.dHeight/14);
         ((RelativeLayout.LayoutParams) b4).addRule(RelativeLayout.RIGHT_OF,RelativeLayout.TRUE);
         ((RelativeLayout.LayoutParams) b4).addRule(RelativeLayout.ALIGN_TOP,RelativeLayout.TRUE);
         button4.setLayoutParams(b4);
 
-        ViewGroup.LayoutParams b5= new RelativeLayout.LayoutParams(350,200);
+        ViewGroup.LayoutParams b5= new RelativeLayout.LayoutParams(GameView.dWidth/3,GameView.dHeight/14);
         ((RelativeLayout.LayoutParams) b5).addRule(RelativeLayout.RIGHT_OF,RelativeLayout.TRUE);
         ((RelativeLayout.LayoutParams) b5).addRule(RelativeLayout.ALIGN_TOP,RelativeLayout.TRUE);
         button5.setLayoutParams(b5);
 
-        ViewGroup.LayoutParams b6= new RelativeLayout.LayoutParams(350,200);
+        ViewGroup.LayoutParams b6= new RelativeLayout.LayoutParams(GameView.dWidth/3,GameView.dHeight/14);
         ((RelativeLayout.LayoutParams) b6).addRule(RelativeLayout.RIGHT_OF,RelativeLayout.TRUE);
         ((RelativeLayout.LayoutParams) b6).addRule(RelativeLayout.ALIGN_TOP,RelativeLayout.TRUE);
         button6.setLayoutParams(b6);
@@ -248,12 +253,16 @@ public class GamesActivity extends AppCompatActivity {
         ViewGroup.LayoutParams SV1= new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         ((RelativeLayout.LayoutParams) SV1).addRule(RelativeLayout.ALIGN_PARENT_LEFT,RelativeLayout.TRUE);
         ((RelativeLayout.LayoutParams) SV1).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,RelativeLayout.TRUE);
+        ((RelativeLayout.LayoutParams) SV1).addRule(RelativeLayout.ALIGN_PARENT_RIGHT,RelativeLayout.TRUE);
         viewCapacite.setLayoutParams(SV1);
 
         ViewGroup.LayoutParams SV2= new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         ((RelativeLayout.LayoutParams) SV2).addRule(RelativeLayout.ALIGN_PARENT_LEFT,RelativeLayout.TRUE);
         ((RelativeLayout.LayoutParams) SV2).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,RelativeLayout.TRUE);
+        ((RelativeLayout.LayoutParams) SV2).addRule(RelativeLayout.ALIGN_PARENT_RIGHT,RelativeLayout.TRUE);
         viewBoutton.setLayoutParams(SV2);
+
+
 
 
 
@@ -291,7 +300,7 @@ public class GamesActivity extends AppCompatActivity {
         linearLayout3.addView(viewCapacite);
 
         linearLayout3.setY(GameView.dHeight - 5*GameView.dHeight/32);
-        linearLayout3.setX(GameView.dWidth - 58*GameView.dWidth/59);
+        linearLayout3.setX(0);
 
 
 

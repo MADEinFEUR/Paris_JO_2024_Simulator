@@ -425,7 +425,7 @@ public class GameView extends View {
 
 
 
-        canvas.drawRect( 50, dHeight - 9*dHeight/60, (float) ( (dWidth - 50 )*(((life*100)/lifeInit)*0.1)), dHeight - 9*dHeight/60 - 10, healthPaint);
+        canvas.drawRect( 50, dHeight - 9*dHeight/60, (float) ( (dWidth - 50 )*(((life*100)/lifeInit)*0.01)), dHeight - 9*dHeight/60 - 10, healthPaint);
         canvas.drawRect(0,0,dWidth,45+55,infoTopPaint );
         canvas.drawText("" + points, titreTransport.getWidth()+20, 45, textPaint);
         canvas.drawBitmap(titreTransport,null,rectTitreTransport,null);
