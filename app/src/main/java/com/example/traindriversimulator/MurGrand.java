@@ -19,7 +19,7 @@ class MurGrand {
     public MurGrand(Context context) {
 
 
-        murGrand[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.mur_t1);
+        murGrand[0] = BitmapFactory.decodeResource(context.getResources(),R.drawable.mur_t2);
 
 
 
