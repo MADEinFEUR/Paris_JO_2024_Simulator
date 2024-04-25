@@ -57,8 +57,11 @@ public class App extends AppCompatActivity {
     }
 
     public void intro(View v){
-        finishActivity(1);
-        launchGameWindow();
+        Intent gamewindow = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            gamewindow = new Intent(this, MenuActivity.class);
+        }
+        startActivities(new Intent[]{gamewindow});
 
     }
 
