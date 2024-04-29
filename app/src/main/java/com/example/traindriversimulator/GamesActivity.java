@@ -586,7 +586,7 @@ public class GamesActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "T1 contruite jeune manifestant", Toast.LENGTH_SHORT).show();
                     GameView.points -= 25;
                 } else {
-                    Toast.makeText(getApplicationContext(), "Construction impossible", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Tu n'as pas les sous sous", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -605,7 +605,7 @@ public class GamesActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "T2 contruite jeune manifestant", Toast.LENGTH_SHORT).show();
                     GameView.points -= 60;
                 } else {
-                    Toast.makeText(getApplicationContext(), "Construction impossible", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Tu n'as pas les sous sous", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -625,7 +625,7 @@ public class GamesActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "T3 contruite jeune manifestant", Toast.LENGTH_SHORT).show();
                     GameView.points -= 150;
                 } else {
-                    Toast.makeText(getApplicationContext(), "Construction impossible", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Tu n'as pas les sous sous", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
@@ -661,14 +661,20 @@ public class GamesActivity extends AppCompatActivity {
                 break;
 
             case "Amélioration choisie" :
+                int cost = 0;
                 for(int j=0;j<GameView.towers.size();j++){
                     if(GameView.towers.get(j).Tx - X <= 50 && GameView.towers.get(j).Ty - Y <= 50
                             && X -GameView.towers.get(j).Tx <= 50 && GameView.towers.get(j).Ty - Y <= 50
                             && GameView.towers.get(j).Tx - X <= 50 && Y - GameView.towers.get(j).Ty <= 50
                             && X -GameView.towers.get(j).Tx <= 50 && Y - GameView.towers.get(j).Ty <= 50){
 
+
+
+
                         switch (GameView.towers.get(j).name){
                             case 1:
+                                cost = 50;
+
                                 GameView.towers.get(j).name=2;
                                 GameView.towers.get(j).towerCoolDownLimit=30;
                                 GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl2);
@@ -679,6 +685,8 @@ public class GamesActivity extends AppCompatActivity {
                             break;
 
                             case 2:
+                                cost = 200;
+
                                 GameView.towers.get(j).name=3;
                                 GameView.towers.get(j).towerCoolDownLimit=10;
                                 GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl3);
@@ -688,6 +696,8 @@ public class GamesActivity extends AppCompatActivity {
                                 break;
 
                             case 3:
+                                cost = 400;
+
                                 GameView.towers.get(j).name=4;
                                 GameView.towers.get(j).towerCoolDownLimit=5;
                                 GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl4);
@@ -701,7 +711,10 @@ public class GamesActivity extends AppCompatActivity {
 
 
 
+
+
                         }
+
 
                     }
                 }
