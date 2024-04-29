@@ -9,6 +9,8 @@ import android.graphics.BitmapFactory;
 class MurPetit {
     public int x;
     public int y;
+    public int construDispo=1;
+
 
     Bitmap murPetit[] = new Bitmap[2];
     int murFrame = 0;

@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 class MurGrand {
     public int x;
     public int y;
+    public int construDispo=1;
 
     Bitmap murGrand[] = new Bitmap[2];
     int murFrame = 0;

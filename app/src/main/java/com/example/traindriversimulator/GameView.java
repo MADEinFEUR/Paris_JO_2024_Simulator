@@ -159,6 +159,8 @@ public class GameView extends View {
         baseX = 0;
         baseY = size.y;
         trainY = 0;
+        nb_manche=0;
+        points=0;
         enemies = new ArrayList<>();
         towers = new ArrayList<>();
         explosions = new ArrayList<>();
@@ -290,7 +292,6 @@ public class GameView extends View {
 
                     if(towers.get(j).towerTimer >= towers.get(j).towerCoolDownLimit){
                         towers.get(j).towerFrame=3;
-                        System.out.println(towers.get(j).towerCoolDownLimit);
                         Explosion(i);
                         canvas.drawLine(towers.get((j)).Tx,towers.get((j)).Ty - 6*tourT1.getHeight()/10,enemies.get(i).positionX,enemies.get(i).positionY,projectilePiant);
                         towers.get(j).towerTimer = 0;
@@ -354,7 +355,6 @@ public class GameView extends View {
                         && enemies.get(i).positionX -catapults.get(j).Tx <= catapults.get(j).getRange() && enemies.get(i).positionY - catapults.get(j).Ty <= catapults.get(j).getRange()){
 
 
-                    System.out.println(catapults.get(j).catapultTimer);
                     if(catapults.get(j).catapultTimer >= catapults.get(j).catapultCoolDownLimit){
                         catapults.get(j).catapultFrame=1;
                         canvas.drawLine(catapults.get((j)).Tx,catapults.get((j)).Ty - 6*cataT1.getHeight()/10,enemies.get(i).positionX,enemies.get(i).positionY,projectilePiantCatapult);
@@ -472,7 +472,6 @@ public class GameView extends View {
 
         }
 
-        System.out.println((float) (((life*100)/lifeInit)));
 
 
 
@@ -631,7 +630,6 @@ public class GameView extends View {
         if (enemies.get(enemyi).getHealth() <= 0) {
             enemies.get(enemyi).enemyTuer();
             nb_spawn--;
-
             /// Faire en sorte que chaque type d'ennemi donne une somme diff
             points += 20; // Add 20 points to the score when an enemy dies
 
@@ -664,13 +662,12 @@ public class GameView extends View {
             rectEmplacementConstru.set(mursP.get(i).getMPX() +360,mursP.get(i).getMPY() -300  ,mursP.get(i).getMPX()+ emplacmentConstru.getWidth() +360 ,mursP.get(i).getMPY()-300 + emplacmentConstru.getHeight());
             canvas.drawBitmap(emplacmentConstru,null,rectEmplacementConstru,null);
 
-            if (rectEmplacementConstru.contains((int)GamesActivity.X,(int)GamesActivity.Y )|| choixConstru==1){
-                contruBatGraphique(canvas);
-                choixEmplacement=10+i;
-                choixConstru=1;
-
-
-
+            switch(""+(rectEmplacementConstru.contains((int)GamesActivity.X,(int)GamesActivity.Y))){
+                case "true":
+                            choixConstru=1;
+                            contruBatGraphique(canvas);
+                            choixEmplacement=10+i;
+                break;
 
             }
        }
@@ -678,25 +675,18 @@ public class GameView extends View {
             rectEmplacementConstru.set(mursG.get(i).getMGX() + dWidth/40,mursG.get(i).getMGY() - murT1.getHeight() - emplacmentConstru.getHeight() +dWidth/40,mursG.get(i).getMGX() + dWidth/40 + 1*emplacmentConstru.getWidth(),mursG.get(i).getMGY() - murT1.getHeight() - emplacmentConstru.getHeight() +dWidth/40 + emplacmentConstru.getHeight());
             canvas.drawBitmap(emplacmentConstru,null,rectEmplacementConstru,null);
 
-            if (rectEmplacementConstru.contains((int)GamesActivity.X,(int)GamesActivity.Y )|| choixConstru==1 ){
-                contruBatGraphique(canvas);
-                choixEmplacement=i;
-                choixConstru=1;
+            switch(""+(rectEmplacementConstru.contains((int)GamesActivity.X,(int)GamesActivity.Y))){
+                case "true":
+                            choixConstru=1;
+                            contruBatGraphique(canvas);
+                            choixEmplacement=i;
+
+                break;
 
             }
         }
 
-        switch(""+(rectB1.contains((int)GamesActivity.X,(int)GamesActivity.Y))){
-            case "true":
-                System.out.println("bat1");
-                choixConstru=0;
-                break;
-            default:
-                choixConstru=0;
-                break;
-
-
-        }
+        System.out.println(batiments.size());
         switch (choixEmplacement){
             case 1:
                 Xemplacement=mursG.get(1).getMGX() + dWidth/40;
@@ -709,72 +699,72 @@ public class GameView extends View {
 
                 break;
             case 11:
-                Xemplacement=mursP.get(1).getMPX() +360;
-                Yemplacement=mursP.get(1).getMPY() -300 ;
+                Xemplacement=mursP.get(1).getMPX() +560;
+                Yemplacement=mursP.get(1).getMPY() -150 ;
                 break;
         }
 
         switch(""+(rectB1.contains((int)GamesActivity.X,(int)GamesActivity.Y))){
             case "true":
-                System.out.println("bat2");
-                choixConstru=0;
-                Batiment batiment = new Batiment(context,Xemplacement,Yemplacement,1);
-                batiments.add(batiment);
-                break;
-            default:
-                choixConstru=0;
+                GamesActivity.X = -1000;
+                GamesActivity.Y=-1000;
+                switch (choixConstru) {
+                    case 1:
+                        Batiment batiment = new Batiment(context,Xemplacement,Yemplacement,1);
+                        batiments.add(batiment);
+                        choixConstru=0;
+                    break;
+                }
+
                 break;
 
         }
+
         switch(""+(rectB2.contains((int)GamesActivity.X,(int)GamesActivity.Y))){
             case "true":
-                System.out.println("bat3");
-                choixConstru=0;
-                Batiment batiment = new Batiment(context,Xemplacement,Yemplacement,2);
-                batiments.add(batiment);
+                GamesActivity.X = -1000;
+                GamesActivity.Y=-1000;
+                switch (choixConstru) {
+                    case 1:
+                        Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
+                        batiments.add(batiment);
+                        choixConstru=0;
+                    break;
+                }
                 break;
-            default:
-                choixConstru=0;
-                break;
-
         }
         switch(""+(rectB3.contains((int)GamesActivity.X,(int)GamesActivity.Y))){
             case "true":
-                choixConstru=0;
-                System.out.println("bat4");
-                Batiment batiment = new Batiment(context,Xemplacement,Yemplacement,3);
-                batiments.add(batiment);
-                break;
-            default:
-                choixConstru=0;
-                break;
-
-        }switch(""+(rectB4.contains((int)GamesActivity.X,(int)GamesActivity.Y))){
-            case "true":
-                choixConstru=0;
-                System.out.println("bat4");
-                Batiment batiment = new Batiment(context,Xemplacement,Yemplacement,4);
-                batiments.add(batiment);
-                break;
-            default:
-                choixConstru=0;
-                break;
-
+                GamesActivity.X = -1000;
+                GamesActivity.Y=-1000;
+                switch (choixConstru) {
+                    case 1:
+                        Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
+                        batiments.add(batiment);
+                        choixConstru=0;
+                    break;
+                }
         }
-
-
-
-
-
-
-
+        switch(""+(rectB4.contains((int)GamesActivity.X,(int)GamesActivity.Y))){
+            case "true":
+                GamesActivity.X = -1000;
+                GamesActivity.Y=-1000;
+                switch (choixConstru) {
+                    case 1:
+                        Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
+                        batiments.add(batiment);
+                        choixConstru=0;
+                    break;
+                }
+                break;
+        }
     }
 
     private void contruBatGraphique(Canvas canvas){
-        rectB1.set(dWidth/2 -200,dHeight/2- constru1.getWidth()/2 ,dWidth/2+constru1.getWidth()- constru1.getWidth()/2-200,dHeight/2+ constru1.getHeight()- constru1.getWidth()/2);
-        rectB2.set(dWidth/2 +200,dHeight/2 - constru1.getWidth()/2,dWidth/2+constru1.getWidth()- constru1.getWidth()/2+200,dHeight/2+ constru1.getHeight()- constru1.getWidth()/2);
+        rectB1.set(dWidth/2 -constru1.getWidth()/2-200,dHeight/2- constru1.getWidth()/2 ,dWidth/2+constru1.getWidth()- constru1.getWidth()/2-200,dHeight/2+ constru1.getHeight()- constru1.getWidth()/2);
+        rectB2.set(dWidth/2 - constru1.getWidth()/2+200,dHeight/2 - constru1.getWidth()/2,dWidth/2+constru1.getWidth()- constru1.getWidth()/2+200,dHeight/2+ constru1.getHeight()- constru1.getWidth()/2);
         rectB3.set(dWidth/2- constru1.getWidth()/2,dHeight/2 - constru1.getWidth()/2-200,dWidth/2+constru1.getWidth()- constru1.getWidth()/2,dHeight/2+ constru1.getHeight()- constru1.getWidth()/2-200);
-        rectB4.set(dWidth/2- constru1.getWidth()/2,dHeight/2- constru1.getWidth()/2+200 ,dWidth/2+constru1.getWidth()- constru1.getWidth()/2,dHeight/2 + constru1.getHeight()- constru1.getWidth()/+200);
+        rectB4.set(dWidth/2- constru1.getWidth()/2,dHeight/2- constru1.getWidth()/2+200 ,dWidth/2+constru1.getWidth()- constru1.getWidth()/2,dHeight/2 + constru1.getHeight()- constru1.getWidth()/2 + 200);
 
         canvas.drawBitmap(constru1,null,rectB1,null);
         canvas.drawBitmap(constru2,null,rectB2,null);
@@ -820,7 +810,6 @@ public class GameView extends View {
                     animTrain=0;
 
                     VagueEnemyMaker.Spawn(nb_manche);
-                    System.out.println(enemies.size());
                     GamesActivity.choisi="Rien pour le moment";
                 }
 
