@@ -19,6 +19,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.menu_activity);
 
 
+
     }
     public void lancerJouer(View v){
         Intent gamewindow = null;
@@ -26,6 +27,7 @@ public class MenuActivity extends AppCompatActivity {
             gamewindow = new Intent(this, GamesActivity.class);
         }
         startActivities(new Intent[]{gamewindow});
+        GameView.partieLancer=0;
     }
 
     public void lancerBoutique(View v){

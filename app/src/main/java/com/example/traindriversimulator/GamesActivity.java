@@ -35,9 +35,9 @@ import java.util.ArrayList;
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class GamesActivity extends AppCompatActivity {
 
-    int cost = 0;
-    public static float X=0;
-    public static float Y=0;
+    int cost =0;
+    public static float X=-1000;
+    public static float Y=-1000;
     FrameLayout gameActivity;
     RelativeLayout GameButtons;
     GameView gameView;
