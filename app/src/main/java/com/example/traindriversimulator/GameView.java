@@ -632,6 +632,10 @@ public class GameView extends View {
             enemies.get(enemyi).enemyTuer();
             nb_spawn--;
 
+            /// Faire en sorte que chaque type d'ennemi donne une somme diff
+            points += 20; // Add 20 points to the score when an enemy dies
+
+
         }
 
 
@@ -802,8 +806,11 @@ public class GameView extends View {
                 pouvoirPossible=0;
                 outilPossible=1;
 
+                ///Faire en sorte que toute les n manches la somme augmente
+                if(30 - timerseconde == 29){
+                    points += 2 + (int)(points * 0.01);
 
-
+                }
 
                 if(30 - timerseconde == 0){
                     nb_manche++;
