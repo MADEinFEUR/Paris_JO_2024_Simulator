@@ -35,7 +35,7 @@ import java.util.ArrayList;
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class GamesActivity extends AppCompatActivity {
 
-
+    int cost = 0;
     public static float X=0;
     public static float Y=0;
     FrameLayout gameActivity;
@@ -661,7 +661,7 @@ public class GamesActivity extends AppCompatActivity {
                 break;
 
             case "Amélioration choisie" :
-                int cost = 0;
+
                 for(int j=0;j<GameView.towers.size();j++){
                     if(GameView.towers.get(j).Tx - X <= 50 && GameView.towers.get(j).Ty - Y <= 50
                             && X -GameView.towers.get(j).Tx <= 50 && GameView.towers.get(j).Ty - Y <= 50
@@ -674,38 +674,62 @@ public class GamesActivity extends AppCompatActivity {
                         switch (GameView.towers.get(j).name){
                             case 1:
                                 cost = 50;
+                                if (GameView.points < cost) {
+                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    GameView.points -= cost;
 
-                                GameView.towers.get(j).name=2;
-                                GameView.towers.get(j).towerCoolDownLimit=30;
-                                GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl2);
-                                GameView.towers.get(j).setDamage(5);
+                                    GameView.towers.get(j).name = 2;
+                                    GameView.towers.get(j).towerCoolDownLimit = 30;
+                                    GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl2);
+                                    GameView.towers.get(j).setDamage(5);
 
-                                System.out.println(GameView.towers.get(j).name );
-                                System.out.println(GameView.towers.get(j).towerCoolDownLimit );
+                                    System.out.println(GameView.towers.get(j).name);
+                                    System.out.println(GameView.towers.get(j).towerCoolDownLimit);
+                                }
                             break;
 
                             case 2:
                                 cost = 200;
 
-                                GameView.towers.get(j).name=3;
-                                GameView.towers.get(j).towerCoolDownLimit=10;
-                                GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl3);
-                                GameView.towers.get(j).setDamage(5);
+                                if (GameView.points < cost) {
+                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    GameView.points -= cost;
 
-                                System.out.println("Amélioré");
+                                    GameView.towers.get(j).name = 3;
+                                    GameView.towers.get(j).towerCoolDownLimit = 10;
+                                    GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl3);
+                                    GameView.towers.get(j).setDamage(5);
+
+                                    System.out.println("Amélioré");
+                                }
                                 break;
 
                             case 3:
-                                cost = 400;
+                                cost = 650;
+                                if (GameView.points < cost) {
+                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
 
-                                GameView.towers.get(j).name=4;
-                                GameView.towers.get(j).towerCoolDownLimit=5;
-                                GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl4);
-                                GameView.towers.get(j).setDamage(5);
+                                    GameView.points -= cost;
 
-                                System.out.println("Amélioré");
+
+                                    GameView.towers.get(j).name = 4;
+                                    GameView.towers.get(j).towerCoolDownLimit = 5;
+                                    GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl4);
+                                    GameView.towers.get(j).setDamage(5);
+
+                                    System.out.println("Amélioré");
+                                }
                                 break;
                             case 4:
+
+
+
                                 Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
                                 break;
 
@@ -726,25 +750,53 @@ public class GamesActivity extends AppCompatActivity {
 
                         switch (GameView.mines.get(j).name){
                             case 1:
-                                GameView.mines.get(j).name = 2;
-                                GameView.mines.get(j).setNewSkin(decodeResource(gameView.getContext().getResources(), R.drawable.mine2_ground)) ;
-                                GameView.mines.get(j).setDamage(70);
-                                System.out.println("Amélioré");
-                                break;
+                                cost = 75;
+                                if (GameView.points < cost) {
+                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    GameView.points -= cost;
+
+
+                                    GameView.mines.get(j).name = 2;
+                                    GameView.mines.get(j).setNewSkin(decodeResource(gameView.getContext().getResources(), R.drawable.mine2_ground));
+                                    GameView.mines.get(j).setDamage(70);
+                                    System.out.println("Amélioré");
+                                    break;
+                                }
 
                             case 2:
-                                GameView.mines.get(j).name = 3;
-                                GameView.mines.get(j).mine[0] = decodeResource(gameView.getContext().getResources(), R.drawable.mine3_ground);
-                                GameView.mines.get(j).setDamage(90);
-                                System.out.println("Amélioré");
-                                break;
+                                cost = 150;
+
+                                if (GameView.points < cost) {
+                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    GameView.points -= cost;
+
+
+                                    GameView.mines.get(j).name = 3;
+                                    GameView.mines.get(j).mine[0] = decodeResource(gameView.getContext().getResources(), R.drawable.mine3_ground);
+                                    GameView.mines.get(j).setDamage(90);
+                                    System.out.println("Amélioré");
+                                    break;
+                                }
 
                             case 3:
+                                cost = 400 ;if (GameView.points < cost) {
+                                Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                GameView.points -= cost;
+
+
+
                                 GameView.mines.get(j).name = 4;
                                 GameView.mines.get(j).mine[0] = decodeResource(gameView.getContext().getResources(), R.drawable.mine4_ground);
                                 GameView.mines.get(j).setDamage(110);
                                 System.out.println("Amélioré");
                                 break;
+                            }
                             case 4:
 
                                 Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
@@ -764,31 +816,61 @@ public class GamesActivity extends AppCompatActivity {
 
                         switch (GameView.catapults.get(j).name){
                             case 1:
-                                GameView.catapults.get(j).name = 2;
-                                GameView.catapults.get(j).catapultCoolDownLimit=110;
-                                GameView.catapults.get(j).setDamage(150);
-                                GameView.catapults.get(j).catapult[0] = decodeResource(gameView.getContext().getResources(), R.drawable.catapultlvl2);
-                                System.out.println("Amélioré");
-                                break;
+                                cost = 350;
+                                if (GameView.points < cost) {
+                                Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                            }
+                                else {
+                                    GameView.points -= cost;
+
+
+
+                                    GameView.catapults.get(j).name = 2;
+                                    GameView.catapults.get(j).catapultCoolDownLimit = 110;
+                                    GameView.catapults.get(j).setDamage(150);
+                                    GameView.catapults.get(j).catapult[0] = decodeResource(gameView.getContext().getResources(), R.drawable.catapultlvl2);
+                                    System.out.println("Amélioré");
+                                    break;
+                                }
 
                             case 2:
-                                GameView.catapults.get(j).name = 3;
-                                GameView.catapults.get(j).setDamage(170);
-                                GameView.catapults.get(j).catapultCoolDownLimit=80;
+                                cost = 500;
+                                if (GameView.points < cost) {
+                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    GameView.points -= cost;
 
-                                GameView.catapults.get(j).catapult[0] = decodeResource(gameView.getContext().getResources(), R.drawable.catapultlvl3);
 
-                                System.out.println("Amélioré");
-                                break;
+
+                                    GameView.catapults.get(j).name = 3;
+                                    GameView.catapults.get(j).setDamage(170);
+                                    GameView.catapults.get(j).catapultCoolDownLimit = 80;
+
+                                    GameView.catapults.get(j).catapult[0] = decodeResource(gameView.getContext().getResources(), R.drawable.catapultlvl3);
+
+                                    System.out.println("Amélioré");
+                                    break;
+                                }
 
                             case 3:
-                                GameView.catapults.get(j).name = 4;
-                                GameView.catapults.get(j).setDamage(190);
-                                GameView.catapults.get(j).catapultCoolDownLimit=50;
+                                cost = 700;
+                                if (GameView.points < cost) {
+                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    GameView.points -= cost;
 
-                                GameView.catapults.get(j).catapult[0] = decodeResource(gameView.getContext().getResources(), R.drawable.catapultlvl4);
 
-                                break;
+
+                                    GameView.catapults.get(j).name = 4;
+                                    GameView.catapults.get(j).setDamage(190);
+                                    GameView.catapults.get(j).catapultCoolDownLimit = 50;
+
+                                    GameView.catapults.get(j).catapult[0] = decodeResource(gameView.getContext().getResources(), R.drawable.catapultlvl4);
+
+                                    break;
+                                }
                             case 4:
                                 Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
 
