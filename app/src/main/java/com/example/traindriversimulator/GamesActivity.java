@@ -47,6 +47,8 @@ public class GamesActivity extends AppCompatActivity {
 
     public int boutonjeux;
 
+    //public int points = 0;
+
     public static String choisi = "zizi";
 
     public static float doigtX;
@@ -560,6 +562,10 @@ public class GamesActivity extends AppCompatActivity {
 
     }
 
+//---------------------------cout des tourelles-------------------------------------------------------------
+
+
+
     public void onClick(MotionEvent motionEvent){
          X = motionEvent.getX();
          Y = motionEvent.getY();
@@ -569,31 +575,62 @@ public class GamesActivity extends AppCompatActivity {
 
         switch (choisi){
             case "T1 choisie":
+
+                if (GameView.points >= 25) {
                     if(Y > GameView.dHeight/6) {
                         Tower tower = new Tower(gameView.getContext(), (int) X , (int) Y, 0,1);
                         GameView.towers.add(tower);
                     }else{
                         Toast.makeText(getApplicationContext(), "Impossible de construire aussi haut", Toast.LENGTH_SHORT).show();
                     }
+                    Toast.makeText(getApplicationContext(), "T1 contruite jeune manifestant", Toast.LENGTH_SHORT).show();
+                    GameView.points -= 25;
+                } else {
+                    Toast.makeText(getApplicationContext(), "Construction impossible", Toast.LENGTH_SHORT).show();
+                }
                 break;
 
+
             case "T2 choisie":
+
+
+
+                if (GameView.points >= 60) {
                     if(Y > GameView.dHeight/6) {
                         mine = new Mine(gameView.getContext(), (int) X, (int) Y,1);
                         System.out.println("constreuir");
                         GameView.mines.add(mine);
 
                     }
-                break;
-
-            case "T3 choisie":
-                if(Y > GameView.dHeight/6) {
-                    Catapult catapult = new Catapult(gameView.getContext(), (int) X, (int) Y, 0, 1);
-                    System.out.println("constreuir");
-                    GameView.catapults.add(catapult);
-
+                    Toast.makeText(getApplicationContext(), "T2 contruite jeune manifestant", Toast.LENGTH_SHORT).show();
+                    GameView.points -= 60;
+                } else {
+                    Toast.makeText(getApplicationContext(), "Construction impossible", Toast.LENGTH_SHORT).show();
                 }
                 break;
+
+
+
+
+            case "T3 choisie":
+
+
+                if (GameView.points >= 150) {
+                    if(Y > GameView.dHeight/6) {
+                        Catapult catapult = new Catapult(gameView.getContext(), (int) X, (int) Y, 0, 1);
+                        System.out.println("constreuir");
+                        GameView.catapults.add(catapult);
+
+                    }
+                    Toast.makeText(getApplicationContext(), "T3 contruite jeune manifestant", Toast.LENGTH_SHORT).show();
+                    GameView.points -= 150;
+                } else {
+                    Toast.makeText(getApplicationContext(), "Construction impossible", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+
+
 
             case "Destruction choisie" :
                         for(int j=0;j<GameView.towers.size();j++){

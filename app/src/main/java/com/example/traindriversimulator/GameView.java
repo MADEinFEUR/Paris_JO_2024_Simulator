@@ -42,7 +42,7 @@ public class GameView extends View {
     Paint projectilePiant = new Paint();
     Paint projectilePiantCatapult = new Paint();
 
-    int points = 0;
+    public static int points = 0;
     public static int etatConstruction=0;
     int animTrain=0;
     int life = 3000;
@@ -599,6 +599,8 @@ public class GameView extends View {
         if (enemies.get(enemyi).getHealth() <= 0) {
             enemies.get(enemyi).enemyTuer();
             nb_spawn--;
+            points += 20; // Add 20 points to the score when an enemy dies
+
 
         }
 
@@ -717,10 +719,14 @@ public class GameView extends View {
                 pouvoirPossible=0;
                 outilPossible=1;
 
+                if(30 - timerseconde == 29){
+                    points += 2 + (int)(points * 0.01);
 
+                }
 
 
                 if(30 - timerseconde == 0){
+
                     nb_manche++;
                     timerseconde=0;
                     etatPartie = 1;
@@ -730,6 +736,7 @@ public class GameView extends View {
                     VagueEnemyMaker.Spawn(nb_manche);
                     System.out.println(enemies.size());
                     GamesActivity.choisi="Rien pour le moment";
+
                 }
 
                 if(30 - timerseconde <= 10){
