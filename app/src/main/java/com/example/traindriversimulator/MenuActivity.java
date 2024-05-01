@@ -1,10 +1,12 @@
 package com.example.traindriversimulator;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.VideoView;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,7 +33,15 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void lancerBoutique(View v){
+        @SuppressLint("WrongViewCast") ImageButton launchMainTwoButton = findViewById(R.id.imageView15);
 
+        // Set an OnClickListener for the button
+        launchMainTwoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MenuActivity.this, ShopActivity.class);
+                startActivity(intent);
+            }
     }
 
     public void lancerMDJ(View v){
@@ -47,6 +57,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void lancerQuitter(View v){
-
+        moveTaskToBack(true);
+        finishAndRemoveTask();
     }
 }
