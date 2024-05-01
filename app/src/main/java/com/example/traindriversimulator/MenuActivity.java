@@ -32,16 +32,15 @@ public class MenuActivity extends AppCompatActivity {
         GameView.partieLancer=0;
     }
 
-    public void lancerBoutique(View v){
+    public void lancerBoutique(View v) {
         @SuppressLint("WrongViewCast") ImageButton launchMainTwoButton = findViewById(R.id.imageView15);
-
-        // Set an OnClickListener for the button
         launchMainTwoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MenuActivity.this, ShopActivity.class);
                 startActivity(intent);
             }
+        });
     }
 
     public void lancerMDJ(View v){
