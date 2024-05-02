@@ -17,6 +17,8 @@ class Catapult {
 
     public int name;
 
+    public int cost;
+
     public static Enemy cible = null;
 
     Bitmap catapult[] = new Bitmap[2];
@@ -28,7 +30,7 @@ class Catapult {
     }
 
 
-    public Catapult(Context context, int Tx, int Ty, int catapultTimer, int name) {
+    public Catapult(Context context, int Tx, int Ty, int catapultTimer, int name, int cost) {
         this.damage = damage;
         this.range = range;
         this.life = life;
@@ -38,6 +40,7 @@ class Catapult {
         this.name = name;
         this.cible = cible;
         this.catapultCoolDownLimit = catapultCoolDownLimit;
+        this.cost = cost;
 
         ChangementLvlTower(context,name);
     }

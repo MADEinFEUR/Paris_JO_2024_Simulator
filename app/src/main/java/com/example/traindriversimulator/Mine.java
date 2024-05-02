@@ -15,6 +15,8 @@ class Mine {
 
     public int name;
 
+    public int cost;
+
     Bitmap mine[] = new Bitmap[6];
 
     int mineFrame = 0;
@@ -24,12 +26,13 @@ class Mine {
         return mine[mineFrame];
     }
 
-    public Mine(Context context, int x, int y, int name) {
+    public Mine(Context context, int x, int y, int name, int cost) {
         this.damage = damage;
         this.range = range;
         this.x = x;
         this.y = y;
         this.name = name;
+        this.cost = cost;
 
 
 

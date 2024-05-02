@@ -595,9 +595,9 @@ public class GamesActivity extends AppCompatActivity {
 
 
 
-                if (GameView.points >= 60) {
+                if (GameView.points >= 100) {
                     if(Y > GameView.dHeight/6) {
-                        mine = new Mine(gameView.getContext(), (int) X, (int) Y,1);
+                        mine = new Mine(gameView.getContext(), (int) X, (int) Y,1, 100);
                         System.out.println("constreuir");
                         GameView.mines.add(mine);
 
@@ -617,7 +617,7 @@ public class GamesActivity extends AppCompatActivity {
 
                 if (GameView.points >= 150) {
                     if(Y > GameView.dHeight/6) {
-                        Catapult catapult = new Catapult(gameView.getContext(), (int) X, (int) Y, 0, 1);
+                        Catapult catapult = new Catapult(gameView.getContext(), (int) X, (int) Y, 0, 1,150 );
                         System.out.println("constreuir");
                         GameView.catapults.add(catapult);
 
@@ -638,7 +638,10 @@ public class GamesActivity extends AppCompatActivity {
                                     && X -GameView.towers.get(j).Tx <= 50 && GameView.towers.get(j).Ty - Y <= 50
                                     && GameView.towers.get(j).Tx - X <= 50 && Y - GameView.towers.get(j).Ty <= 50
                                     && X -GameView.towers.get(j).Tx <= 50 && Y - GameView.towers.get(j).Ty <= 50){
+                                GameView.points += (int)(GameView.towers.get(j).cost/2); //on regagne 50% de l'argent dépensé quand on détruit une tourelle
+
                                 GameView.towers.remove(j);
+
                             }
                         }
 
@@ -647,8 +650,9 @@ public class GamesActivity extends AppCompatActivity {
                                     && X -GameView.mines.get(j).x <= 50 && GameView.mines.get(j).y - Y <= 50
                                     && GameView.mines.get(j).x - X <= 50 && Y - GameView.mines.get(j).y <= 50
                                     && X -GameView.mines.get(j).x <= 50 && Y - GameView.mines.get(j).y <= 50){
+                                GameView.points += (int)(GameView.mines.get(j).cost/2); //on regagne 50% de l'argent dépensé quand on détruit une tourelle
+
                                 GameView.mines.remove(j);
-                                GameView.points += (int)(GameView.towers.get(j).cost/2); //on regange 50% de l'argent dépensé quand on détruit une tourelle
                             }
                         }
                         for(int j=0;j<GameView.catapults.size();j++){
@@ -656,7 +660,10 @@ public class GamesActivity extends AppCompatActivity {
                                     && X -GameView.catapults.get(j).Tx <= 50 && GameView.catapults.get(j).Ty - Y <= 50
                                     && GameView.catapults.get(j).Tx - X <= 50 && Y - GameView.catapults.get(j).Ty <= 50
                                     && X -GameView.catapults.get(j).Tx <= 50 && Y - GameView.catapults.get(j).Ty <= 50){
+                                GameView.points += (int)(GameView.catapults.get(j).cost/2); //on regagne 50% de l'argent dépensé quand on détruit une tourelle
+
                                 GameView.catapults.remove(j);
+
                             }
                         }
                 break;
@@ -760,8 +767,9 @@ public class GamesActivity extends AppCompatActivity {
                                 else {
                                     GameView.points -= cost;
 
-
                                     GameView.mines.get(j).name = 2;
+                                    GameView.mines.get(j).cost = cost;
+
                                     GameView.mines.get(j).setNewSkin(decodeResource(gameView.getContext().getResources(), R.drawable.mine2_ground));
                                     GameView.mines.get(j).setDamage(70);
                                     System.out.println("Amélioré");
@@ -779,6 +787,8 @@ public class GamesActivity extends AppCompatActivity {
 
 
                                     GameView.mines.get(j).name = 3;
+                                    GameView.mines.get(j).cost = cost;
+
                                     GameView.mines.get(j).mine[0] = decodeResource(gameView.getContext().getResources(), R.drawable.mine3_ground);
                                     GameView.mines.get(j).setDamage(90);
                                     System.out.println("Amélioré");
@@ -795,6 +805,10 @@ public class GamesActivity extends AppCompatActivity {
 
 
                                 GameView.mines.get(j).name = 4;
+                                GameView.mines.get(j).cost = cost;
+
+                                GameView.towers.get(j).cost = cost;
+
                                 GameView.mines.get(j).mine[0] = decodeResource(gameView.getContext().getResources(), R.drawable.mine4_ground);
                                 GameView.mines.get(j).setDamage(110);
                                 System.out.println("Amélioré");
@@ -829,6 +843,8 @@ public class GamesActivity extends AppCompatActivity {
 
 
                                     GameView.catapults.get(j).name = 2;
+                                    GameView.catapults.get(j).cost = cost;
+
                                     GameView.catapults.get(j).catapultCoolDownLimit = 110;
                                     GameView.catapults.get(j).setDamage(150);
                                     GameView.catapults.get(j).catapult[0] = decodeResource(gameView.getContext().getResources(), R.drawable.catapultlvl2);
@@ -847,6 +863,8 @@ public class GamesActivity extends AppCompatActivity {
 
 
                                     GameView.catapults.get(j).name = 3;
+                                    GameView.catapults.get(j).cost = cost;
+
                                     GameView.catapults.get(j).setDamage(170);
                                     GameView.catapults.get(j).catapultCoolDownLimit = 80;
 
@@ -867,6 +885,8 @@ public class GamesActivity extends AppCompatActivity {
 
 
                                     GameView.catapults.get(j).name = 4;
+                                    GameView.catapults.get(j).cost = cost;
+
                                     GameView.catapults.get(j).setDamage(190);
                                     GameView.catapults.get(j).catapultCoolDownLimit = 50;
 
