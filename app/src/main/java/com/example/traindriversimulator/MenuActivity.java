@@ -33,8 +33,11 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void lancerBoutique(View v) {
-                Intent intent = new Intent(this, ShopActivity.class);
-                startActivities(new Intent[]{intent});
+        Intent gamewindow = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            gamewindow = new Intent(this, ShopActivity.class);
+        }
+        startActivities(new Intent[]{gamewindow});
     }
 
     public void lancerMDJ(View v){

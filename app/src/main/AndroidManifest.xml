@@ -22,6 +22,10 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ShopActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".GameOver"
             android:exported="true"
             android:screenOrientation="portrait" />
