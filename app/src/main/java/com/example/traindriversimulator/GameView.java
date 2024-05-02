@@ -71,7 +71,9 @@ public class GameView extends View {
     public static ArrayList<Tower> towers;
     public static ArrayList<Mine> mines;
     public static ArrayList<Catapult> catapults;
-    public static ArrayList<Batiment> batiments;
+    public static ArrayList<Batiment> batiments1;
+    public static ArrayList<Batiment> batiments2;
+    public static ArrayList<Batiment> batiments3;
     ArrayList<MurGrand> mursG;
     ArrayList<MurPetit> mursP;
 
@@ -84,6 +86,7 @@ public class GameView extends View {
     private int choixEmplacement;
     private int Xemplacement;
     private int Yemplacement;
+    private int batimentCC;
 
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -165,7 +168,9 @@ public class GameView extends View {
         towers = new ArrayList<>();
         explosions = new ArrayList<>();
         catapults = new ArrayList<>();
-        batiments = new ArrayList<>();
+        batiments1 = new ArrayList<>();
+        batiments2 = new ArrayList<>();
+        batiments3 = new ArrayList<>();
         mines = new ArrayList<>();
         mursG = new ArrayList<>();
         mursP = new ArrayList<>();
@@ -263,7 +268,7 @@ public class GameView extends View {
         //gestion des ennemi__________________________________________________________________
 
         for (int i = 0; i < enemies.size(); i++) {
-            enemies.get(i).rdm_deplacement =random.nextInt(70);
+            enemies.get(i).rdm_deplacement = random.nextInt(70);
             canvas.drawBitmap(enemies.get(i).getEnemy(enemies.get(i).enemyFrame), enemies.get(i).getPositionX(), enemies.get(i).getPositionY(), null);
             enemies.get(i).enemyFrame++;
             if (enemies.get(i).enemyFrame > 6) {
@@ -272,30 +277,26 @@ public class GameView extends View {
 
             //gestion vie graphique ennemi
 
-            canvas.drawRect(enemies.get(i).positionX, enemies.get(i).positionY,(int)(enemies.get(i).positionX +  ((enemies.get(i).getHealth()*100/enemies.get(i).healthInit))*0.5), enemies.get(i).positionY + 5, ennemiHeath);
-
-
-
-
+            canvas.drawRect(enemies.get(i).positionX, enemies.get(i).positionY, (int) (enemies.get(i).positionX + ((enemies.get(i).getHealth() * 100 / enemies.get(i).healthInit)) * 0.5), enemies.get(i).positionY + 5, ennemiHeath);
 
 
             //Gestion des bâtiments en fonction de la position des enemies_______________________________________________________________
 
             //tourelle
-            for(int j =0; j<towers.size();j++){
-                if(towers.get(j).Tx - enemies.get(i).positionX <= towers.get(j).getRange() && towers.get(j).Ty - enemies.get(i).positionY <= towers.get(j).getRange()
-                        && enemies.get(i).positionX -towers.get(j).Tx <= towers.get(j).getRange() && towers.get(j).Ty - enemies.get(i).positionY <= towers.get(j).getRange()
+            for (int j = 0; j < towers.size(); j++) {
+                if (towers.get(j).Tx - enemies.get(i).positionX <= towers.get(j).getRange() && towers.get(j).Ty - enemies.get(i).positionY <= towers.get(j).getRange()
+                        && enemies.get(i).positionX - towers.get(j).Tx <= towers.get(j).getRange() && towers.get(j).Ty - enemies.get(i).positionY <= towers.get(j).getRange()
                         && towers.get(j).Tx - enemies.get(i).positionX <= towers.get(j).getRange() && enemies.get(i).positionY - towers.get(j).Ty <= towers.get(j).getRange()
-                        && enemies.get(i).positionX -towers.get(j).Tx <= towers.get(j).getRange() && enemies.get(i).positionY - towers.get(j).Ty <= towers.get(j).getRange()
-                        &&enemies.get(i).getEtat()==1){
+                        && enemies.get(i).positionX - towers.get(j).Tx <= towers.get(j).getRange() && enemies.get(i).positionY - towers.get(j).Ty <= towers.get(j).getRange()
+                        && enemies.get(i).getEtat() == 1) {
 
 
-                    if(towers.get(j).towerTimer >= towers.get(j).towerCoolDownLimit){
-                        towers.get(j).towerFrame=3;
+                    if (towers.get(j).towerTimer >= towers.get(j).towerCoolDownLimit) {
+                        towers.get(j).towerFrame = 3;
                         Explosion(i);
-                        canvas.drawLine(towers.get((j)).Tx,towers.get((j)).Ty - 6*tourT1.getHeight()/10,enemies.get(i).positionX,enemies.get(i).positionY,projectilePiant);
+                        canvas.drawLine(towers.get((j)).Tx, towers.get((j)).Ty - 6 * tourT1.getHeight() / 10, enemies.get(i).positionX, enemies.get(i).positionY, projectilePiant);
                         towers.get(j).towerTimer = 0;
-                        MortEnemy(canvas,i,towers.get(j).getDamage());
+                        MortEnemy(canvas, i, towers.get(j).getDamage());
                         towers.get(j).towerFrame = 0;
                     }
 
@@ -304,32 +305,31 @@ public class GameView extends View {
             }
 
             //pétard de voie
-            for(int j =0; j<mines.size();j++){
+            for (int j = 0; j < mines.size(); j++) {
 
-                if(mines.get(j).x - enemies.get(i).positionX <= mines.get(j).getRange() && mines.get(j).y - enemies.get(i).positionY <= mines.get(j).getRange()
-                        && enemies.get(i).positionX -mines.get(j).x <= mines.get(j).getRange() && mines.get(j).y - enemies.get(i).positionY <= mines.get(j).getRange()
+                if (mines.get(j).x - enemies.get(i).positionX <= mines.get(j).getRange() && mines.get(j).y - enemies.get(i).positionY <= mines.get(j).getRange()
+                        && enemies.get(i).positionX - mines.get(j).x <= mines.get(j).getRange() && mines.get(j).y - enemies.get(i).positionY <= mines.get(j).getRange()
                         && mines.get(j).x - enemies.get(i).positionX <= mines.get(j).getRange() && enemies.get(i).positionY - mines.get(j).y <= mines.get(j).getRange()
-                        && enemies.get(i).positionX -mines.get(j).x <= mines.get(j).getRange() && enemies.get(i).positionY - mines.get(j).y <= mines.get(j).getRange()){
-
+                        && enemies.get(i).positionX - mines.get(j).x <= mines.get(j).getRange() && enemies.get(i).positionY - mines.get(j).y <= mines.get(j).getRange()) {
 
 
                     switch (mines.get(j).mineFrame) {
 
                         default:
-                            mines.get(j).mineFrame=1;
-                            mines.get(j).mineFrame=2;
-                            mines.get(j).mineFrame=3;
-                            mines.get(j).mineFrame=4;
-                            mines.get(j).mineFrame=5;
+                            mines.get(j).mineFrame = 1;
+                            mines.get(j).mineFrame = 2;
+                            mines.get(j).mineFrame = 3;
+                            mines.get(j).mineFrame = 4;
+                            mines.get(j).mineFrame = 5;
                             break;
 
 
                         case 5:
-                            for(int e=0; e<enemies.size(); e++) {
-                                if(mines.get(j).x - enemies.get(e).positionX <= mines.get(j).getRange()+100 && mines.get(j).y - enemies.get(e).positionY <= mines.get(j).getRange()+100
-                                        && enemies.get(e).positionX -mines.get(j).x <= mines.get(j).getRange()+100 && mines.get(j).y - enemies.get(e).positionY <= mines.get(j).getRange()+100
-                                        && mines.get(j).x - enemies.get(e).positionX <= mines.get(j).getRange()+100 && enemies.get(e).positionY - mines.get(j).y <= mines.get(j).getRange()+100
-                                        && enemies.get(e).positionX -mines.get(j).x <= mines.get(j).getRange()+100 && enemies.get(e).positionY - mines.get(j).y <= mines.get(j).getRange()+100) {
+                            for (int e = 0; e < enemies.size(); e++) {
+                                if (mines.get(j).x - enemies.get(e).positionX <= mines.get(j).getRange() + 100 && mines.get(j).y - enemies.get(e).positionY <= mines.get(j).getRange() + 100
+                                        && enemies.get(e).positionX - mines.get(j).x <= mines.get(j).getRange() + 100 && mines.get(j).y - enemies.get(e).positionY <= mines.get(j).getRange() + 100
+                                        && mines.get(j).x - enemies.get(e).positionX <= mines.get(j).getRange() + 100 && enemies.get(e).positionY - mines.get(j).y <= mines.get(j).getRange() + 100
+                                        && enemies.get(e).positionX - mines.get(j).x <= mines.get(j).getRange() + 100 && enemies.get(e).positionY - mines.get(j).y <= mines.get(j).getRange() + 100) {
                                     MortEnemy(canvas, e, mines.get(j).getDamage());
                                 }
                             }
@@ -342,25 +342,24 @@ public class GameView extends View {
                     }
 
 
-
                 }
             }
 
             //catapult
-            for(int j =0; j<catapults.size();j++){
+            for (int j = 0; j < catapults.size(); j++) {
 
-                if(catapults.get(j).Tx - enemies.get(i).positionX <= catapults.get(j).getRange() && catapults.get(j).Ty - enemies.get(i).positionY <= catapults.get(j).getRange()
-                        && enemies.get(i).positionX -catapults.get(j).Tx <= catapults.get(j).getRange() && catapults.get(j).Ty - enemies.get(i).positionY <= catapults.get(j).getRange()
+                if (catapults.get(j).Tx - enemies.get(i).positionX <= catapults.get(j).getRange() && catapults.get(j).Ty - enemies.get(i).positionY <= catapults.get(j).getRange()
+                        && enemies.get(i).positionX - catapults.get(j).Tx <= catapults.get(j).getRange() && catapults.get(j).Ty - enemies.get(i).positionY <= catapults.get(j).getRange()
                         && catapults.get(j).Tx - enemies.get(i).positionX <= catapults.get(j).getRange() && enemies.get(i).positionY - catapults.get(j).Ty <= catapults.get(j).getRange()
-                        && enemies.get(i).positionX -catapults.get(j).Tx <= catapults.get(j).getRange() && enemies.get(i).positionY - catapults.get(j).Ty <= catapults.get(j).getRange()){
+                        && enemies.get(i).positionX - catapults.get(j).Tx <= catapults.get(j).getRange() && enemies.get(i).positionY - catapults.get(j).Ty <= catapults.get(j).getRange()) {
 
 
-                    if(catapults.get(j).catapultTimer >= catapults.get(j).catapultCoolDownLimit){
-                        catapults.get(j).catapultFrame=1;
-                        canvas.drawLine(catapults.get((j)).Tx,catapults.get((j)).Ty - 6*cataT1.getHeight()/10,enemies.get(i).positionX,enemies.get(i).positionY,projectilePiantCatapult);
+                    if (catapults.get(j).catapultTimer >= catapults.get(j).catapultCoolDownLimit) {
+                        catapults.get(j).catapultFrame = 1;
+                        canvas.drawLine(catapults.get((j)).Tx, catapults.get((j)).Ty - 6 * cataT1.getHeight() / 10, enemies.get(i).positionX, enemies.get(i).positionY, projectilePiantCatapult);
 
                         Explosion(i);
-                        MortEnemy(canvas,i,catapults.get(j).getDamage());
+                        MortEnemy(canvas, i, catapults.get(j).getDamage());
 
                         /*
                         for(int e=0; e<enemies.size(); e++) {
@@ -377,55 +376,58 @@ public class GameView extends View {
                         }*/
 
 
-                        catapults.get(j).catapultFrame=0;
+                        catapults.get(j).catapultFrame = 0;
                         catapults.get(j).catapultTimer = 0;
                     }
 
 
-
                 }
 
             }
 
 
-
-
-        //_________________________"IA"_____________________________________________________________
+            //_________________________"IA"_____________________________________________________________
             //gestion déplacement enemie sur les murs de gauche
 
-            for (int j = 0; j < mursG.size(); j++) {
 
-                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement > mursG.get(j).getMGY()
-                        && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement  < mursG.get(j).getMGY() + murT1.getHeight()
-                        && enemies.get(i).positionX -  enemies.get(i).rdm_deplacement < mursG.get(j).getMGX() + murT1.getWidth()) {
-
-                    enemies.get(i).positionX += enemies.get(i).enemyVelocityX;
-                    enemies.get(i).enemyVelocityY = 0;
-                }
-            }
+            switch (batimentCC){
+                default:
 
 
-            //gestion déplacement enemie sur les murs de droite
-            for (int j = 0; j < mursP.size(); j++) {
-                if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement  > mursP.get(j).getMPY()
-                        && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement < mursP.get(j).getMPY()+murT2.getHeight()
-                        && enemies.get(i).positionX  + enemies.get(i).rdm_deplacement  < mursP.get(j).getMPX() + murT2.getWidth()
-                        && enemies.get(i).positionX + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement > mursP.get(j).getMPX()) {
+                    for (int j = 0; j < mursG.size(); j++) {
 
-                    enemies.get(i).positionX += -enemies.get(i).enemyVelocityX;
-                    enemies.get(i).enemyVelocityY = 0;
+                        if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement > mursG.get(j).getMGY()
+                                && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement < mursG.get(j).getMGY() + murT1.getHeight()
+                                && enemies.get(i).positionX - enemies.get(i).rdm_deplacement < mursG.get(j).getMGX() + murT1.getWidth()) {
 
-                }
-
+                            enemies.get(i).positionX += enemies.get(i).enemyVelocityX;
+                            enemies.get(i).enemyVelocityY = 0;
+                        }
+                    }
 
 
+                    //gestion déplacement enemie sur les murs de droite
+                    for (int j = 0; j < mursP.size(); j++) {
+                        if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement > mursP.get(j).getMPY()
+                                && enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement < mursP.get(j).getMPY() + murT2.getHeight()
+                                && enemies.get(i).positionX + enemies.get(i).rdm_deplacement < mursP.get(j).getMPX() + murT2.getWidth()
+                                && enemies.get(i).positionX + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement > mursP.get(j).getMPX()) {
 
-            }
-            if(enemies.get(i).getEtat() !=0) {
-                enemies.get(i).positionY += enemies.get(i).enemyVelocityY;
-                enemies.get(i).resetEnemyVelocity();
+                            enemies.get(i).positionX += -enemies.get(i).enemyVelocityX;
+                            enemies.get(i).enemyVelocityY = 0;
+
+                        }
+
+
+                    }
+                    if (enemies.get(i).getEtat() != 0) {
+                        enemies.get(i).positionY += enemies.get(i).enemyVelocityY;
+                        enemies.get(i).resetEnemyVelocity();
+                    }
+                    break;
             }
         }
+
 
 
         //Gestion des suicides sur la base
@@ -573,10 +575,18 @@ public class GameView extends View {
                     canvas.drawBitmap(mines.get(i).getMine(mines.get(i).mineFrame),mines.get(i).x - mineT1.getWidth()/2 ,mines.get(i).y - mineT1.getHeight()/2 ,null);
 
                 }
-                for (int i=0; i < batiments.size();i++){
-                    canvas.drawBitmap(batiments.get(i).getBatiment(batiments.get(i).batimentFrame),batiments.get(i).Cx -constru1.getWidth()/2 ,batiments.get(i).Cy - constru1.getHeight()/2 ,null);
+                for (int i=0; i < batiments1.size();i++){
+                    canvas.drawBitmap(batiments1.get(i).getBatiment(batiments1.get(i).batimentFrame),batiments1.get(i).Cx -constru1.getWidth()/2 ,batiments1.get(i).Cy - constru1.getHeight()/2 ,null);
 
                 }
+                for (int i=0; i < batiments2.size();i++){
+                    canvas.drawBitmap(batiments2.get(i).getBatiment(batiments2.get(i).batimentFrame),batiments2.get(i).Cx -constru1.getWidth()/2 ,batiments2.get(i).Cy - constru1.getHeight()/2 ,null);
+
+                }for (int i=0; i < batiments3.size();i++){
+                canvas.drawBitmap(batiments3.get(i).getBatiment(batiments3.get(i).batimentFrame),batiments3.get(i).Cx -constru1.getWidth()/2 ,batiments3.get(i).Cy - constru1.getHeight()/2 ,null);
+
+            }
+
 
             break;
         }
@@ -631,7 +641,7 @@ public class GameView extends View {
             enemies.get(enemyi).enemyTuer();
             nb_spawn--;
             /// Faire en sorte que chaque type d'ennemi donne une somme diff
-            points += 20; // Add 20 points to the score when an enemy dies
+            points  += enemies.get(enemyi).loot; // Add 20 points to the score when an enemy dies
 
 
         }
@@ -686,21 +696,23 @@ public class GameView extends View {
             }
         }
 
-        System.out.println(batiments.size());
         switch (choixEmplacement){
             case 1:
                 Xemplacement=mursG.get(1).getMGX() + dWidth/40;
-                Yemplacement=mursG.get(1).getMGY() - murT1.getHeight() - emplacmentConstru.getHeight() +dWidth/40;
+                Yemplacement=mursG.get(1).getMGY() - murT1.getHeight() - emplacmentConstru.getHeight() +dWidth/8;
+                batimentCC = 1;
 
                 break;
             case 2:
                 Xemplacement=mursG.get(2).getMGX() + dWidth/40;
-                Yemplacement=mursG.get(2).getMGY() - murT1.getHeight() - emplacmentConstru.getHeight() +dWidth/40;
+                Yemplacement=mursG.get(2).getMGY() - murT1.getHeight() - emplacmentConstru.getHeight() +dWidth/8;
+                batimentCC = 2;
 
                 break;
             case 11:
                 Xemplacement=mursP.get(1).getMPX() +560;
-                Yemplacement=mursP.get(1).getMPY() -150 ;
+                Yemplacement=mursP.get(1).getMPY() -180;
+                batimentCC = 3;
                 break;
         }
 
@@ -709,11 +721,38 @@ public class GameView extends View {
                 GamesActivity.X = -1000;
                 GamesActivity.Y=-1000;
                 switch (choixConstru) {
-                    case 1:
-                        Batiment batiment = new Batiment(context,Xemplacement,Yemplacement,1);
-                        batiments.add(batiment);
-                        choixConstru=0;
+                    case 1 :
+                    switch(choixEmplacement) {
+
+                        case 1:
+                            Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
+                            batiments1.add(batiment);
+                            choixConstru = 0;
+                            if(batiments1.size() >= 2){
+                                batiments1.remove(0);
+                            }
+                            System.out.println(batiments1.size());
+
+                            break;
+                        case 2:
+                            batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
+                            batiments2.add(batiment);
+                            choixConstru = 0;
+                            if(batiments2.size() >= 2){
+                                batiments2.remove(0);
+                            }
+                            break;
+                        case 11:
+                            batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
+                            batiments3.add(batiment);
+                            choixConstru = 0;
+                            if(batiments3.size() >= 2){
+                                batiments3.remove(0);
+                            }
+                            break;
+                    }
                     break;
+
                 }
 
                 break;
@@ -725,11 +764,37 @@ public class GameView extends View {
                 GamesActivity.X = -1000;
                 GamesActivity.Y=-1000;
                 switch (choixConstru) {
-                    case 1:
-                        Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
-                        batiments.add(batiment);
-                        choixConstru=0;
-                    break;
+                    case 1 :
+                        switch(choixEmplacement) {
+
+                            case 1:
+                                Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
+                                batiments1.add(batiment);
+                                choixConstru = 0;
+                                if(batiments1.size() >= 2){
+                                    batiments1.remove(0);
+                                }
+                                break;
+                            case 2:
+                                batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
+                                batiments2.add(batiment);
+                                if(batiments2.size() >= 2){
+                                    batiments2.remove(0);
+                                }
+                                choixConstru = 0;
+
+                                break;
+                            case 11:
+                                batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
+                                batiments3.add(batiment);
+                                choixConstru = 0;
+                                if(batiments3.size() >= 2){
+                                    batiments3.remove(0);
+                                }
+                                break;
+                        }
+                        break;
+
                 }
                 break;
         }
@@ -738,11 +803,36 @@ public class GameView extends View {
                 GamesActivity.X = -1000;
                 GamesActivity.Y=-1000;
                 switch (choixConstru) {
-                    case 1:
-                        Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
-                        batiments.add(batiment);
-                        choixConstru=0;
-                    break;
+                    case 1 :
+                        switch(choixEmplacement) {
+
+                            case 1:
+                                Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
+                                batiments1.add(batiment);
+                                choixConstru = 0;
+                                if(batiments1.size() >= 2){
+                                    batiments1.remove(0);
+                                }
+                                break;
+                            case 2:
+                                batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
+                                batiments2.add(batiment);
+                                choixConstru = 0;
+                                if(batiments2.size() >= 2){
+                                    batiments2.remove(0);
+                                }
+                                break;
+                            case 11:
+                                batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
+                                batiments3.add(batiment);
+                                choixConstru = 0;
+                                if(batiments3.size() >= 2){
+                                    batiments3.remove(0);
+                                }
+                                break;
+                        }
+                        break;
+
                 }
         }
         switch(""+(rectB4.contains((int)GamesActivity.X,(int)GamesActivity.Y))){
@@ -750,11 +840,36 @@ public class GameView extends View {
                 GamesActivity.X = -1000;
                 GamesActivity.Y=-1000;
                 switch (choixConstru) {
-                    case 1:
-                        Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
-                        batiments.add(batiment);
-                        choixConstru=0;
-                    break;
+                    case 1 :
+                        switch(choixEmplacement) {
+
+                            case 1:
+                                Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
+                                batiments1.add(batiment);
+                                choixConstru = 0;
+                                if(batiments1.size() >= 2){
+                                    batiments1.remove(0);
+
+                                }
+                                break;
+                            case 2:
+                                batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
+                                batiments2.add(batiment);
+                                choixConstru = 0;
+                                if(batiments2.size() >= 2){
+                                    batiments2.remove(0);
+                                }
+                                break;
+                            case 11:
+                                batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
+                                batiments3.add(batiment);
+                                choixConstru = 0;
+                                if(batiments3.size() >= 2){
+                                    batiments3.remove(0);
+                                }
+                                break;
+                        }
+                        break;
                 }
                 break;
         }
@@ -785,6 +900,14 @@ public class GameView extends View {
             enemies.add(enemy);
         }
     }
+
+
+
+
+
+
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void QuickPlay(Canvas canvas){
