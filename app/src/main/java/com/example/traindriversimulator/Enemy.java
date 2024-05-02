@@ -11,6 +11,7 @@ public class Enemy {
     public int healthInit;
 
     private int etat = 1;
+    public int loot;
     private int rank;
     private int attaque;
     private int attaqueRange;
@@ -41,6 +42,7 @@ public class Enemy {
         this.rdm_deplacement = rdm_deplacement;
 
 
+
         switch (name){
             case /*davidLeLent*/"t1" :
                 enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.crs_t1);
@@ -54,6 +56,7 @@ public class Enemy {
                 attaque = 10;
                 healthInit=50;
                 health=healthInit;
+                loot=20;
 
 
                 enemyVelocityY = 4;
@@ -73,6 +76,7 @@ public class Enemy {
                 attaque = 30;
                 healthInit=70;
                 health=healthInit;
+                loot=50;
 
 
                 enemyVelocityY = 3;
@@ -91,6 +95,7 @@ public class Enemy {
                 attaque = 50;
                 healthInit=150;
                 health=healthInit;
+                loot=100;
 
 
                 enemyVelocityY = 3;
@@ -109,6 +114,7 @@ public class Enemy {
                 attaque = 200;
                 healthInit=700;
                 health=healthInit;
+                loot=500;
 
 
                 enemyVelocityY = 3;

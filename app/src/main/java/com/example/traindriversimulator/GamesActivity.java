@@ -578,7 +578,7 @@ public class GamesActivity extends AppCompatActivity {
 
                 if (GameView.points >= 25) {
                     if(Y > GameView.dHeight/6) {
-                        Tower tower = new Tower(gameView.getContext(), (int) X , (int) Y, 0,1);
+                        Tower tower = new Tower(gameView.getContext(), (int) X , (int) Y, 0,1,25);
                         GameView.towers.add(tower);
                     }else{
                         Toast.makeText(getApplicationContext(), "Impossible de construire aussi haut", Toast.LENGTH_SHORT).show();
@@ -648,6 +648,7 @@ public class GamesActivity extends AppCompatActivity {
                                     && GameView.mines.get(j).x - X <= 50 && Y - GameView.mines.get(j).y <= 50
                                     && X -GameView.mines.get(j).x <= 50 && Y - GameView.mines.get(j).y <= 50){
                                 GameView.mines.remove(j);
+                                GameView.points += (int)(GameView.towers.get(j).cost/2); //on regange 50% de l'argent dépensé quand on détruit une tourelle
                             }
                         }
                         for(int j=0;j<GameView.catapults.size();j++){
@@ -681,10 +682,10 @@ public class GamesActivity extends AppCompatActivity {
                                     GameView.points -= cost;
 
                                     GameView.towers.get(j).name = 2;
+                                    GameView.towers.get(j).cost = cost;
                                     GameView.towers.get(j).towerCoolDownLimit = 30;
                                     GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl2);
                                     GameView.towers.get(j).setDamage(5);
-
                                     System.out.println(GameView.towers.get(j).name);
                                     System.out.println(GameView.towers.get(j).towerCoolDownLimit);
                                 }
@@ -698,7 +699,7 @@ public class GamesActivity extends AppCompatActivity {
                                 }
                                 else {
                                     GameView.points -= cost;
-
+                                    GameView.towers.get(j).cost = cost;
                                     GameView.towers.get(j).name = 3;
                                     GameView.towers.get(j).towerCoolDownLimit = 10;
                                     GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl3);
@@ -719,11 +720,13 @@ public class GamesActivity extends AppCompatActivity {
 
 
                                     GameView.towers.get(j).name = 4;
+                                    GameView.towers.get(j).cost = cost;
                                     GameView.towers.get(j).towerCoolDownLimit = 5;
                                     GameView.towers.get(j).tower[0] = decodeResource(gameView.getContext().getResources(), R.drawable.towerlvl4);
                                     GameView.towers.get(j).setDamage(5);
 
                                     System.out.println("Amélioré");
+                                    System.out.println(GameView.towers.get(j).cost);
                                 }
                                 break;
                             case 4:

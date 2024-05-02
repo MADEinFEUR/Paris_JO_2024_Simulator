@@ -21,6 +21,7 @@ class Tower {
 
     Bitmap tower[] = new Bitmap[5];
     int towerFrame = 0;
+    public int cost;
 
 
     public Bitmap getTower(int towerFrame){
@@ -28,7 +29,7 @@ class Tower {
     }
 
 
-    public Tower(Context context, int Tx, int Ty,int towerTimer, int name) {
+    public Tower(Context context, int Tx, int Ty,int towerTimer, int name,int cost) {
         this.damage = damage;
         this.range = range;
         this.life = life;
@@ -38,6 +39,7 @@ class Tower {
         this.name = name;
         this.cible = cible;
         this.towerCoolDownLimit = towerCoolDownLimit;
+        this.cost = cost;
 
         ChangementLvlTower(context,name);
     }

@@ -31,7 +31,6 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void lancerBoutique(View v){
-
     }
 
     public void lancerMDJ(View v){

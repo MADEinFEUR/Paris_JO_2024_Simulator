@@ -71,7 +71,9 @@ public class GameView extends View {
     public static ArrayList<Tower> towers;
     public static ArrayList<Mine> mines;
     public static ArrayList<Catapult> catapults;
-    public static ArrayList<Batiment> batiments;
+    public static ArrayList<Batiment> batiments1;
+    public static ArrayList<Batiment> batiments2;
+    public static ArrayList<Batiment> batiments3;
     ArrayList<MurGrand> mursG;
     ArrayList<MurPetit> mursP;
 
@@ -165,7 +167,9 @@ public class GameView extends View {
         towers = new ArrayList<>();
         explosions = new ArrayList<>();
         catapults = new ArrayList<>();
-        batiments = new ArrayList<>();
+        batiments1 = new ArrayList<>();
+        batiments2 = new ArrayList<>();
+        batiments3 = new ArrayList<>();
         mines = new ArrayList<>();
         mursG = new ArrayList<>();
         mursP = new ArrayList<>();
@@ -573,10 +577,18 @@ public class GameView extends View {
                     canvas.drawBitmap(mines.get(i).getMine(mines.get(i).mineFrame),mines.get(i).x - mineT1.getWidth()/2 ,mines.get(i).y - mineT1.getHeight()/2 ,null);
 
                 }
-                for (int i=0; i < batiments.size();i++){
-                    canvas.drawBitmap(batiments.get(i).getBatiment(batiments.get(i).batimentFrame),batiments.get(i).Cx -constru1.getWidth()/2 ,batiments.get(i).Cy - constru1.getHeight()/2 ,null);
+                for (int i=0; i < batiments1.size();i++){
+                    canvas.drawBitmap(batiments1.get(i).getBatiment(batiments1.get(i).batimentFrame),batiments1.get(i).Cx -constru1.getWidth()/2 ,batiments1.get(i).Cy - constru1.getHeight()/2 ,null);
 
                 }
+                for (int i=0; i < batiments2.size();i++){
+                    canvas.drawBitmap(batiments2.get(i).getBatiment(batiments2.get(i).batimentFrame),batiments2.get(i).Cx -constru1.getWidth()/2 ,batiments2.get(i).Cy - constru1.getHeight()/2 ,null);
+
+                }for (int i=0; i < batiments3.size();i++){
+                canvas.drawBitmap(batiments3.get(i).getBatiment(batiments3.get(i).batimentFrame),batiments3.get(i).Cx -constru1.getWidth()/2 ,batiments3.get(i).Cy - constru1.getHeight()/2 ,null);
+
+            }
+
 
             break;
         }
@@ -631,7 +643,7 @@ public class GameView extends View {
             enemies.get(enemyi).enemyTuer();
             nb_spawn--;
             /// Faire en sorte que chaque type d'ennemi donne une somme diff
-            points += 20; // Add 20 points to the score when an enemy dies
+            points  += enemies.get(enemyi).loot; // Add 20 points to the score when an enemy dies
 
 
         }
@@ -686,7 +698,6 @@ public class GameView extends View {
             }
         }
 
-        System.out.println(batiments.size());
         switch (choixEmplacement){
             case 1:
                 Xemplacement=mursG.get(1).getMGX() + dWidth/40;
@@ -709,11 +720,38 @@ public class GameView extends View {
                 GamesActivity.X = -1000;
                 GamesActivity.Y=-1000;
                 switch (choixConstru) {
-                    case 1:
-                        Batiment batiment = new Batiment(context,Xemplacement,Yemplacement,1);
-                        batiments.add(batiment);
-                        choixConstru=0;
+                    case 1 :
+                    switch(choixEmplacement) {
+
+                        case 1:
+                            Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
+                            batiments1.add(batiment);
+                            choixConstru = 0;
+                            if(batiments1.size() >= 1){
+                                batiments1.remove(0);
+                            }
+                            System.out.println(batiments1.size());
+
+                            break;
+                        case 2:
+                            batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
+                            batiments2.add(batiment);
+                            choixConstru = 0;
+                            if(batiments2.size() >= 1){
+                                batiments2.remove(0);
+                            }
+                            break;
+                        case 11:
+                            batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
+                            batiments3.add(batiment);
+                            choixConstru = 0;
+                            if(batiments3.size() >= 1){
+                                batiments3.remove(0);
+                            }
+                            break;
+                    }
                     break;
+
                 }
 
                 break;
@@ -725,11 +763,37 @@ public class GameView extends View {
                 GamesActivity.X = -1000;
                 GamesActivity.Y=-1000;
                 switch (choixConstru) {
-                    case 1:
-                        Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
-                        batiments.add(batiment);
-                        choixConstru=0;
-                    break;
+                    case 1 :
+                        switch(choixEmplacement) {
+
+                            case 1:
+                                Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
+                                batiments1.add(batiment);
+                                choixConstru = 0;
+                                if(batiments1.size() >= 1){
+                                    batiments1.remove(0);
+                                }
+                                break;
+                            case 2:
+                                batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
+                                batiments2.add(batiment);
+                                if(batiments2.size() >= 1){
+                                    batiments2.remove(0);
+                                }
+                                choixConstru = 0;
+
+                                break;
+                            case 11:
+                                batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
+                                batiments3.add(batiment);
+                                choixConstru = 0;
+                                if(batiments3.size() >= 1){
+                                    batiments3.remove(0);
+                                }
+                                break;
+                        }
+                        break;
+
                 }
                 break;
         }
@@ -738,11 +802,36 @@ public class GameView extends View {
                 GamesActivity.X = -1000;
                 GamesActivity.Y=-1000;
                 switch (choixConstru) {
-                    case 1:
-                        Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
-                        batiments.add(batiment);
-                        choixConstru=0;
-                    break;
+                    case 1 :
+                        switch(choixEmplacement) {
+
+                            case 1:
+                                Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
+                                batiments1.add(batiment);
+                                choixConstru = 0;
+                                if(batiments1.size() >= 1){
+                                    batiments1.remove(0);
+                                }
+                                break;
+                            case 2:
+                                batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
+                                batiments2.add(batiment);
+                                choixConstru = 0;
+                                if(batiments2.size() >= 1){
+                                    batiments2.remove(0);
+                                }
+                                break;
+                            case 11:
+                                batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
+                                batiments3.add(batiment);
+                                choixConstru = 0;
+                                if(batiments3.size() >= 1){
+                                    batiments3.remove(0);
+                                }
+                                break;
+                        }
+                        break;
+
                 }
         }
         switch(""+(rectB4.contains((int)GamesActivity.X,(int)GamesActivity.Y))){
@@ -750,11 +839,35 @@ public class GameView extends View {
                 GamesActivity.X = -1000;
                 GamesActivity.Y=-1000;
                 switch (choixConstru) {
-                    case 1:
-                        Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
-                        batiments.add(batiment);
-                        choixConstru=0;
-                    break;
+                    case 1 :
+                        switch(choixEmplacement) {
+
+                            case 1:
+                                Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
+                                batiments1.add(batiment);
+                                choixConstru = 0;
+                                if(batiments1.size() >= 1){
+                                    batiments1.remove(0);
+                                }
+                                break;
+                            case 2:
+                                batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
+                                batiments2.add(batiment);
+                                choixConstru = 0;
+                                if(batiments2.size() >= 1){
+                                    batiments2.remove(0);
+                                }
+                                break;
+                            case 11:
+                                batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
+                                batiments3.add(batiment);
+                                choixConstru = 0;
+                                if(batiments3.size() >= 1){
+                                    batiments3.remove(0);
+                                }
+                                break;
+                        }
+                        break;
                 }
                 break;
         }
