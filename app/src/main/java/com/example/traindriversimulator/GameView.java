@@ -848,6 +848,7 @@ public class GameView extends View {
                                 choixConstru = 0;
                                 if(batiments1.size() >= 1){
                                     batiments1.remove(0);
+                                    //sds
                                 }
                                 break;
                             case 2:
