@@ -33,14 +33,8 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void lancerBoutique(View v) {
-        @SuppressLint("WrongViewCast") ImageButton launchMainTwoButton = findViewById(R.id.imageView15);
-        launchMainTwoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuActivity.this, ShopActivity.class);
-                startActivity(intent);
-            }
-        });
+                Intent intent = new Intent(this, ShopActivity.class);
+                startActivities(new Intent[]{intent});
     }
 
     public void lancerMDJ(View v){
