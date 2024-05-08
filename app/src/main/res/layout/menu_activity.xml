@@ -16,8 +16,8 @@
         app:srcCompat="@drawable/ecran_d_accueil3" />
 
     <ScrollView
-        android:layout_width="420dp"
-        android:layout_height="227dp"
+        android:layout_width="419dp"
+        android:layout_height="219dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -28,12 +28,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imageView14"
                 android:layout_width="match_parent"
-                android:layout_height="77dp"
+                android:layout_height="73dp"
                 android:importantForAccessibility="no"
                 android:onClick="lancerJouer"
                 app:srcCompat="@drawable/menujouer" />
