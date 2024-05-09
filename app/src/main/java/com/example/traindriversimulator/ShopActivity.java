@@ -17,7 +17,15 @@ public class ShopActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shop_activity);
     }
+    public void lancerBoutique2 (View v) {
+        Intent gamewindow = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            gamewindow = new Intent(this, ShopActivity2.class);
+        }
+        startActivities(new Intent[]{gamewindow});
+    }
 }
+
     /* private Button payPalButton;
 
     @Override
