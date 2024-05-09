@@ -18,3 +18,11 @@ public class ShopActivity2 extends AppCompatActivity {
         setContentView(R.layout.shop_activity2);
     }
 }
+    public void revenirBoutique (View v) {
+        Intent gamewindow = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            gamewindow = new Intent(this, ShopActivity.class);
+        }
+        startActivities(new Intent[]{gamewindow});
+    }
+}
