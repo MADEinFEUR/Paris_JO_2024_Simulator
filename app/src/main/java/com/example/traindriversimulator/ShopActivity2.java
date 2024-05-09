@@ -24,5 +24,7 @@ public class ShopActivity2 extends AppCompatActivity {
             gamewindow = new Intent(this, ShopActivity.class);
         }
         startActivities(new Intent[]{gamewindow});
+        overridePendingTransition(R.anim.slide_gauche);
+
     }
 }
