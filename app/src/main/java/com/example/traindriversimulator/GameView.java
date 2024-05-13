@@ -977,22 +977,6 @@ public class GameView extends View {
 
 
                 break;
-
         }
-
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
 }
