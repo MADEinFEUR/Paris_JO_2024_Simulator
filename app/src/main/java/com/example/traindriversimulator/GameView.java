@@ -46,8 +46,8 @@ public class GameView extends View {
     public static int partieLancer= 0;
     public static int etatConstruction=0;
     int animTrain=0;
-    int life = 3000;
-    private int lifeInit = 3000;
+    int life = 1000;
+    private int lifeInit = 1000;
     int range_munition = 70;
     static int dWidth, dHeight;
     Random random;
@@ -87,6 +87,12 @@ public class GameView extends View {
     private int Xemplacement;
     private int Yemplacement;
     private int batimentCC;
+    private int nb_infirmerie;
+    public static int nb_Reserve;
+    private int healInfEffectue;
+    private int nb_avantP;
+    private int nb_Potion;
+    private boolean etatBoostReserve = true;
 
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -280,7 +286,42 @@ public class GameView extends View {
             canvas.drawRect(enemies.get(i).positionX, enemies.get(i).positionY, (int) (enemies.get(i).positionX + ((enemies.get(i).getHealth() * 100 / enemies.get(i).healthInit)) * 0.5), enemies.get(i).positionY + 5, ennemiHeath);
 
 
-            //Gestion des bâtiments en fonction de la position des enemies_______________________________________________________________
+            //Gestion des bâtiments spéciaux
+
+            //infirmerie
+
+
+            switch(nb_infirmerie){
+                case 0 :
+                    break;
+                default:
+                    switch (etatPartie){
+                        case 0:
+                            switch (healInfEffectue){
+                                case 1:
+                                    if(life + 100*nb_infirmerie < lifeInit){
+                                        life += 100*nb_infirmerie;
+                                        System.out.println("heal");
+                                        healInfEffectue = 0;
+                                }
+                                    break;
+                            }
+                            break;
+                        case 1:
+                            healInfEffectue = 1;
+                            break;
+                    }
+                    break;
+            }
+
+            //Reserve
+
+
+
+
+
+
+
 
             //tourelle
             for (int j = 0; j < towers.size(); j++) {
@@ -482,6 +523,7 @@ public class GameView extends View {
         canvas.drawText("" + points, titreTransport.getWidth()+20, 45, textPaint);
         canvas.drawBitmap(titreTransport,null,rectTitreTransport,null);
 
+
         switch (etatPartie){
             case 0:
                 canvas.drawText(" "+(30 - timerseconde)+" sec ||"+" Préparation ||",dWidth/2,45,textPaint2);
@@ -498,6 +540,7 @@ public class GameView extends View {
                 break;
         }
         handler.postDelayed(runnable, UPADATE_MILLIS);
+
 
         switch(partieLancer){
             case 0 :
@@ -695,7 +738,6 @@ public class GameView extends View {
 
             }
         }
-
         switch (choixEmplacement){
             case 1:
                 Xemplacement=mursG.get(1).getMGX() + dWidth/40;
@@ -723,13 +765,15 @@ public class GameView extends View {
                 switch (choixConstru) {
                     case 1 :
                     switch(choixEmplacement) {
-
                         case 1:
                             Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
                             batiments1.add(batiment);
                             choixConstru = 0;
-                            if(batiments1.size() >= 2){
+                            nb_infirmerie +=1;
+
+                            if(batiments1.size() > 1){
                                 batiments1.remove(0);
+                                nb_infirmerie =- 1;
                             }
                             System.out.println(batiments1.size());
 
@@ -738,16 +782,20 @@ public class GameView extends View {
                             batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
                             batiments2.add(batiment);
                             choixConstru = 0;
-                            if(batiments2.size() >= 2){
+                            nb_infirmerie +=1;
+                            if(batiments2.size() > 1){
                                 batiments2.remove(0);
+                                nb_infirmerie =- 1;
                             }
                             break;
                         case 11:
                             batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
                             batiments3.add(batiment);
                             choixConstru = 0;
-                            if(batiments3.size() >= 2){
+                            nb_infirmerie +=1;
+                            if(batiments3.size() > 1){
                                 batiments3.remove(0);
+                                nb_infirmerie =- 1;
                             }
                             break;
                     }
@@ -771,15 +819,19 @@ public class GameView extends View {
                                 Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
                                 batiments1.add(batiment);
                                 choixConstru = 0;
-                                if(batiments1.size() >= 2){
+                                boostDegat();
+                                if(batiments1.size() > 1){
                                     batiments1.remove(0);
+                                    deBoostDegat();
                                 }
                                 break;
                             case 2:
                                 batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
                                 batiments2.add(batiment);
-                                if(batiments2.size() >= 2){
+                                boostDegat();
+                                if(batiments2.size() > 1){
                                     batiments2.remove(0);
+                                    deBoostDegat();
                                 }
                                 choixConstru = 0;
 
@@ -788,8 +840,11 @@ public class GameView extends View {
                                 batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
                                 batiments3.add(batiment);
                                 choixConstru = 0;
-                                if(batiments3.size() >= 2){
+                                boostDegat();
+                                if(batiments3.size() > 1){
                                     batiments3.remove(0);
+                                    deBoostDegat();
+
                                 }
                                 break;
                         }
@@ -810,24 +865,32 @@ public class GameView extends View {
                                 Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
                                 batiments1.add(batiment);
                                 choixConstru = 0;
-                                if(batiments1.size() >= 2){
+                                nb_avantP += 1;
+                                if(batiments1.size() > 1){
                                     batiments1.remove(0);
+                                    nb_avantP -= 1;
                                 }
                                 break;
                             case 2:
                                 batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
                                 batiments2.add(batiment);
                                 choixConstru = 0;
-                                if(batiments2.size() >= 2){
+                                nb_avantP += 1;
+                                if(batiments2.size() > 1){
                                     batiments2.remove(0);
+                                    nb_avantP -= 1;
+
                                 }
                                 break;
                             case 11:
                                 batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
                                 batiments3.add(batiment);
                                 choixConstru = 0;
-                                if(batiments3.size() >= 2){
+                                nb_avantP += 1;
+                                if(batiments3.size() > 1){
                                     batiments3.remove(0);
+                                    nb_avantP -= 1;
+
                                 }
                                 break;
                         }
@@ -847,8 +910,10 @@ public class GameView extends View {
                                 Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
                                 batiments1.add(batiment);
                                 choixConstru = 0;
-                                if(batiments1.size() >= 2){
+                                nb_Potion +=1;
+                                if(batiments1.size() > 1){
                                     batiments1.remove(0);
+                                    nb_Potion -=1;
 
                                 }
                                 break;
@@ -856,16 +921,20 @@ public class GameView extends View {
                                 batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
                                 batiments2.add(batiment);
                                 choixConstru = 0;
-                                if(batiments2.size() >= 2){
+                                nb_Potion +=1;
+                                if(batiments2.size() > 1){
                                     batiments2.remove(0);
+                                    nb_Potion -=1;
                                 }
                                 break;
                             case 11:
                                 batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
                                 batiments3.add(batiment);
                                 choixConstru = 0;
-                                if(batiments3.size() >= 2){
+                                nb_Potion +=1;
+                                if(batiments3.size() > 1){
                                     batiments3.remove(0);
+                                    nb_Potion -=1;
                                 }
                                 break;
                         }
@@ -901,6 +970,36 @@ public class GameView extends View {
         }
     }
 
+    private void boostDegat(){
+        for (int i = 0; i < towers.size(); i++) {
+            towers.get(i).setDamage((int)(towers.get(i).getDamage()*1.50));
+        }
+        for (int i = 0; i < mines.size(); i++) {
+            mines.get(i).setDamage((int)(mines.get(i).getDamage()*1.30) );
+
+        }
+        for (int i = 0; i < catapults.size(); i++) {
+            catapults.get(i).setDamage((int)(catapults.get(i).getDamage()*1.20) );
+
+        }
+        System.out.println("boost degat");
+    }
+
+    private void deBoostDegat(){
+        for (int i = 0; i < towers.size(); i++) {
+            towers.get(i).setDamage((int)(towers.get(i).getDamage()*0.50));
+        }
+        for (int i = 0; i < mines.size(); i++) {
+            mines.get(i).setDamage((int)(mines.get(i).getDamage()*0.30) );
+
+        }
+        for (int i = 0; i < catapults.size(); i++) {
+            catapults.get(i).setDamage((int)(catapults.get(i).getDamage()*0.20) );
+
+        }
+        System.out.println("deboost de degat");
+    }
+
 
 
 
@@ -921,7 +1020,8 @@ public class GameView extends View {
 
                 ///Faire en sorte que toute les n manches la somme augmente
                 if(30 - timerseconde == 29){
-                    points += 2 + (int)(points * 0.01);
+                    points += 200*nb_Potion;
+                    points += 2 + (int)(points * 0.01) ;
 
                 }
 

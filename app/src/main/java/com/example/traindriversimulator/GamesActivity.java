@@ -699,7 +699,7 @@ public class GamesActivity extends AppCompatActivity {
                             break;
 
                             case 2:
-                                cost = 200;
+                                cost = 75;
 
                                 if (GameView.points < cost) {
                                     Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
@@ -715,9 +715,8 @@ public class GamesActivity extends AppCompatActivity {
                                     System.out.println("Amélioré");
                                 }
                                 break;
-
                             case 3:
-                                cost = 650;
+                                cost = 100;
                                 if (GameView.points < cost) {
                                     Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
                                 }
