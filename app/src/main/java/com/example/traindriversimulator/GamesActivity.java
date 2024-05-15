@@ -432,9 +432,6 @@ public class GamesActivity extends AppCompatActivity {
                         button3.setBackgroundResource(R.drawable.lacrymogene);
                         button2.setBackgroundResource(R.drawable.lanceur_lbd);
                         GameView.etatConstruction = 0;
-                        if(GameView.forceSyndic = false){
-                            button1.setBackgroundResource(R.drawable.desactiver);
-                        }
                         break;
                     default:
                         button1.setBackgroundResource(R.drawable.desactiver);
@@ -548,10 +545,14 @@ public class GamesActivity extends AppCompatActivity {
                 switch (GameView.pouvoirPossible){
                     case 1:
                         choisi = "Lanceur LBD choisie";
-                        button2.setBackgroundColor(Color.GREEN);
-                        button3.setBackgroundResource(R.drawable.lacrymogene);
-                        button1.setBackgroundResource(R.drawable.force_syndicale);
-                        GameView.etatConstruction = 0;
+                        if(GameView.forceSyndic == false){
+                            button2.setBackgroundColor(R.drawable.desactiver);
+                        } else {
+                            button2.setBackgroundColor(Color.GREEN);
+                            button3.setBackgroundResource(R.drawable.lacrymogene);
+                            button1.setBackgroundResource(R.drawable.force_syndicale);
+                            GameView.etatConstruction = 0;
+                        }
                         break;
                     default:
                         button2.setBackgroundResource(R.drawable.desactiver);
@@ -577,24 +578,39 @@ public class GamesActivity extends AppCompatActivity {
         //spawn tourelle au clic lorsqu'elle est choisi
 
         switch (choisi){
+            case "Lanceur LBD choisie" :
+                if(GameView.paveVerif == true) {
+                    GameView.yPave = Y;
+                    GameView.xPave = X;
+                    Toast.makeText(getApplicationContext(), "LANCEEE DU PAVEEEE!!!!!!", Toast.LENGTH_SHORT).show();
+                    GameView.paveControl = true;
+                    GameView.paveVerif = false;
+                }
+                Toast.makeText(getApplicationContext(), "pas encore disponible", Toast.LENGTH_SHORT).show();
+
+                break;
+
             case "Force syndicale choisie":
-                if(GameView.forceSyndic == true)
+                if(GameView.forceSyndic == true) {
                     GameView.forceSyndic = false;
-                    GameView.forceSyndicClique = true;
+                    GameView.xForceSydicale = Y;
+                    Toast.makeText(getApplicationContext(), "Force Synd", Toast.LENGTH_SHORT).show();
+                }
+                Toast.makeText(getApplicationContext(), "pas encore disponible", Toast.LENGTH_SHORT).show();
 
                 break;
 
             case "T1 choisie":
 
-                if (GameView.points >= 25) {
+                if (GameView.points >= 15) {
                     if(Y > GameView.dHeight/6) {
-                        Tower tower = new Tower(gameView.getContext(), (int) X , (int) Y, 0,1,25);
+                        Tower tower = new Tower(gameView.getContext(), (int) X , (int) Y, 0,1,15);
                         GameView.towers.add(tower);
                     }else{
                         Toast.makeText(getApplicationContext(), "Impossible de construire aussi haut", Toast.LENGTH_SHORT).show();
                     }
                     Toast.makeText(getApplicationContext(), "T1 contruite jeune manifestant", Toast.LENGTH_SHORT).show();
-                    GameView.points -= 25;
+                    GameView.points -= 15;
                 } else {
                     Toast.makeText(getApplicationContext(), "Tu n'as pas les sous sous", Toast.LENGTH_SHORT).show();
                 }

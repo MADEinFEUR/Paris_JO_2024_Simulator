@@ -28,9 +28,14 @@ import java.util.Random;
 
 public class GameView extends View {
 
-    public static boolean forceSyndic;
-    Bitmap background, base, train, rail, murT1, murT2,tourT1,mineT1,titreTransport,cataT1,emplacmentConstru,constru1,constru2,constru3,constru4,avantPartie;
-    Rect rectBackground, rectBase, rectTrain, rectRail, rectMurT1,rectTitreTransport,rectEmplacementConstru,rectB1,rectB2,rectB3,rectB4,rectAvantPartie;
+    public static boolean forceSyndic = true;
+    public static float xForceSydicale;
+    public static float yPave;
+    public static float xPave;
+    public static boolean paveVerif = true;
+    public static boolean paveControl;
+    Bitmap background, base, train, rail, murT1, murT2,tourT1,mineT1,titreTransport,cataT1,emplacmentConstru,constru1,constru2,constru3,constru4,avantPartie, barrage, pavecible;
+    Rect rectBackground, rectBase, rectTrain, rectRail, rectMurT1,rectTitreTransport,rectEmplacementConstru,rectB1,rectB2,rectB3,rectB4,rectAvantPartie, rectBarrage,rectPaveCible;
     public static Context context;
     Handler handler;
     final long UPADATE_MILLIS = 30;
@@ -95,8 +100,9 @@ public class GameView extends View {
     private int nb_Potion;
     private boolean etatBoostReserve = true;
     private int timerControlEnemy;
-    private int timerForceSyndical;
-    public static boolean forceSyndicClique;
+    private int timerForceSyndical = 0;
+    public static boolean forceSyndicClique = true;
+    private int timerPave;
 
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -119,6 +125,8 @@ public class GameView extends View {
         constru3= BitmapFactory.decodeResource(getResources(), R.drawable.avantpost);
         constru4= BitmapFactory.decodeResource(getResources(), R.drawable.potion);
         avantPartie= BitmapFactory.decodeResource(getResources(), R.drawable.avantlapartie);
+        barrage= BitmapFactory.decodeResource(getResources(), R.drawable.barrage);
+        pavecible= BitmapFactory.decodeResource(getResources(), R.drawable.pavecible);
 
 
 
@@ -144,6 +152,8 @@ public class GameView extends View {
         rectMurT1 = new Rect(0, 0, murT1.getWidth(), murT1.getHeight());
         rectTitreTransport = new Rect(10, 10, titreTransport.getWidth()+10, titreTransport.getHeight()+10);
         rectEmplacementConstru = new Rect(10, 10, titreTransport.getWidth()+10, titreTransport.getHeight()+10);
+        rectBarrage = new Rect(0, 0, 0, 0);
+        rectPaveCible = new Rect(0, 0, 0, 0);
 
 
 
@@ -174,6 +184,8 @@ public class GameView extends View {
         trainY = 0;
         nb_manche=0;
         points=0;
+        forceSyndic = true;
+        forceSyndicClique = true;
         enemies = new ArrayList<>();
         towers = new ArrayList<>();
         explosions = new ArrayList<>();
@@ -268,13 +280,14 @@ public class GameView extends View {
         if((etatPartie==0 && 200- timerseconde < 30 )|| (etatPartie==1 && nb_spawn < 5*nb_manche)){
             trainX = trainX + 12;
             rectTrain.set((int) trainX, 0, (int) (train.getWidth()+ trainX), 200);
+            forceSyndicClique = false;
+            paveControl = false;
         }
 
 
 
 
 
-        //pouvoir
 
 
 
@@ -288,16 +301,65 @@ public class GameView extends View {
                 enemies.get(i).enemyFrame = 0;
             }
 
+
             //gestion vie graphique ennemi
 
             canvas.drawRect(enemies.get(i).positionX, enemies.get(i).positionY, (int) (enemies.get(i).positionX + ((enemies.get(i).getHealth() * 100 / enemies.get(i).healthInit)) * 0.5), enemies.get(i).positionY + 5, ennemiHeath);
 
 
+            //pouvoir
+
+            // le pave
+            if(paveControl == true) {
+                rectPaveCible.set((int)(xPave), (int)(yPave),(int) xPave + pavecible.getWidth(),(int)(yPave) + pavecible.getHeight());
+                canvas.drawBitmap(pavecible,null,rectPaveCible,null);
+
+
+                if (xPave - enemies.get(i).positionX <= 20 && yPave - enemies.get(i).positionY <= 20
+                        && enemies.get(i).positionX - xPave <= 20 && yPave - enemies.get(i).positionY <= 20
+                        && xPave - enemies.get(i).positionX <= 20 && enemies.get(i).positionY - yPave <= 20
+                        && enemies.get(i).positionX - xPave <= 20 && enemies.get(i).positionY - yPave <= 20) {
+
+                    MortEnemy(canvas, i, 1);
+                    Explosion explosion = new Explosion(context);
+                    explosion.explosionX = (int) xPave;
+                    explosion.explosionY = (int) yPave;
+                    explosions.add(explosion);
+                }
+            }
+            //contrôle ratp en civil
+            if(forceSyndicClique == true) {
+                if (enemies.get(i).positionY < xForceSydicale + 10 && enemies.get(i).positionY >= xForceSydicale - 10 && forceSyndic == false) {
+                    rectBarrage.set(0, (int) xForceSydicale, dWidth, (int) xForceSydicale + barrage.getHeight());
+                    canvas.drawBitmap(barrage, null, rectBarrage, null);
+                    enemies.get(i).controlEtat = true;
+                    enemies.get(i).enemyVelocityY = 0;
+                    timerControlEnemy += 1;
+
+                    if (timerControlEnemy > 30) {
+                        timerControlEnemy = 0;
+                    }
+
+                    System.out.println(timerControlEnemy);
+                    System.out.println(enemies.get(i).timerControle);
+                    if (timerControlEnemy == enemies.get(i).timerControle) {
+                        for (int j = 0; j == 20; j++) {
+                            enemies.get(i).positionY += 5;
+                        }
+                        enemies.get(i).resetEnemyVelocity();
+                        timerControlEnemy = 0;
+                        enemies.get(i).controlEtat = false;
+                    }
+                }
+            }
+
+
+
+
+
             //Gestion des bâtiments spéciaux
 
             //infirmerie
-
-
             switch(nb_infirmerie){
                 case 0 :
                     break;
@@ -321,27 +383,7 @@ public class GameView extends View {
                     break;
             }
 
-            //contrôle ratp en civil
-            if(enemies.get(i).positionY < dHeight/2 +10 && enemies.get(i).positionY >= dHeight/2 -10  &&  forceSyndicClique==true){
-                    enemies.get(i).controlEtat= true;
-                    enemies.get(i).enemyVelocityY = 0;
-                    timerControlEnemy+=1;
 
-                    if(timerControlEnemy > 30){
-                        timerControlEnemy = 0;
-                    }
-
-                    System.out.println(timerControlEnemy);
-                    System.out.println(enemies.get(i).timerControle );
-                    if(timerControlEnemy == enemies.get(i).timerControle  ){
-                        for(int j=0; j ==20; j++){
-                            enemies.get(i).positionY += 5;
-                        }
-                        enemies.get(i).resetEnemyVelocity();
-                        timerControlEnemy = 0;
-                        enemies.get(i).controlEtat = false;
-                    }
-            }
 
 
 
@@ -644,19 +686,19 @@ public class GameView extends View {
                     canvas.drawBitmap(mines.get(i).getMine(mines.get(i).mineFrame),mines.get(i).x - mineT1.getWidth()/2 ,mines.get(i).y - mineT1.getHeight()/2 ,null);
 
                 }
+
                 for (int i=0; i < batiments1.size();i++){
                     canvas.drawBitmap(batiments1.get(i).getBatiment(batiments1.get(i).batimentFrame),batiments1.get(i).Cx -constru1.getWidth()/2 ,batiments1.get(i).Cy - constru1.getHeight()/2 ,null);
 
                 }
+
                 for (int i=0; i < batiments2.size();i++){
                     canvas.drawBitmap(batiments2.get(i).getBatiment(batiments2.get(i).batimentFrame),batiments2.get(i).Cx -constru1.getWidth()/2 ,batiments2.get(i).Cy - constru1.getHeight()/2 ,null);
 
-                }for (int i=0; i < batiments3.size();i++){
-                canvas.drawBitmap(batiments3.get(i).getBatiment(batiments3.get(i).batimentFrame),batiments3.get(i).Cx -constru1.getWidth()/2 ,batiments3.get(i).Cy - constru1.getHeight()/2 ,null);
-
-            }
-
-
+                }
+                for (int i=0; i < batiments3.size();i++){
+                    canvas.drawBitmap(batiments3.get(i).getBatiment(batiments3.get(i).batimentFrame),batiments3.get(i).Cx -constru1.getWidth()/2 ,batiments3.get(i).Cy - constru1.getHeight()/2 ,null);
+                }
             break;
         }
     }
@@ -666,16 +708,27 @@ public class GameView extends View {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void GestionTimer(){
         globalTimer++;
-
         if (forceSyndic == false) {
             timerForceSyndical++;
-            if(timerForceSyndical == 5000){
+            if(timerForceSyndical >= 5000){
+                timerForceSyndical = 0;
                 forceSyndic = true;
+                forceSyndicClique = true;
             }
+        }
+        if(paveVerif == false){
+            timerPave++;
+            if(timerPave >= 1200){
+                timerPave = 0;
+                paveVerif = true;
+                paveControl = false;
+            }
+
+
         }
         switch(etatPartie){
             case 0:
-                forceSyndicClique = false;
+
                 timerMancheDefense++;
                 timerMancheAttaque=0;
                 if(timerMancheDefense >= 25){
@@ -724,23 +777,6 @@ public class GameView extends View {
 
     }
 
-    public class MyLongClickListener implements View.OnLongClickListener {
-        @RequiresApi(api = Build.VERSION_CODES.R)
-        @Override
-        public boolean onLongClick(View v) {
-            switch (etatConstruction){
-                case 1:
-
-
-
-                    break;
-            }
-
-            return false;
-        }
-    }
-
-
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void Construction(Canvas canvas){
         for (int i = 1; i < mursP.size(); i++) {
@@ -779,13 +815,13 @@ public class GameView extends View {
                 break;
             case 2:
                 Xemplacement=mursG.get(2).getMGX() + dWidth/40;
-                Yemplacement=mursG.get(2).getMGY() - murT1.getHeight() - emplacmentConstru.getHeight() +dWidth/8;
+                Yemplacement=mursG.get(2).getMGY() - murT1.getHeight() - emplacmentConstru.getHeight() +dWidth/6;
                 batimentCC = 2;
 
                 break;
             case 11:
-                Xemplacement=mursP.get(1).getMPX() +560;
-                Yemplacement=mursP.get(1).getMPY() -180;
+                Xemplacement=mursP.get(1).getMPX() + dWidth/2;
+                Yemplacement=mursP.get(1).getMPY() -dHeight/13;
                 batimentCC = 3;
                 break;
         }
