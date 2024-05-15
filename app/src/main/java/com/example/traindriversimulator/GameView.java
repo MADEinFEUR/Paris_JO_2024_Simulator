@@ -311,19 +311,19 @@ public class GameView extends View {
 
             // le pave
             if(paveControl == true) {
-                rectPaveCible.set((int)(xPave), (int)(yPave),(int) xPave + pavecible.getWidth(),(int)(yPave) + pavecible.getHeight());
+                rectPaveCible.set((int)(xPave) - pavecible.getWidth()/2, (int)(yPave) - pavecible.getHeight()/2,(int) xPave + pavecible.getWidth()/2,(int)(yPave) + pavecible.getHeight()/2);
                 canvas.drawBitmap(pavecible,null,rectPaveCible,null);
 
 
-                if (xPave - enemies.get(i).positionX <= 20 && yPave - enemies.get(i).positionY <= 20
-                        && enemies.get(i).positionX - xPave <= 20 && yPave - enemies.get(i).positionY <= 20
-                        && xPave - enemies.get(i).positionX <= 20 && enemies.get(i).positionY - yPave <= 20
-                        && enemies.get(i).positionX - xPave <= 20 && enemies.get(i).positionY - yPave <= 20) {
+                if (xPave - enemies.get(i).positionX <= 50 && yPave - enemies.get(i).positionY <= 50
+                        && enemies.get(i).positionX - xPave <= 50 && yPave - enemies.get(i).positionY <= 50
+                        && xPave - enemies.get(i).positionX <= 50 && enemies.get(i).positionY - yPave <= 50
+                        && enemies.get(i).positionX - xPave <= 50 && enemies.get(i).positionY - yPave <= 50) {
 
                     MortEnemy(canvas, i, 1);
                     Explosion explosion = new Explosion(context);
-                    explosion.explosionX = (int) xPave;
-                    explosion.explosionY = (int) yPave;
+                    explosion.explosionX = (int)(xPave) - pavecible.getWidth()/2;
+                    explosion.explosionY = (int)(yPave) - pavecible.getHeight()/2;
                     explosions.add(explosion);
                 }
             }

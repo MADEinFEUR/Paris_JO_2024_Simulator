@@ -585,8 +585,9 @@ public class GamesActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "LANCEEE DU PAVEEEE!!!!!!", Toast.LENGTH_SHORT).show();
                     GameView.paveControl = true;
                     GameView.paveVerif = false;
+                }else {
+                    Toast.makeText(getApplicationContext(), "pas encore disponible", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getApplicationContext(), "pas encore disponible", Toast.LENGTH_SHORT).show();
 
                 break;
 
@@ -595,8 +596,9 @@ public class GamesActivity extends AppCompatActivity {
                     GameView.forceSyndic = false;
                     GameView.xForceSydicale = Y;
                     Toast.makeText(getApplicationContext(), "Force Synd", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(), "pas encore disponible", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getApplicationContext(), "pas encore disponible", Toast.LENGTH_SHORT).show();
 
                 break;
 
