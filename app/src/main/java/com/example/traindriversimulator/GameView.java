@@ -28,6 +28,7 @@ import java.util.Random;
 
 public class GameView extends View {
 
+    public static boolean forceSyndic;
     Bitmap background, base, train, rail, murT1, murT2,tourT1,mineT1,titreTransport,cataT1,emplacmentConstru,constru1,constru2,constru3,constru4,avantPartie;
     Rect rectBackground, rectBase, rectTrain, rectRail, rectMurT1,rectTitreTransport,rectEmplacementConstru,rectB1,rectB2,rectB3,rectB4,rectAvantPartie;
     public static Context context;
@@ -88,11 +89,14 @@ public class GameView extends View {
     private int Yemplacement;
     private int batimentCC;
     private int nb_infirmerie;
-    public static int nb_Reserve;
+    public static int nb_Reserve = 0;
     private int healInfEffectue;
     private int nb_avantP;
     private int nb_Potion;
     private boolean etatBoostReserve = true;
+    private int timerControlEnemy;
+    private int timerForceSyndical;
+    public static boolean forceSyndicClique;
 
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -270,6 +274,9 @@ public class GameView extends View {
 
 
 
+        //pouvoir
+
+
 
         //gestion des ennemi__________________________________________________________________
 
@@ -314,8 +321,27 @@ public class GameView extends View {
                     break;
             }
 
-            //Reserve
+            //contrôle ratp en civil
+            if(enemies.get(i).positionY < dHeight/2 +10 && enemies.get(i).positionY >= dHeight/2 -10  &&  forceSyndicClique==true){
+                    enemies.get(i).controlEtat= true;
+                    enemies.get(i).enemyVelocityY = 0;
+                    timerControlEnemy+=1;
 
+                    if(timerControlEnemy > 30){
+                        timerControlEnemy = 0;
+                    }
+
+                    System.out.println(timerControlEnemy);
+                    System.out.println(enemies.get(i).timerControle );
+                    if(timerControlEnemy == enemies.get(i).timerControle  ){
+                        for(int j=0; j ==20; j++){
+                            enemies.get(i).positionY += 5;
+                        }
+                        enemies.get(i).resetEnemyVelocity();
+                        timerControlEnemy = 0;
+                        enemies.get(i).controlEtat = false;
+                    }
+            }
 
 
 
@@ -461,7 +487,7 @@ public class GameView extends View {
 
 
                     }
-                    if (enemies.get(i).getEtat() != 0) {
+                    if (enemies.get(i).getEtat() != 0 && enemies.get(i).controlEtat == false) {
                         enemies.get(i).positionY += enemies.get(i).enemyVelocityY;
                         enemies.get(i).resetEnemyVelocity();
                     }
@@ -641,9 +667,15 @@ public class GameView extends View {
     public void GestionTimer(){
         globalTimer++;
 
-
+        if (forceSyndic == false) {
+            timerForceSyndical++;
+            if(timerForceSyndical == 5000){
+                forceSyndic = true;
+            }
+        }
         switch(etatPartie){
             case 0:
+                forceSyndicClique = false;
                 timerMancheDefense++;
                 timerMancheAttaque=0;
                 if(timerMancheDefense >= 25){
@@ -770,6 +802,15 @@ public class GameView extends View {
                             batiments1.add(batiment);
                             choixConstru = 0;
                             nb_infirmerie +=1;
+                            if(nb_Potion >= 1 && batiments1.get(0).getName() == 4){
+                                nb_Potion -=1;
+                            }
+                            if(nb_avantP >= 1 && batiments1.get(0).getName() ==3 ){
+                                nb_avantP -= 1;
+                            }
+                            if(batiments1.get(0).getName() == 2){
+                                deBoostDegat();
+                            }
 
                             if(batiments1.size() > 1){
                                 batiments1.remove(0);
@@ -783,6 +824,17 @@ public class GameView extends View {
                             batiments2.add(batiment);
                             choixConstru = 0;
                             nb_infirmerie +=1;
+
+                            if(nb_Potion >= 1 && batiments2.get(0).getName() == 4){
+                                nb_Potion -=1;
+                            }
+                            if(nb_avantP >= 1 && batiments2.get(0).getName() == 3){
+                                nb_avantP -= 1;
+                            }
+                            if(batiments2.get(0).getName() == 2){
+                                deBoostDegat();
+                            }
+
                             if(batiments2.size() > 1){
                                 batiments2.remove(0);
                                 nb_infirmerie =- 1;
@@ -793,6 +845,16 @@ public class GameView extends View {
                             batiments3.add(batiment);
                             choixConstru = 0;
                             nb_infirmerie +=1;
+                            if(nb_Potion >= 1 && batiments3.get(0).getName() == 4){
+                                nb_Potion -=1;
+                            }
+                            if(nb_avantP >= 1 && batiments3.get(0).getName() == 3){
+                                nb_avantP -= 1;
+                            }
+                            if(batiments3.get(0).getName() == 2){
+                                deBoostDegat();
+                            }
+
                             if(batiments3.size() > 1){
                                 batiments3.remove(0);
                                 nb_infirmerie =- 1;
@@ -820,18 +882,36 @@ public class GameView extends View {
                                 batiments1.add(batiment);
                                 choixConstru = 0;
                                 boostDegat();
+                                if(nb_Potion >= 1 && batiments1.get(0).getName() == 4){
+                                    nb_Potion -=1;
+                                }
+                                if(nb_avantP >= 1 && batiments1.get(0).getName() == 3){
+                                    nb_avantP -= 1;
+                                }
+                                if(nb_infirmerie >= 1  && batiments1.get(0).getName() == 1 ){
+                                    nb_infirmerie -=1;
+                                }
                                 if(batiments1.size() > 1){
+                                    nb_Reserve = 0;
                                     batiments1.remove(0);
-                                    deBoostDegat();
                                 }
                                 break;
                             case 2:
                                 batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
                                 batiments2.add(batiment);
                                 boostDegat();
+                                if(nb_Potion >= 1 && batiments2.get(0).getName() == 4) {
+                                    nb_Potion -=1;
+                                }
+                                if(nb_avantP >= 1 && batiments2.get(0).getName() == 3){
+                                    nb_avantP -= 1;
+                                }
+                                if(nb_infirmerie >= 1  && batiments2.get(0).getName() == 1 ){
+                                    nb_infirmerie -=1;
+                                }
                                 if(batiments2.size() > 1){
+                                    nb_Reserve = 0;
                                     batiments2.remove(0);
-                                    deBoostDegat();
                                 }
                                 choixConstru = 0;
 
@@ -841,11 +921,21 @@ public class GameView extends View {
                                 batiments3.add(batiment);
                                 choixConstru = 0;
                                 boostDegat();
+                                if(nb_Potion >= 1  && batiments3.get(0).getName() == 4){
+                                    nb_Potion -=1;
+                                }
+                                if(nb_avantP >= 1  && batiments3.get(0).getName() == 3){
+                                    nb_avantP -= 1;
+                                }
+                                if(nb_infirmerie >= 1  && batiments3.get(0).getName() == 1 ){
+                                    nb_infirmerie -=1;
+                                }
                                 if(batiments3.size() > 1){
+                                    nb_Reserve = 0;
                                     batiments3.remove(0);
-                                    deBoostDegat();
 
                                 }
+
                                 break;
                         }
                         break;
@@ -866,9 +956,23 @@ public class GameView extends View {
                                 batiments1.add(batiment);
                                 choixConstru = 0;
                                 nb_avantP += 1;
+                                if(nb_Potion >= 1  && batiments1.get(0).getName() == 4 ){
+                                    nb_Potion -=1;
+                                }
+                                if(nb_infirmerie >= 1  && batiments1.get(0).getName() == 1 ){
+                                    nb_infirmerie -=1;
+                                }
+                                if(batiments1.get(0).getName() == 2){
+                                    deBoostDegat();
+                                }
+
+
                                 if(batiments1.size() > 1){
                                     batiments1.remove(0);
                                     nb_avantP -= 1;
+                                    if(nb_avantP > 3){
+                                        nb_avantP -= 1;
+                                    }
                                 }
                                 break;
                             case 2:
@@ -876,9 +980,21 @@ public class GameView extends View {
                                 batiments2.add(batiment);
                                 choixConstru = 0;
                                 nb_avantP += 1;
+                                if(nb_Potion >= 1  && batiments2.get(0).getName() == 4){
+                                    nb_Potion -=1;
+                                }
+                                if(nb_infirmerie >= 1  && batiments2.get(0).getName() == 1 ){
+                                    nb_infirmerie -=1;
+                                }
+                                if(batiments2.get(0).getName() == 2){
+                                    deBoostDegat();
+                                }
+
                                 if(batiments2.size() > 1){
                                     batiments2.remove(0);
-                                    nb_avantP -= 1;
+                                    if(nb_avantP > 3){
+                                        nb_avantP -= 1;
+                                    }
 
                                 }
                                 break;
@@ -887,9 +1003,22 @@ public class GameView extends View {
                                 batiments3.add(batiment);
                                 choixConstru = 0;
                                 nb_avantP += 1;
+                                if(nb_Potion >= 1 && batiments3.get(0).getName() == 4 ){
+                                    nb_Potion -=1;
+                                }
+                                if(nb_infirmerie >= 1  && batiments3.get(0).getName() == 1 ){
+                                    nb_infirmerie -=1;
+                                }
+                                if(batiments3.get(0).getName() == 2){
+                                    deBoostDegat();
+                                }
+
                                 if(batiments3.size() > 1){
                                     batiments3.remove(0);
-                                    nb_avantP -= 1;
+                                    if(nb_avantP > 3){
+                                        nb_avantP -= 1;
+                                    }
+
 
                                 }
                                 break;
@@ -911,9 +1040,23 @@ public class GameView extends View {
                                 batiments1.add(batiment);
                                 choixConstru = 0;
                                 nb_Potion +=1;
+
+                                if(batiments1.get(0).getName() == 2){
+                                    deBoostDegat();
+                                }
+
+                                if(nb_infirmerie >= 1  && batiments1.get(0).getName() == 1 ){
+                                    nb_infirmerie -=1;
+                                }
+                                if(nb_avantP >= 1 && batiments1.get(0).getName() == 3){
+                                    nb_avantP -= 1;
+                                }
+
+
                                 if(batiments1.size() > 1){
                                     batiments1.remove(0);
-                                    nb_Potion -=1;
+
+
 
                                 }
                                 break;
@@ -922,9 +1065,20 @@ public class GameView extends View {
                                 batiments2.add(batiment);
                                 choixConstru = 0;
                                 nb_Potion +=1;
+                                if(batiments2.get(0).getName() == 2){
+                                    deBoostDegat();
+                                }
+
+                                if(nb_infirmerie >= 1  && batiments2.get(0).getName() == 1 ){
+                                    nb_infirmerie -=1;
+                                }
+                                if(nb_avantP >= 1 && batiments2.get(0).getName() == 3){
+                                    nb_avantP -= 1;
+                                }
+
                                 if(batiments2.size() > 1){
                                     batiments2.remove(0);
-                                    nb_Potion -=1;
+
                                 }
                                 break;
                             case 11:
@@ -932,9 +1086,19 @@ public class GameView extends View {
                                 batiments3.add(batiment);
                                 choixConstru = 0;
                                 nb_Potion +=1;
+                                if(batiments3.get(0).getName() == 2){
+                                    deBoostDegat();
+                                }
+
+                                if(nb_infirmerie >= 1  && batiments3.get(0).getName() == 1 ){
+                                    nb_infirmerie -=1;
+                                }
+                                if(nb_avantP >= 1 && batiments3.get(0).getName() == 3){
+                                    nb_avantP -= 1;
+                                }
                                 if(batiments3.size() > 1){
                                     batiments3.remove(0);
-                                    nb_Potion -=1;
+
                                 }
                                 break;
                         }
@@ -971,33 +1135,34 @@ public class GameView extends View {
     }
 
     private void boostDegat(){
+        nb_Reserve = 1;
         for (int i = 0; i < towers.size(); i++) {
-            towers.get(i).setDamage((int)(towers.get(i).getDamage()*1.50));
+            towers.get(i).setDamage((int)(towers.get(i).getDamage() + 1000));
         }
         for (int i = 0; i < mines.size(); i++) {
-            mines.get(i).setDamage((int)(mines.get(i).getDamage()*1.30) );
+            mines.get(i).setDamage((int)(mines.get(i).getDamage() + 50) );
 
         }
         for (int i = 0; i < catapults.size(); i++) {
-            catapults.get(i).setDamage((int)(catapults.get(i).getDamage()*1.20) );
+            catapults.get(i).setDamage((int)(catapults.get(i).getDamage() + 70) );
 
         }
         System.out.println("boost degat");
     }
 
     private void deBoostDegat(){
-        for (int i = 0; i < towers.size(); i++) {
-            towers.get(i).setDamage((int)(towers.get(i).getDamage()*0.50));
-        }
-        for (int i = 0; i < mines.size(); i++) {
-            mines.get(i).setDamage((int)(mines.get(i).getDamage()*0.30) );
+            for (int i = 0; i < towers.size(); i++) {
+                towers.get(i).setDamage((int) (towers.get(i).getDamage() - 1000));
+            }
+            for (int i = 0; i < mines.size(); i++) {
+                mines.get(i).setDamage((int) (mines.get(i).getDamage() - 50));
 
-        }
-        for (int i = 0; i < catapults.size(); i++) {
-            catapults.get(i).setDamage((int)(catapults.get(i).getDamage()*0.20) );
+            }
+            for (int i = 0; i < catapults.size(); i++) {
+                catapults.get(i).setDamage((int) (catapults.get(i).getDamage() - 70));
 
-        }
-        System.out.println("deboost de degat");
+            }
+            System.out.println("deboost de degat");
     }
 
 
@@ -1020,7 +1185,7 @@ public class GameView extends View {
 
                 ///Faire en sorte que toute les n manches la somme augmente
                 if(30 - timerseconde == 29){
-                    points += 200*nb_Potion;
+                    points += 20*nb_Potion;
                     points += 2 + (int)(points * 0.01) ;
 
                 }

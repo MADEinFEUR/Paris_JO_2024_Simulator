@@ -432,6 +432,9 @@ public class GamesActivity extends AppCompatActivity {
                         button3.setBackgroundResource(R.drawable.lacrymogene);
                         button2.setBackgroundResource(R.drawable.lanceur_lbd);
                         GameView.etatConstruction = 0;
+                        if(GameView.forceSyndic = false){
+                            button1.setBackgroundResource(R.drawable.desactiver);
+                        }
                         break;
                     default:
                         button1.setBackgroundResource(R.drawable.desactiver);
@@ -574,6 +577,13 @@ public class GamesActivity extends AppCompatActivity {
         //spawn tourelle au clic lorsqu'elle est choisi
 
         switch (choisi){
+            case "Force syndicale choisie":
+                if(GameView.forceSyndic == true)
+                    GameView.forceSyndic = false;
+                    GameView.forceSyndicClique = true;
+
+                break;
+
             case "T1 choisie":
 
                 if (GameView.points >= 25) {

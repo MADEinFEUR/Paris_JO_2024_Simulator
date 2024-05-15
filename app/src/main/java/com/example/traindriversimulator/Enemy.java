@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import java.util.Random;
 
 public class Enemy {
+    public int timerControle;
     private int health;
     public int healthInit;
 
@@ -25,6 +26,8 @@ public class Enemy {
     public int positionX;
     public int rdm_deplacement;
     public int positionY;
+
+    public boolean controlEtat;
     Random random;
 
 
@@ -129,7 +132,7 @@ public class Enemy {
         spawnRandom();
 
 
-
+        timerControle = random.nextInt(20);
 
 
 
