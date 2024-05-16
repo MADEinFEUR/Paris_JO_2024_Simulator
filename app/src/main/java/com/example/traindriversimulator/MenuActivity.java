@@ -22,7 +22,8 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_activity);
         //muzik
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.sncf_remix_coupe_decale); // replace "your_music_file" with the name of your music file
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.sncf_remix_coupe_decale);
+        mediaPlayer.start();
     }
 
     public void lancerJouer(View v){
