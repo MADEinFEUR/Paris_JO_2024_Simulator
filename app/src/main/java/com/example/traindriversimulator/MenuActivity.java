@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.MediaController;
 import android.widget.VideoView;
 import android.widget.ImageButton;
 import android.widget.Button;
@@ -21,9 +22,15 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_activity);
-        //muzik
+        //music sncf coupe decale
         MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.sncf_remix_coupe_decale);
         mediaPlayer.start();
+        //video winnie qui danse
+        VideoView videoView = findViewById(R.id.videoView);
+        videoView.setVideoPath("android.ressource://"+getPackageName()+"/"+R.raw.winnie_dance);
+        MediaController mediaController = new MediaController(this);
+        mediaController.setAnchorView(videoView);
+        videoView.setMediaController(mediaController);
     }
 
     public void lancerJouer(View v){
