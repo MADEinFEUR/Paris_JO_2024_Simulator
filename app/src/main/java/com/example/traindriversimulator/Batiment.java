@@ -80,6 +80,9 @@ public class Batiment {
         public void setName(int newName) {
             name = newName;
         }
+        public int getName() {
+            return name;
+        }
         public void setDamage(int newDamage) {
             damage = newDamage;
         }
