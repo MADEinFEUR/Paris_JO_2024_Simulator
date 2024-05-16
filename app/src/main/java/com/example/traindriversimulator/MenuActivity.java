@@ -21,9 +21,10 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_activity);
-
-
+        //muzik
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.sncf_remix_coupe_decale); // replace "your_music_file" with the name of your music file
     }
+
     public void lancerJouer(View v){
         Intent gamewindow = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
