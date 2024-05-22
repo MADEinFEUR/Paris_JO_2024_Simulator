@@ -25,9 +25,10 @@ public class MenuActivity extends AppCompatActivity {
 
     }
     public void lancerJouer(View v){
+
         Intent gamewindow = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            gamewindow = new Intent(this, GamesActivity.class);
+            gamewindow = new Intent(this, MDJ.class);
         }
         startActivities(new Intent[]{gamewindow});
         GameView.partieLancer=0;
@@ -42,6 +43,11 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void lancerMDJ(View v){
+        Intent gamewindow = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            gamewindow = new Intent(this, GameTuto.class);
+        }
+        startActivities(new Intent[]{gamewindow});
 
     }
 

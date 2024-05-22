@@ -4,11 +4,10 @@ import static android.graphics.BitmapFactory.decodeResource;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.service.autofill.OnClickAction;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,17 +19,11 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.graphics.Canvas;
-import android.graphics.BitmapFactory;
-import android.graphics.Paint;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-
-import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class GamesActivity extends AppCompatActivity {
@@ -63,7 +56,6 @@ public class GamesActivity extends AppCompatActivity {
     private Button button5;
     private Button button6;
     private Button button7;
-
     private View.OnTouchListener onTouchListener= new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -76,9 +68,11 @@ public class GamesActivity extends AppCompatActivity {
 
     private TextView txt;
 
-    @SuppressLint("ResourceType")
+
+    @SuppressLint({"ResourceType", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
 
 
@@ -87,6 +81,7 @@ public class GamesActivity extends AppCompatActivity {
         GameButtons = new RelativeLayout(this);
 
         gameActivity.setOnTouchListener(onTouchListener);
+
 
 
 
@@ -120,6 +115,7 @@ public class GamesActivity extends AppCompatActivity {
         button5 = new Button(this);
         button6 = new Button(this);
         button7 = new Button(this);
+
 
 
 
@@ -322,18 +318,15 @@ public class GamesActivity extends AppCompatActivity {
         setContentView(R.layout.games_activity);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+
+
+
+
+
         gameActivity.addView(gameView);
         gameActivity.addView(GameButtons);
+
         setContentView(gameActivity);
-
-
-
-
-
-
-
-
-
     }
 
 
@@ -578,26 +571,57 @@ public class GamesActivity extends AppCompatActivity {
         //spawn tourelle au clic lorsqu'elle est choisi
 
         switch (choisi){
+            case "Lacrymogène choisie":
+                if(GameView.points - 100 > 0) {
+                    GameView.points -= 100;
+                    if (GameView.smokeControl == false) {
+                        Toast.makeText(getApplicationContext(), "LACRYMO!!!!!", Toast.LENGTH_SHORT).show();
+                        GameView.smokeVerif = false;
+                        GameView.smokeControl = true;
+                    } else {
+                        Toast.makeText(getApplicationContext(), "pas encore disponible", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), "pas d'argent", Toast.LENGTH_SHORT).show();
+
+                }
+                break;
+
+
+
             case "Lanceur LBD choisie" :
-                if(GameView.paveVerif == true) {
-                    GameView.yPave = Y;
-                    GameView.xPave = X;
-                    Toast.makeText(getApplicationContext(), "LANCEEE DU PAVEEEE!!!!!!", Toast.LENGTH_SHORT).show();
-                    GameView.paveControl = true;
-                    GameView.paveVerif = false;
-                }else {
-                    Toast.makeText(getApplicationContext(), "pas encore disponible", Toast.LENGTH_SHORT).show();
+                if(GameView.points - 150 > 0) {
+                    GameView.points -= 150;
+                    if (GameView.paveVerif == true) {
+                        GameView.yPave = Y;
+                        GameView.xPave = X;
+                        Toast.makeText(getApplicationContext(), "LANCEEE DU PAVEEEE!!!!!!", Toast.LENGTH_SHORT).show();
+                        GameView.paveControl = true;
+                        GameView.paveVerif = false;
+                    } else {
+                        Toast.makeText(getApplicationContext(), "pas encore disponible", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), "pas d'argent", Toast.LENGTH_SHORT).show();
+
                 }
 
                 break;
 
             case "Force syndicale choisie":
-                if(GameView.forceSyndic == true) {
-                    GameView.forceSyndic = false;
-                    GameView.xForceSydicale = Y;
-                    Toast.makeText(getApplicationContext(), "Force Synd", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(getApplicationContext(), "pas encore disponible", Toast.LENGTH_SHORT).show();
+                if(GameView.points - 200 > 0) {
+                    GameView.points -= 200;
+                    if (GameView.forceSyndic == true) {
+                        GameView.forceSyndic = false;
+                        GameView.forceSyndicClique = true;
+                        GameView.xForceSydicale = Y;
+                        Toast.makeText(getApplicationContext(), "Force Synd", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "pas encore disponible", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), "pas d'argent", Toast.LENGTH_SHORT).show();
+
                 }
 
                 break;
