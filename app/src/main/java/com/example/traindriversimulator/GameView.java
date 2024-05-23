@@ -934,7 +934,6 @@ public class GameView extends View {
                 }
 
                 break;
-
         }
 
         switch(""+(rectB2.contains((int)GamesActivity.X,(int)GamesActivity.Y))){
