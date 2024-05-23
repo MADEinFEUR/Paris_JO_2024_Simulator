@@ -56,6 +56,12 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void lancerCredit(View v){
+        Intent gamewindow = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            gamewindow = new Intent(this, GameCredit.class);
+        }
+        startActivities(new Intent[]{gamewindow});
+
 
     }
 
