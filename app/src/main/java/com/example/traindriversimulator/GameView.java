@@ -15,11 +15,14 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.os.Handler;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.RequiresApi;
 
@@ -29,12 +32,13 @@ import java.util.Random;
 public class GameView extends View {
 
     public static boolean forceSyndic = true;
+    public Smoke smoke;
     public static float xForceSydicale;
     public static float yPave;
     public static float xPave;
     public static boolean paveVerif = true;
     public static boolean paveControl;
-    Bitmap background, base, train, rail, murT1, murT2,tourT1,mineT1,titreTransport,cataT1,emplacmentConstru,constru1,constru2,constru3,constru4,avantPartie, barrage, pavecible;
+    Bitmap background, base, train, rail, murT1, murT2,tourT1,mineT1,titreTransport,cataT1,emplacmentConstru,constru1,constru2,constru3,constru4, barrage, pavecible;
     Rect rectBackground, rectBase, rectTrain, rectRail, rectMurT1,rectTitreTransport,rectEmplacementConstru,rectB1,rectB2,rectB3,rectB4,rectAvantPartie, rectBarrage,rectPaveCible;
     public static Context context;
     Handler handler;
@@ -49,7 +53,7 @@ public class GameView extends View {
     Paint projectilePiantCatapult = new Paint();
 
     public static int points = 0;
-    public static int partieLancer= 0;
+    public static int partieLancer= 1;
     public static int etatConstruction=0;
     int animTrain=0;
     int life = 1000;
@@ -101,13 +105,20 @@ public class GameView extends View {
     private boolean etatBoostReserve = true;
     private int timerControlEnemy;
     private int timerForceSyndical = 0;
-    public static boolean forceSyndicClique = true;
+    public static boolean forceSyndicClique = false;
     private int timerPave;
+    public static boolean smokeControl;
+    public static boolean smokeVerif;
+    private int timerSmoke;
+    public static int modeDeJeu;
 
 
+    @SuppressLint("ResourceType")
     @RequiresApi(api = Build.VERSION_CODES.R)
     public GameView(Context context) {
         super(context);
+
+
         this.context = context;
         background = BitmapFactory.decodeResource(getResources(), R.drawable.map);
         base = BitmapFactory.decodeResource(getResources(), R.drawable.base);
@@ -124,7 +135,6 @@ public class GameView extends View {
         constru2 = BitmapFactory.decodeResource(getResources(), R.drawable.reserve);
         constru3= BitmapFactory.decodeResource(getResources(), R.drawable.avantpost);
         constru4= BitmapFactory.decodeResource(getResources(), R.drawable.potion);
-        avantPartie= BitmapFactory.decodeResource(getResources(), R.drawable.avantlapartie);
         barrage= BitmapFactory.decodeResource(getResources(), R.drawable.barrage);
         pavecible= BitmapFactory.decodeResource(getResources(), R.drawable.pavecible);
 
@@ -141,7 +151,6 @@ public class GameView extends View {
         dWidth = size.x;
         dHeight = size.y;
         rectBackground = new Rect(0, 0, dWidth, dHeight);
-        rectAvantPartie = new Rect(0, 0, dWidth, dHeight);
         rectBase = new Rect(0, dHeight - base.getHeight(), dWidth, dHeight);
         rectB1 = new Rect(0, dHeight - base.getHeight(), dWidth, dHeight);
         rectB4 = new Rect(0, dHeight - base.getHeight(), dWidth, dHeight);
@@ -183,9 +192,10 @@ public class GameView extends View {
         baseY = size.y;
         trainY = 0;
         nb_manche=0;
-        points=0;
+        points=10000;
         forceSyndic = true;
         forceSyndicClique = true;
+        smoke = new Smoke(context);
         enemies = new ArrayList<>();
         towers = new ArrayList<>();
         explosions = new ArrayList<>();
@@ -231,11 +241,20 @@ public class GameView extends View {
         canvas.drawBitmap(rail, null, rectRail, null);
         canvas.drawBitmap(train, null, rectTrain, null);
 
-
-        switch(partieLancer) {
-            case 1:
                 //=================appel mode de jeu====================
+        switch (modeDeJeu){
+            case 1:
                 QuickPlay(canvas);
+                break;
+            case 2:
+                Infinite(canvas);
+                break;
+            case 3:
+                QuickPlay(canvas);
+                points = 200;
+                break;
+        }
+
 
 
                 //=================appel choix de la map================
@@ -255,15 +274,7 @@ public class GameView extends View {
                         }
                         break;
                 }
-            break;
-            case 0:
-                switch (""+(rectAvantPartie.contains((int)GamesActivity.X,(int)GamesActivity.Y))){
-                case "true":
-                    partieLancer=1;
-                    break;
-                }
-                break;
-        }
+
 
 
 
@@ -289,8 +300,6 @@ public class GameView extends View {
 
 
 
-
-
         //gestion des ennemi__________________________________________________________________
 
         for (int i = 0; i < enemies.size(); i++) {
@@ -307,7 +316,7 @@ public class GameView extends View {
             canvas.drawRect(enemies.get(i).positionX, enemies.get(i).positionY, (int) (enemies.get(i).positionX + ((enemies.get(i).getHealth() * 100 / enemies.get(i).healthInit)) * 0.5), enemies.get(i).positionY + 5, ennemiHeath);
 
 
-            //pouvoir
+            //_______________________________________________________________________pouvoir____________________________________________________________________________________________
 
             // le pave
             if(paveControl == true) {
@@ -315,10 +324,10 @@ public class GameView extends View {
                 canvas.drawBitmap(pavecible,null,rectPaveCible,null);
 
 
-                if (xPave - enemies.get(i).positionX <= 50 && yPave - enemies.get(i).positionY <= 50
-                        && enemies.get(i).positionX - xPave <= 50 && yPave - enemies.get(i).positionY <= 50
-                        && xPave - enemies.get(i).positionX <= 50 && enemies.get(i).positionY - yPave <= 50
-                        && enemies.get(i).positionX - xPave <= 50 && enemies.get(i).positionY - yPave <= 50) {
+                if (xPave - enemies.get(i).positionX <= 75 && yPave - enemies.get(i).positionY <= 75
+                        && enemies.get(i).positionX - xPave <= 75 && yPave - enemies.get(i).positionY <= 75
+                        && xPave - enemies.get(i).positionX <= 75 && enemies.get(i).positionY - yPave <= 75
+                        && enemies.get(i).positionX - xPave <= 75 && enemies.get(i).positionY - yPave <= 75) {
 
                     MortEnemy(canvas, i, 1);
                     Explosion explosion = new Explosion(context);
@@ -327,11 +336,28 @@ public class GameView extends View {
                     explosions.add(explosion);
                 }
             }
+
+            //smoke
+            if(smokeControl == true) {
+                if (smokeVerif == false) {
+                    canvas.drawBitmap(smoke.getSmoke(smoke.smokeFrame), 0, 0, null);
+                        smoke.smokeFrame++;
+                        System.out.println(smoke.smokeFrame);
+                    if (smoke.smokeFrame >= 15) {
+                        smokeVerif = true;
+                        enemies.get(i).attaque = (int) (enemies.get(i).getAttaque() * 0.25);
+                        System.out.println(enemies.get(i).attaque);
+                    }
+                }
+            }
+
             //contrôle ratp en civil
-            if(forceSyndicClique == true) {
-                if (enemies.get(i).positionY < xForceSydicale + 10 && enemies.get(i).positionY >= xForceSydicale - 10 && forceSyndic == false) {
+
+                if (enemies.get(i).positionY < xForceSydicale + 10 && enemies.get(i).positionY >= xForceSydicale - 10 && forceSyndic == false && forceSyndicClique == true) {
+
                     rectBarrage.set(0, (int) xForceSydicale, dWidth, (int) xForceSydicale + barrage.getHeight());
                     canvas.drawBitmap(barrage, null, rectBarrage, null);
+
                     enemies.get(i).controlEtat = true;
                     enemies.get(i).enemyVelocityY = 0;
                     timerControlEnemy += 1;
@@ -351,7 +377,6 @@ public class GameView extends View {
                         enemies.get(i).controlEtat = false;
                     }
                 }
-            }
 
 
 
@@ -502,7 +527,6 @@ public class GameView extends View {
             switch (batimentCC){
                 default:
 
-
                     for (int j = 0; j < mursG.size(); j++) {
 
                         if (enemies.get(i).positionY + enemies.get(i).getEnemyWidth() + enemies.get(i).rdm_deplacement > mursG.get(j).getMGY()
@@ -610,15 +634,7 @@ public class GameView extends View {
         handler.postDelayed(runnable, UPADATE_MILLIS);
 
 
-        switch(partieLancer){
-            case 0 :
-                canvas.drawBitmap(avantPartie,null,rectAvantPartie,null);
-                break;
-            default:
-                break;
 
-
-        }
 
 
 
@@ -718,10 +734,21 @@ public class GameView extends View {
         }
         if(paveVerif == false){
             timerPave++;
-            if(timerPave >= 1200){
+            if(timerPave >= 3000){
                 timerPave = 0;
                 paveVerif = true;
                 paveControl = false;
+            }
+
+
+        }
+
+        if(smokeVerif == false){
+            timerSmoke++;
+            if(timerSmoke >= 1500){
+                timerSmoke = 0;
+                smokeVerif = true;
+                smokeControl = false;
             }
 
 
@@ -832,71 +859,76 @@ public class GameView extends View {
                 GamesActivity.Y=-1000;
                 switch (choixConstru) {
                     case 1 :
-                    switch(choixEmplacement) {
-                        case 1:
-                            Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
-                            batiments1.add(batiment);
-                            choixConstru = 0;
-                            nb_infirmerie +=1;
-                            if(nb_Potion >= 1 && batiments1.get(0).getName() == 4){
-                                nb_Potion -=1;
-                            }
-                            if(nb_avantP >= 1 && batiments1.get(0).getName() ==3 ){
-                                nb_avantP -= 1;
-                            }
-                            if(batiments1.get(0).getName() == 2){
-                                deBoostDegat();
-                            }
+                        if(points - 300 > 0) {
+                            points-=300;
+                            switch (choixEmplacement) {
+                                case 1:
 
-                            if(batiments1.size() > 1){
-                                batiments1.remove(0);
-                                nb_infirmerie =- 1;
-                            }
-                            System.out.println(batiments1.size());
 
-                            break;
-                        case 2:
-                            batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
-                            batiments2.add(batiment);
-                            choixConstru = 0;
-                            nb_infirmerie +=1;
+                                    Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
+                                    batiments1.add(batiment);
+                                    choixConstru = 0;
+                                    nb_infirmerie += 1;
+                                    if (nb_Potion >= 1 && batiments1.get(0).getName() == 4) {
+                                        nb_Potion -= 1;
+                                    }
+                                    if (nb_avantP >= 1 && batiments1.get(0).getName() == 3) {
+                                        nb_avantP -= 1;
+                                    }
+                                    if (batiments1.get(0).getName() == 2) {
+                                        deBoostDegat();
+                                    }
 
-                            if(nb_Potion >= 1 && batiments2.get(0).getName() == 4){
-                                nb_Potion -=1;
-                            }
-                            if(nb_avantP >= 1 && batiments2.get(0).getName() == 3){
-                                nb_avantP -= 1;
-                            }
-                            if(batiments2.get(0).getName() == 2){
-                                deBoostDegat();
-                            }
+                                    if (batiments1.size() > 1) {
+                                        batiments1.remove(0);
+                                        nb_infirmerie = -1;
+                                    }
+                                    System.out.println(batiments1.size());
 
-                            if(batiments2.size() > 1){
-                                batiments2.remove(0);
-                                nb_infirmerie =- 1;
-                            }
-                            break;
-                        case 11:
-                            batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
-                            batiments3.add(batiment);
-                            choixConstru = 0;
-                            nb_infirmerie +=1;
-                            if(nb_Potion >= 1 && batiments3.get(0).getName() == 4){
-                                nb_Potion -=1;
-                            }
-                            if(nb_avantP >= 1 && batiments3.get(0).getName() == 3){
-                                nb_avantP -= 1;
-                            }
-                            if(batiments3.get(0).getName() == 2){
-                                deBoostDegat();
-                            }
+                                    break;
+                                case 2:
+                                    batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
+                                    batiments2.add(batiment);
+                                    choixConstru = 0;
+                                    nb_infirmerie += 1;
 
-                            if(batiments3.size() > 1){
-                                batiments3.remove(0);
-                                nb_infirmerie =- 1;
+                                    if (nb_Potion >= 1 && batiments2.get(0).getName() == 4) {
+                                        nb_Potion -= 1;
+                                    }
+                                    if (nb_avantP >= 1 && batiments2.get(0).getName() == 3) {
+                                        nb_avantP -= 1;
+                                    }
+                                    if (batiments2.get(0).getName() == 2) {
+                                        deBoostDegat();
+                                    }
+
+                                    if (batiments2.size() > 1) {
+                                        batiments2.remove(0);
+                                        nb_infirmerie = -1;
+                                    }
+                                    break;
+                                case 11:
+                                    batiment = new Batiment(context, Xemplacement, Yemplacement, 1);
+                                    batiments3.add(batiment);
+                                    choixConstru = 0;
+                                    nb_infirmerie += 1;
+                                    if (nb_Potion >= 1 && batiments3.get(0).getName() == 4) {
+                                        nb_Potion -= 1;
+                                    }
+                                    if (nb_avantP >= 1 && batiments3.get(0).getName() == 3) {
+                                        nb_avantP -= 1;
+                                    }
+                                    if (batiments3.get(0).getName() == 2) {
+                                        deBoostDegat();
+                                    }
+
+                                    if (batiments3.size() > 1) {
+                                        batiments3.remove(0);
+                                        nb_infirmerie = -1;
+                                    }
+                                    break;
                             }
-                            break;
-                    }
+                        }
                     break;
 
                 }
@@ -911,68 +943,71 @@ public class GameView extends View {
                 GamesActivity.Y=-1000;
                 switch (choixConstru) {
                     case 1 :
-                        switch(choixEmplacement) {
+                        if(points - 500 > 0) {
+                            points-=500;
+                            switch (choixEmplacement) {
 
-                            case 1:
-                                Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
-                                batiments1.add(batiment);
-                                choixConstru = 0;
-                                boostDegat();
-                                if(nb_Potion >= 1 && batiments1.get(0).getName() == 4){
-                                    nb_Potion -=1;
-                                }
-                                if(nb_avantP >= 1 && batiments1.get(0).getName() == 3){
-                                    nb_avantP -= 1;
-                                }
-                                if(nb_infirmerie >= 1  && batiments1.get(0).getName() == 1 ){
-                                    nb_infirmerie -=1;
-                                }
-                                if(batiments1.size() > 1){
-                                    nb_Reserve = 0;
-                                    batiments1.remove(0);
-                                }
-                                break;
-                            case 2:
-                                batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
-                                batiments2.add(batiment);
-                                boostDegat();
-                                if(nb_Potion >= 1 && batiments2.get(0).getName() == 4) {
-                                    nb_Potion -=1;
-                                }
-                                if(nb_avantP >= 1 && batiments2.get(0).getName() == 3){
-                                    nb_avantP -= 1;
-                                }
-                                if(nb_infirmerie >= 1  && batiments2.get(0).getName() == 1 ){
-                                    nb_infirmerie -=1;
-                                }
-                                if(batiments2.size() > 1){
-                                    nb_Reserve = 0;
-                                    batiments2.remove(0);
-                                }
-                                choixConstru = 0;
+                                case 1:
+                                    Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
+                                    batiments1.add(batiment);
+                                    choixConstru = 0;
+                                    boostDegat();
+                                    if (nb_Potion >= 1 && batiments1.get(0).getName() == 4) {
+                                        nb_Potion -= 1;
+                                    }
+                                    if (nb_avantP >= 1 && batiments1.get(0).getName() == 3) {
+                                        nb_avantP -= 1;
+                                    }
+                                    if (nb_infirmerie >= 1 && batiments1.get(0).getName() == 1) {
+                                        nb_infirmerie -= 1;
+                                    }
+                                    if (batiments1.size() > 1) {
+                                        nb_Reserve = 0;
+                                        batiments1.remove(0);
+                                    }
+                                    break;
+                                case 2:
+                                    batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
+                                    batiments2.add(batiment);
+                                    boostDegat();
+                                    if (nb_Potion >= 1 && batiments2.get(0).getName() == 4) {
+                                        nb_Potion -= 1;
+                                    }
+                                    if (nb_avantP >= 1 && batiments2.get(0).getName() == 3) {
+                                        nb_avantP -= 1;
+                                    }
+                                    if (nb_infirmerie >= 1 && batiments2.get(0).getName() == 1) {
+                                        nb_infirmerie -= 1;
+                                    }
+                                    if (batiments2.size() > 1) {
+                                        nb_Reserve = 0;
+                                        batiments2.remove(0);
+                                    }
+                                    choixConstru = 0;
 
-                                break;
-                            case 11:
-                                batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
-                                batiments3.add(batiment);
-                                choixConstru = 0;
-                                boostDegat();
-                                if(nb_Potion >= 1  && batiments3.get(0).getName() == 4){
-                                    nb_Potion -=1;
-                                }
-                                if(nb_avantP >= 1  && batiments3.get(0).getName() == 3){
-                                    nb_avantP -= 1;
-                                }
-                                if(nb_infirmerie >= 1  && batiments3.get(0).getName() == 1 ){
-                                    nb_infirmerie -=1;
-                                }
-                                if(batiments3.size() > 1){
-                                    nb_Reserve = 0;
-                                    batiments3.remove(0);
+                                    break;
+                                case 11:
+                                    batiment = new Batiment(context, Xemplacement, Yemplacement, 2);
+                                    batiments3.add(batiment);
+                                    choixConstru = 0;
+                                    boostDegat();
+                                    if (nb_Potion >= 1 && batiments3.get(0).getName() == 4) {
+                                        nb_Potion -= 1;
+                                    }
+                                    if (nb_avantP >= 1 && batiments3.get(0).getName() == 3) {
+                                        nb_avantP -= 1;
+                                    }
+                                    if (nb_infirmerie >= 1 && batiments3.get(0).getName() == 1) {
+                                        nb_infirmerie -= 1;
+                                    }
+                                    if (batiments3.size() > 1) {
+                                        nb_Reserve = 0;
+                                        batiments3.remove(0);
 
-                                }
+                                    }
 
-                                break;
+                                    break;
+                            }
                         }
                         break;
 
@@ -985,79 +1020,82 @@ public class GameView extends View {
                 GamesActivity.Y=-1000;
                 switch (choixConstru) {
                     case 1 :
-                        switch(choixEmplacement) {
+                        if(points - 600 > 0) {
+                            points-=600;
+                            switch (choixEmplacement) {
 
-                            case 1:
-                                Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
-                                batiments1.add(batiment);
-                                choixConstru = 0;
-                                nb_avantP += 1;
-                                if(nb_Potion >= 1  && batiments1.get(0).getName() == 4 ){
-                                    nb_Potion -=1;
-                                }
-                                if(nb_infirmerie >= 1  && batiments1.get(0).getName() == 1 ){
-                                    nb_infirmerie -=1;
-                                }
-                                if(batiments1.get(0).getName() == 2){
-                                    deBoostDegat();
-                                }
-
-
-                                if(batiments1.size() > 1){
-                                    batiments1.remove(0);
-                                    nb_avantP -= 1;
-                                    if(nb_avantP > 3){
-                                        nb_avantP -= 1;
+                                case 1:
+                                    Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
+                                    batiments1.add(batiment);
+                                    choixConstru = 0;
+                                    nb_avantP += 1;
+                                    if (nb_Potion >= 1 && batiments1.get(0).getName() == 4) {
+                                        nb_Potion -= 1;
                                     }
-                                }
-                                break;
-                            case 2:
-                                batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
-                                batiments2.add(batiment);
-                                choixConstru = 0;
-                                nb_avantP += 1;
-                                if(nb_Potion >= 1  && batiments2.get(0).getName() == 4){
-                                    nb_Potion -=1;
-                                }
-                                if(nb_infirmerie >= 1  && batiments2.get(0).getName() == 1 ){
-                                    nb_infirmerie -=1;
-                                }
-                                if(batiments2.get(0).getName() == 2){
-                                    deBoostDegat();
-                                }
-
-                                if(batiments2.size() > 1){
-                                    batiments2.remove(0);
-                                    if(nb_avantP > 3){
-                                        nb_avantP -= 1;
+                                    if (nb_infirmerie >= 1 && batiments1.get(0).getName() == 1) {
+                                        nb_infirmerie -= 1;
                                     }
-
-                                }
-                                break;
-                            case 11:
-                                batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
-                                batiments3.add(batiment);
-                                choixConstru = 0;
-                                nb_avantP += 1;
-                                if(nb_Potion >= 1 && batiments3.get(0).getName() == 4 ){
-                                    nb_Potion -=1;
-                                }
-                                if(nb_infirmerie >= 1  && batiments3.get(0).getName() == 1 ){
-                                    nb_infirmerie -=1;
-                                }
-                                if(batiments3.get(0).getName() == 2){
-                                    deBoostDegat();
-                                }
-
-                                if(batiments3.size() > 1){
-                                    batiments3.remove(0);
-                                    if(nb_avantP > 3){
-                                        nb_avantP -= 1;
+                                    if (batiments1.get(0).getName() == 2) {
+                                        deBoostDegat();
                                     }
 
 
-                                }
-                                break;
+                                    if (batiments1.size() > 1) {
+                                        batiments1.remove(0);
+                                        nb_avantP -= 1;
+                                        if (nb_avantP > 3) {
+                                            nb_avantP -= 1;
+                                        }
+                                    }
+                                    break;
+                                case 2:
+                                    batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
+                                    batiments2.add(batiment);
+                                    choixConstru = 0;
+                                    nb_avantP += 1;
+                                    if (nb_Potion >= 1 && batiments2.get(0).getName() == 4) {
+                                        nb_Potion -= 1;
+                                    }
+                                    if (nb_infirmerie >= 1 && batiments2.get(0).getName() == 1) {
+                                        nb_infirmerie -= 1;
+                                    }
+                                    if (batiments2.get(0).getName() == 2) {
+                                        deBoostDegat();
+                                    }
+
+                                    if (batiments2.size() > 1) {
+                                        batiments2.remove(0);
+                                        if (nb_avantP > 3) {
+                                            nb_avantP -= 1;
+                                        }
+
+                                    }
+                                    break;
+                                case 11:
+                                    batiment = new Batiment(context, Xemplacement, Yemplacement, 3);
+                                    batiments3.add(batiment);
+                                    choixConstru = 0;
+                                    nb_avantP += 1;
+                                    if (nb_Potion >= 1 && batiments3.get(0).getName() == 4) {
+                                        nb_Potion -= 1;
+                                    }
+                                    if (nb_infirmerie >= 1 && batiments3.get(0).getName() == 1) {
+                                        nb_infirmerie -= 1;
+                                    }
+                                    if (batiments3.get(0).getName() == 2) {
+                                        deBoostDegat();
+                                    }
+
+                                    if (batiments3.size() > 1) {
+                                        batiments3.remove(0);
+                                        if (nb_avantP > 3) {
+                                            nb_avantP -= 1;
+                                        }
+
+
+                                    }
+                                    break;
+                            }
                         }
                         break;
 
@@ -1069,74 +1107,76 @@ public class GameView extends View {
                 GamesActivity.Y=-1000;
                 switch (choixConstru) {
                     case 1 :
-                        switch(choixEmplacement) {
+                        if(points - 800 > 0) {
+                            points -= 800;
+                            switch (choixEmplacement) {
 
-                            case 1:
-                                Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
-                                batiments1.add(batiment);
-                                choixConstru = 0;
-                                nb_Potion +=1;
+                                case 1:
+                                    Batiment batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
+                                    batiments1.add(batiment);
+                                    choixConstru = 0;
+                                    nb_Potion += 1;
 
-                                if(batiments1.get(0).getName() == 2){
-                                    deBoostDegat();
-                                }
+                                    if (batiments1.get(0).getName() == 2) {
+                                        deBoostDegat();
+                                    }
 
-                                if(nb_infirmerie >= 1  && batiments1.get(0).getName() == 1 ){
-                                    nb_infirmerie -=1;
-                                }
-                                if(nb_avantP >= 1 && batiments1.get(0).getName() == 3){
-                                    nb_avantP -= 1;
-                                }
-
-
-                                if(batiments1.size() > 1){
-                                    batiments1.remove(0);
+                                    if (nb_infirmerie >= 1 && batiments1.get(0).getName() == 1) {
+                                        nb_infirmerie -= 1;
+                                    }
+                                    if (nb_avantP >= 1 && batiments1.get(0).getName() == 3) {
+                                        nb_avantP -= 1;
+                                    }
 
 
+                                    if (batiments1.size() > 1) {
+                                        batiments1.remove(0);
 
-                                }
-                                break;
-                            case 2:
-                                batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
-                                batiments2.add(batiment);
-                                choixConstru = 0;
-                                nb_Potion +=1;
-                                if(batiments2.get(0).getName() == 2){
-                                    deBoostDegat();
-                                }
 
-                                if(nb_infirmerie >= 1  && batiments2.get(0).getName() == 1 ){
-                                    nb_infirmerie -=1;
-                                }
-                                if(nb_avantP >= 1 && batiments2.get(0).getName() == 3){
-                                    nb_avantP -= 1;
-                                }
+                                    }
+                                    break;
+                                case 2:
+                                    batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
+                                    batiments2.add(batiment);
+                                    choixConstru = 0;
+                                    nb_Potion += 1;
+                                    if (batiments2.get(0).getName() == 2) {
+                                        deBoostDegat();
+                                    }
 
-                                if(batiments2.size() > 1){
-                                    batiments2.remove(0);
+                                    if (nb_infirmerie >= 1 && batiments2.get(0).getName() == 1) {
+                                        nb_infirmerie -= 1;
+                                    }
+                                    if (nb_avantP >= 1 && batiments2.get(0).getName() == 3) {
+                                        nb_avantP -= 1;
+                                    }
 
-                                }
-                                break;
-                            case 11:
-                                batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
-                                batiments3.add(batiment);
-                                choixConstru = 0;
-                                nb_Potion +=1;
-                                if(batiments3.get(0).getName() == 2){
-                                    deBoostDegat();
-                                }
+                                    if (batiments2.size() > 1) {
+                                        batiments2.remove(0);
 
-                                if(nb_infirmerie >= 1  && batiments3.get(0).getName() == 1 ){
-                                    nb_infirmerie -=1;
-                                }
-                                if(nb_avantP >= 1 && batiments3.get(0).getName() == 3){
-                                    nb_avantP -= 1;
-                                }
-                                if(batiments3.size() > 1){
-                                    batiments3.remove(0);
+                                    }
+                                    break;
+                                case 11:
+                                    batiment = new Batiment(context, Xemplacement, Yemplacement, 4);
+                                    batiments3.add(batiment);
+                                    choixConstru = 0;
+                                    nb_Potion += 1;
+                                    if (batiments3.get(0).getName() == 2) {
+                                        deBoostDegat();
+                                    }
 
-                                }
-                                break;
+                                    if (nb_infirmerie >= 1 && batiments3.get(0).getName() == 1) {
+                                        nb_infirmerie -= 1;
+                                    }
+                                    if (nb_avantP >= 1 && batiments3.get(0).getName() == 3) {
+                                        nb_avantP -= 1;
+                                    }
+                                    if (batiments3.size() > 1) {
+                                        batiments3.remove(0);
+
+                                    }
+                                    break;
+                            }
                         }
                         break;
                 }
@@ -1252,10 +1292,7 @@ public class GameView extends View {
                 pouvoirPossible=1;
                 outilPossible=0;
 
-
-
-
-
+                
                 if(nb_spawn <= 0){
                     timerseconde=0;
                     etatPartie = 0;
@@ -1275,6 +1312,66 @@ public class GameView extends View {
                     ((Activity) context).finish();
 
                 }
+
+
+                break;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public void Infinite(Canvas canvas){
+        // pendant 30 secondes le joueur build les defenses
+        switch (etatPartie){
+            case 0 : //Round préparation
+
+                constructionPossible=1;
+                pouvoirPossible=0;
+                outilPossible=1;
+
+                ///Faire en sorte que toute les n manches la somme augmente
+                if(30 - timerseconde == 29){
+                    points += 20*nb_Potion;
+                    points += 2 + (int)(points * 0.01) ;
+
+                }
+
+                if(30 - timerseconde == 0){
+                    nb_manche++;
+                    timerseconde=0;
+                    etatPartie = 1;
+
+                    animTrain=0;
+
+                    VagueEnemyMaker.Spawn(nb_manche);
+                    GamesActivity.choisi="Rien pour le moment";
+                }
+
+                if(30 - timerseconde <= 10){
+                    animTrain=1;
+
+
+                }
+
+
+                break;
+            case 1: //Round de defense
+                constructionPossible=0;
+                pouvoirPossible=1;
+                outilPossible=0;
+
+
+                if(nb_spawn <= 0){
+                    timerseconde=0;
+                    etatPartie = 0;
+                    trainX = -850;
+                }
+
+                break;
+            case 2:
+                constructionPossible=0;
+                pouvoirPossible=1;
+                outilPossible=0;
+
 
 
                 break;

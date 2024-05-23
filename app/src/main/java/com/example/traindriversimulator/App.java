@@ -32,7 +32,6 @@ public class App extends AppCompatActivity {
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.intro_rer_gaming);
         intro1.setVideoURI(uri);
 
-
     }
 
     public void launchGameWindow(){

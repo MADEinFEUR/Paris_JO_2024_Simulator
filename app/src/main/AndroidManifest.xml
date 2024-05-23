@@ -38,6 +38,14 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".GameTuto"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MDJ"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".App"
             android:exported="true"
             android:screenOrientation="portrait">

@@ -14,7 +14,7 @@ public class Enemy {
     private int etat = 1;
     public int loot;
     private int rank;
-    private int attaque;
+    public int attaque;
     private int attaqueRange;
     private String name;
     private int moneyReward;
