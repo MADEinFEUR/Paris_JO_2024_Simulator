@@ -119,6 +119,8 @@ public class GameView extends View {
         super(context);
 
 
+
+
         this.context = context;
         background = BitmapFactory.decodeResource(getResources(), R.drawable.map);
         base = BitmapFactory.decodeResource(getResources(), R.drawable.base);
@@ -251,7 +253,6 @@ public class GameView extends View {
                 break;
             case 3:
                 QuickPlay(canvas);
-                points = 200;
                 break;
         }
 

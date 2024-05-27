@@ -2,6 +2,7 @@ package com.example.traindriversimulator;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -38,6 +39,10 @@ public class GameOver extends AppCompatActivity {
             editor.commit();
         }
         tvHighest.setText(""+highest);
+
+        MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.defaite_avi);
+        MenuActivity.musicPlayer .setLooping(true);
+        MenuActivity.musicPlayer .start();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -45,6 +50,7 @@ public class GameOver extends AppCompatActivity {
         Intent intent = new Intent(GameOver.this, GamesActivity.class);
         startActivity(intent);
         finish();
+        MenuActivity.musicPlayer.stop();
 
     }
 
@@ -52,5 +58,6 @@ public class GameOver extends AppCompatActivity {
         Intent intent = new Intent(GameOver.this, MenuActivity.class);
         startActivity(intent);
         finish();
+        MenuActivity.musicPlayer.stop();
     }
 }

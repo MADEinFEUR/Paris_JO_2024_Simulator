@@ -43,6 +43,10 @@ public class App extends AppCompatActivity {
 
     }
 
+
+
+
+
     //____________________________vidéo intro_________________________________________________________________
     protected  void onResume(){
         super.onResume();
@@ -54,6 +58,9 @@ public class App extends AppCompatActivity {
 
 
     }
+
+
+
 
     public void intro(View v){
         Intent gamewindow = null;

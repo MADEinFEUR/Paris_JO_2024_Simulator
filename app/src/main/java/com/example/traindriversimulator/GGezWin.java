@@ -2,6 +2,7 @@ package com.example.traindriversimulator;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -38,6 +39,10 @@ public class GGezWin extends AppCompatActivity {
             editor.commit();
         }
         tvHighest.setText(""+highest);
+
+        MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.royale_victory_hdmi);
+        MenuActivity.musicPlayer .setLooping(true);
+        MenuActivity.musicPlayer .start();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -45,6 +50,8 @@ public class GGezWin extends AppCompatActivity {
         Intent intent = new Intent(GGezWin.this, GamesActivity.class);
         startActivity(intent);
         finish();
+        MenuActivity.musicPlayer.stop();
+
 
     }
 
@@ -52,6 +59,8 @@ public class GGezWin extends AppCompatActivity {
         Intent intent = new Intent(GGezWin.this, App.class);
         startActivity(intent);
         finish();
+        MenuActivity.musicPlayer.stop();
+
     }
 }
 

@@ -5,6 +5,7 @@ import static android.graphics.BitmapFactory.decodeResource;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,6 +49,8 @@ public class GamesActivity extends AppCompatActivity {
     public static float doigtY;
 
     private Mine mine;
+    public static MediaPlayer musicPlayerGame;
+
 
     private Button button1;
     private Button button2;
@@ -74,6 +77,13 @@ public class GamesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+
+
+
+        // Musique de guedin
+        MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.souls_mp3_de_zinzin);
+        MenuActivity.musicPlayer .setLooping(true);
+        MenuActivity.musicPlayer .start();
 
 
         gameView=new GameView(this);
