@@ -1,6 +1,7 @@
 package com.example.traindriversimulator;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -22,6 +23,13 @@ public class ShopActivity2 extends AppCompatActivity {
         }
         startActivities(new Intent[]{gamewindow});
 
+
+    }
+    public void lancerPaypal (View v) {
+        String url = "https://paypal.me/tuturmoney?country.x=FR&locale.x=fr_FR";
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
     public void exit(View v){
         Intent gamewindow = null;
