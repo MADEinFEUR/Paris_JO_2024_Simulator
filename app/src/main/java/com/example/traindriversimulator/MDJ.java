@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.media.MediaPlayer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +12,7 @@ public class MDJ extends AppCompatActivity {
 
 
     public static int mapChoisi;
+    private MediaPlayer musicPlayer; // Ajoute la variable musicPlayer
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,9 @@ public class MDJ extends AppCompatActivity {
     }
 
     public void lancerBossRush(View v) {
+        if (musicPlayer != null) {
+            musicPlayer.stop();
+        }
         Intent gamewindow = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             gamewindow = new Intent(this, GamesActivity.class);

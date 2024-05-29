@@ -24,6 +24,12 @@ public class ShopActivity extends AppCompatActivity {
         }
         startActivities(new Intent[]{gamewindow});
     }
+    public void lancerPaypal (View v) {
+        String url = "https://www.paypal.com";
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
+    }
     public void exit(View v){
         Intent gamewindow = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
