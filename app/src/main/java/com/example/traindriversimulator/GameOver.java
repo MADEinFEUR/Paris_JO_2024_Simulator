@@ -39,7 +39,7 @@ public class GameOver extends AppCompatActivity {
             editor.commit();
         }
         tvHighest.setText(""+highest);
-
+        MenuActivity.musicPlayer .stop();
         MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.defaite_avi);
         MenuActivity.musicPlayer .setLooping(true);
         MenuActivity.musicPlayer .start();

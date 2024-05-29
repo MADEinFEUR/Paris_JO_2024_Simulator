@@ -106,13 +106,13 @@ public class Enemy {
 
                 break;
             case /*joseLetreLent*/ "boss":
-                enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
-                enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemi1);
+                enemy[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.pecresse);
+                enemy[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.pecresse);
+                enemy[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.pecresse);
+                enemy[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.pecresse);
+                enemy[4] = BitmapFactory.decodeResource(context.getResources(), R.drawable.pecresse);
+                enemy[5] = BitmapFactory.decodeResource(context.getResources(), R.drawable.pecresse);
+                enemy[6] = BitmapFactory.decodeResource(context.getResources(), R.drawable.pecresse);
 
                 attaque = 200;
                 healthInit=700;

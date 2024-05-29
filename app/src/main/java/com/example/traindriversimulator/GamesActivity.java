@@ -91,7 +91,7 @@ public class GamesActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         GameView.constructionPossible =1;
-
+        musu();
 
         // Musique de guedin
 
@@ -822,7 +822,6 @@ private void option() {
                 if(GameView.points - 100 > 0) {
                     GameView.points -= 100;
                     if (GameView.smokeControl == false) {
-                        Toast.makeText(getApplicationContext(), "LACRYMO!!!!!", Toast.LENGTH_SHORT).show();
                         GameView.smokeVerif = false;
                         GameView.smokeControl = true;
                     } else {
@@ -842,7 +841,6 @@ private void option() {
                     if (GameView.paveVerif == true) {
                         GameView.yPave = Y;
                         GameView.xPave = X;
-                        Toast.makeText(getApplicationContext(), "LANCEEE DU PAVEEEE!!!!!!", Toast.LENGTH_SHORT).show();
                         GameView.paveControl = true;
                         GameView.paveVerif = false;
                     } else {
@@ -862,7 +860,6 @@ private void option() {
                         GameView.forceSyndic = false;
                         GameView.forceSyndicClique = true;
                         GameView.xForceSydicale = Y;
-                        Toast.makeText(getApplicationContext(), "Force Synd", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "pas encore disponible", Toast.LENGTH_SHORT).show();
                     }
@@ -880,9 +877,7 @@ private void option() {
                         Tower tower = new Tower(gameView.getContext(), (int) X , (int) Y, 0,1,15);
                         GameView.towers.add(tower);
                     }else{
-                        Toast.makeText(getApplicationContext(), "Impossible de construire aussi haut", Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(getApplicationContext(), "T1 contruite jeune manifestant", Toast.LENGTH_SHORT).show();
                     GameView.points -= 15;
                 } else {
                     Toast.makeText(getApplicationContext(), "Tu n'as pas les sous sous", Toast.LENGTH_SHORT).show();
@@ -901,7 +896,6 @@ private void option() {
                         GameView.mines.add(mine);
 
                     }
-                    Toast.makeText(getApplicationContext(), "T2 contruite jeune manifestant", Toast.LENGTH_SHORT).show();
                     GameView.points -= 60;
                 } else {
                     Toast.makeText(getApplicationContext(), "Tu n'as pas les sous sous", Toast.LENGTH_SHORT).show();
@@ -921,7 +915,6 @@ private void option() {
                         GameView.catapults.add(catapult);
 
                     }
-                    Toast.makeText(getApplicationContext(), "T3 contruite jeune manifestant", Toast.LENGTH_SHORT).show();
                     GameView.points -= 150;
                 } else {
                     Toast.makeText(getApplicationContext(), "Tu n'as pas les sous sous", Toast.LENGTH_SHORT).show();
@@ -1001,7 +994,7 @@ private void option() {
                                 cost = 75;
 
                                 if (GameView.points < cost) {
-                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, "trop cher", Toast.LENGTH_SHORT).show();
                                 }
                                 else {
                                     GameView.points -= cost;
@@ -1017,7 +1010,7 @@ private void option() {
                             case 3:
                                 cost = 100;
                                 if (GameView.points < cost) {
-                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, "trop cher", Toast.LENGTH_SHORT).show();
                                 }
                                 else {
 
@@ -1060,7 +1053,7 @@ private void option() {
                             case 1:
                                 cost = 75;
                                 if (GameView.points < cost) {
-                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, "trop cher", Toast.LENGTH_SHORT).show();
                                 }
                                 else {
                                     GameView.points -= cost;
@@ -1078,7 +1071,7 @@ private void option() {
                                 cost = 150;
 
                                 if (GameView.points < cost) {
-                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, "trop cher", Toast.LENGTH_SHORT).show();
                                 }
                                 else {
                                     GameView.points -= cost;
@@ -1095,7 +1088,7 @@ private void option() {
 
                             case 3:
                                 cost = 400 ;if (GameView.points < cost) {
-                                Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "trop cher", Toast.LENGTH_SHORT).show();
                             }
                             else {
                                 GameView.points -= cost;
@@ -1133,7 +1126,7 @@ private void option() {
                             case 1:
                                 cost = 350;
                                 if (GameView.points < cost) {
-                                Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, "trop cher", Toast.LENGTH_SHORT).show();
                             }
                                 else {
                                     GameView.points -= cost;
@@ -1153,7 +1146,7 @@ private void option() {
                             case 2:
                                 cost = 500;
                                 if (GameView.points < cost) {
-                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, "trop cher", Toast.LENGTH_SHORT).show();
                                 }
                                 else {
                                     GameView.points -= cost;
@@ -1175,7 +1168,7 @@ private void option() {
                             case 3:
                                 cost = 700;
                                 if (GameView.points < cost) {
-                                    Toast.makeText(this, "The cost is too high", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, "trop cher", Toast.LENGTH_SHORT).show();
                                 }
                                 else {
                                     GameView.points -= cost;
@@ -1193,7 +1186,7 @@ private void option() {
                                     break;
                                 }
                             case 4:
-                                Toast.makeText(getApplicationContext(), "Niveau max atteint", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "trop cher", Toast.LENGTH_SHORT).show();
 
                                 break;
 
