@@ -1,6 +1,7 @@
 package com.example.traindriversimulator;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,6 +17,10 @@ public class MDJ extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mdj_activity);
 
+        MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.propulsion);
+        MenuActivity.musicPlayer.setLooping(true);
+        MenuActivity.musicPlayer.start();
+
 
     }
 
@@ -26,6 +31,7 @@ public class MDJ extends AppCompatActivity {
         }
         startActivities(new Intent[]{gamewindow});
         GameView.modeDeJeu = 3;
+        MenuActivity.stopMusic();
     }
 
     public void lancerInfinite(View v){
@@ -35,6 +41,22 @@ public class MDJ extends AppCompatActivity {
         }
         startActivities(new Intent[]{gamewindow});
         GameView.modeDeJeu = 2;
+        MenuActivity.stopMusic();
+
+    }
+
+    public void exit(View v){
+        Intent gamewindow = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            gamewindow = new Intent(this, MenuActivity.class);
+        }
+        startActivities(new Intent[]{gamewindow});
+        MenuActivity.stopMusic();
+
+
+
+
+
     }
 
     public void lancerQuickPlay(View v){
@@ -45,5 +67,7 @@ public class MDJ extends AppCompatActivity {
         }
         startActivities(new Intent[]{gamewindow});
         GameView.modeDeJeu = 1;
+        MenuActivity.stopMusic();
+
     }
 }

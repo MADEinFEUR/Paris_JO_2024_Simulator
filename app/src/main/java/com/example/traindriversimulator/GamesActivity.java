@@ -4,6 +4,7 @@ import static android.graphics.BitmapFactory.decodeResource;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -97,7 +98,6 @@ public class GamesActivity extends AppCompatActivity {
 
 
 
-
         LinearLayout linearLayout1 = new LinearLayout(this);
         linearLayout1.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout1.setMinimumWidth(GameView.dWidth);
@@ -126,8 +126,26 @@ public class GamesActivity extends AppCompatActivity {
         button6 = new Button(this);
         button7 = new Button(this);
 
+        Button button8 = new Button(this);
 
 
+
+        button8.setId(2);
+        button8.setWidth(75);
+        button8.setHeight(75);
+        button8.setBackgroundResource(R.drawable.exit);
+
+        button8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gamewindow = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R)
+                    gamewindow = new Intent(context, MenuActivity.class);
+                startActivities(new Intent[]{gamewindow});
+                MenuActivity.stopMusic();
+
+            }
+        });
 
         //bouton
 
@@ -144,6 +162,8 @@ public class GamesActivity extends AppCompatActivity {
                 bouton1jeu();
             }
         });
+
+
 
 
         //button2.setBackgroundResource(R.drawable.t2);
@@ -247,6 +267,12 @@ public class GamesActivity extends AppCompatActivity {
         ((RelativeLayout.LayoutParams) b6).addRule(RelativeLayout.ALIGN_TOP,RelativeLayout.TRUE);
         button6.setLayoutParams(b6);
 
+        ViewGroup.LayoutParams b8= new RelativeLayout.LayoutParams(GameView.dWidth/3,GameView.dHeight/14);
+        ((RelativeLayout.LayoutParams) b8).addRule(RelativeLayout.RIGHT_OF,RelativeLayout.TRUE);
+        ((RelativeLayout.LayoutParams) b8).addRule(RelativeLayout.ALIGN_TOP,RelativeLayout.TRUE);
+        button6.setLayoutParams(b8);
+
+
 
 
 
@@ -274,6 +300,12 @@ public class GamesActivity extends AppCompatActivity {
         ((RelativeLayout.LayoutParams) SV2).addRule(RelativeLayout.ALIGN_PARENT_RIGHT,RelativeLayout.TRUE);
         viewBoutton.setLayoutParams(SV2);
 
+        ViewGroup.LayoutParams SV3= new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        ((RelativeLayout.LayoutParams) SV3).addRule(RelativeLayout.ALIGN_PARENT_LEFT,RelativeLayout.TRUE);
+        ((RelativeLayout.LayoutParams) SV3).addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,RelativeLayout.TRUE);
+        ((RelativeLayout.LayoutParams) SV3).addRule(RelativeLayout.ALIGN_PARENT_RIGHT,RelativeLayout.TRUE);
+        viewBoutton.setLayoutParams(SV3);
+
 
 
 
@@ -287,14 +319,9 @@ public class GamesActivity extends AppCompatActivity {
         ViewGroup.LayoutParams params= new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
 
 
-
-
-
-
-
         GameButtons.setLayoutParams(params);
         GameButtons.addView(linearLayout3);
-
+        GameButtons.addView(button8);
 
 
         linearLayout1.addView(button1);
@@ -304,6 +331,7 @@ public class GamesActivity extends AppCompatActivity {
         linearLayout2.addView(button4);
         linearLayout2.addView(button5);
         linearLayout2.addView(button6);
+
 
         viewCapacite.addView(linearLayout1);
         viewBoutton.addView(linearLayout2);

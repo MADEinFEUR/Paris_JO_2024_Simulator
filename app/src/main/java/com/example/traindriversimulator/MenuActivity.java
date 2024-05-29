@@ -41,9 +41,6 @@ public class MenuActivity extends AppCompatActivity {
 
     }
 
-
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -53,14 +50,13 @@ public class MenuActivity extends AppCompatActivity {
             musicPlayer = null;
         }
     }
-    private void stopMusic() {
+
+    public static void stopMusic() {
         musicPlayer.stop();
     }
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void lancerJouer(View v){
         stopMusic();
-
-
         Intent gamewindow = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             gamewindow = new Intent(this, MDJ.class);
@@ -68,7 +64,7 @@ public class MenuActivity extends AppCompatActivity {
         startActivities(new Intent[]{gamewindow});
         GameView.partieLancer=0;
 
-        stopMusic();
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -78,18 +74,17 @@ public class MenuActivity extends AppCompatActivity {
             gamewindow = new Intent(this, ShopActivity.class);
         }
         startActivities(new Intent[]{gamewindow});
-        stopMusic();
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void lancerMDJ(View v){
         Intent gamewindow = null;
+        stopMusic();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             gamewindow = new Intent(this, GameTuto.class);
         }
         startActivities(new Intent[]{gamewindow});
-        stopMusic();
 
 
     }
@@ -100,6 +95,7 @@ public class MenuActivity extends AppCompatActivity {
 
     public void lancerCredit(View v){
         Intent gamewindow = null;
+        stopMusic();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             gamewindow = new Intent(this, GameCredit.class);
         }
