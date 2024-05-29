@@ -2,10 +2,12 @@ package com.example.traindriversimulator;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.media.MediaPlayer;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MDJ extends AppCompatActivity {
@@ -26,6 +28,7 @@ public class MDJ extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     public void lancerBossRush(View v) {
         if (musicPlayer != null) {
             musicPlayer.stop();
@@ -36,6 +39,7 @@ public class MDJ extends AppCompatActivity {
         }
         startActivities(new Intent[]{gamewindow});
         GameView.modeDeJeu = 3;
+        GamesActivity.musicIg = "souls";
         MenuActivity.stopMusic();
     }
 

@@ -116,6 +116,7 @@ public class GameView extends View {
     public static int modeDeJeu;
 
 
+
     @SuppressLint("ResourceType")
     @RequiresApi(api = Build.VERSION_CODES.R)
     public GameView(Context context) {

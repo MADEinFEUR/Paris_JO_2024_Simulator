@@ -16,11 +16,16 @@ import android.widget.Button;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 public class MenuActivity extends AppCompatActivity {
 
 
     public static int mapChoisi;
     public static MediaPlayer musicPlayer;
+
+    public  static ArrayList<String> musics;
+
 
     private HardwareRenderer mediaPlayer;
 
@@ -34,6 +39,14 @@ public class MenuActivity extends AppCompatActivity {
         musicPlayer = MediaPlayer.create(this, R.raw.sncf_remix_coupe_decale);
         musicPlayer.setLooping(true);
         musicPlayer.start();
+
+
+
+
+
+
+
+
 
 
     }

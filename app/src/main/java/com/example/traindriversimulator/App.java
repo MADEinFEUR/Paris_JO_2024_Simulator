@@ -32,6 +32,15 @@ public class App extends AppCompatActivity {
         Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.intro_rer_gaming);
         intro1.setVideoURI(uri);
 
+        MenuActivity.musics = new ArrayList<String>();
+        MenuActivity.musics.add("souls");
+        MenuActivity.musics.add("onvix");
+        MenuActivity.musics.add("goofy");
+        MenuActivity.musics.add("rock");
+        MenuActivity.musics.add("wii");
+        MenuActivity.musics.add("caramel");
+        MenuActivity.musics.add("sans armes");
+
     }
 
     public void launchGameWindow(){

@@ -40,11 +40,12 @@ public class GamesActivity extends AppCompatActivity {
     public static int longclick;
 
 
-    public int boutonjeux;
+    public int boutonjeux = 1;
+    private int optionClique=0;
 
     //public int points = 0;
 
-    public static String choisi = "zizi";
+    public static String choisi = "zz";
 
     public static float doigtX;
     public static float doigtY;
@@ -54,13 +55,22 @@ public class GamesActivity extends AppCompatActivity {
 
 
     private Button button1;
-    public static String musicIg;
+    public static String musicIg = "zizi";
     private Button button2;
     private Button button3;
     private Button button4;
     private Button button5;
     private Button button6;
     private Button button7;
+    private Button button8;
+    private Button button9;
+    private Button button10;
+    private Button button11;
+    private Button button12;
+
+
+
+
     private View.OnTouchListener onTouchListener= new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -72,6 +82,7 @@ public class GamesActivity extends AppCompatActivity {
 
 
     private TextView txt;
+    private int musicNum= MenuActivity.musics.size();
 
 
     @SuppressLint({"ResourceType", "MissingInflatedId"})
@@ -79,22 +90,11 @@ public class GamesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-
+        GameView.constructionPossible =1;
 
 
         // Musique de guedin
-        switch (musicIg) {
-            case "souls" :
-                MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.souls_mp3_de_zinzin);
-            break;
-            case "" :
-                break;
-            default :
-                break;
 
-        }
-        MenuActivity.musicPlayer .setLooping(true);
-        MenuActivity.musicPlayer .start();
 
 
         gameView=new GameView(this);
@@ -132,21 +132,117 @@ public class GamesActivity extends AppCompatActivity {
         button7 = new Button(this);
 
 
-        Button button8 = new Button(this);
+        button8 = new Button(this);
+        button9 = new Button(this);
+        button10 = new Button(this);
+        button11 = new Button(this);
+        button12 = new Button(this);
+
+
+
+
 
 
         button8.setId(8);
         button8.setWidth(50);
         button8.setHeight(50);
         button8.setX(GameView.dWidth - GameView.dWidth/4);
-        button8.setBackgroundResource(R.drawable.exit);
+        button8.setBackgroundResource(R.drawable.option);
 
         button8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               option();
+            }
+        });
+
+
+
+        button9.setId(9);
+        button9.setWidth(50);
+        button9.setHeight(50);
+        button9.setX(GameView.dWidth/2 - 1*GameView.dWidth/10);
+        button9.setY(GameView.dHeight - 3*GameView.dHeight/4);
+
+        button9.setBackgroundResource(R.drawable.exit);
+        button9.setEnabled(false);
+        button9.setVisibility(View.INVISIBLE);
+
+
+        button9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 exit();
             }
         });
+
+
+
+        button10.setId(10);
+        button10.setWidth(50);
+        button10.setHeight(50);
+        button10.setX(GameView.dWidth/2 - 4*GameView.dWidth/10);
+        button10.setY(GameView.dHeight - 2*GameView.dHeight/4);
+
+        button10.setBackgroundResource(R.drawable.musicpresc);
+        button10.setEnabled(false);
+        button10.setVisibility(View.INVISIBLE);
+
+
+        button10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(musicNum == 0 ){
+                    musicNum = MenuActivity.musics.size() - 1;
+                }else{
+                    musicNum --;
+                }
+                musicIg = MenuActivity.musics.get(musicNum);
+                musu();
+
+            }
+        });
+
+
+
+        button11.setId(11);
+        button11.setWidth(50);
+        button11.setHeight(50);
+        button11.setX(GameView.dWidth/2 + 3*GameView.dWidth/20);
+        button11.setY(GameView.dHeight - 2*GameView.dHeight/4);
+        button11.setBackgroundResource(R.drawable.musicsuiv);
+        button11.setEnabled(false);
+        button11.setVisibility(View.INVISIBLE);
+
+
+        button11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(musicNum >= MenuActivity.musics.size()-1){
+                    musicNum =0;
+                }else{
+                    musicNum ++;
+                }
+                musicIg = MenuActivity.musics.get(musicNum);
+                musu();
+
+
+            }
+        });
+
+
+
+        button12.setId(12);
+        button12.setWidth(GameView.dWidth);
+        button12.setHeight(GameView.dHeight);
+        button12.setX(0);
+        button12.setY(0);
+        button12.setBackgroundResource(R.drawable.mapflou);
+        button12.setEnabled(false);
+        button12.setVisibility(View.INVISIBLE);
+
+
+
 
         //bouton
 
@@ -322,7 +418,14 @@ public class GamesActivity extends AppCompatActivity {
 
         GameButtons.setLayoutParams(params);
         GameButtons.addView(linearLayout3);
+        GameButtons.addView(button12);
         GameButtons.addView(button8);
+        GameButtons.addView(button9);
+        GameButtons.addView(button10);
+        GameButtons.addView(button11);
+
+
+
 
 
         linearLayout1.addView(button1);
@@ -363,6 +466,8 @@ public class GamesActivity extends AppCompatActivity {
         gameActivity.addView(GameButtons);
 
         setContentView(gameActivity);
+
+
     }
 
 
@@ -377,7 +482,107 @@ private  void exit(){
         gamewindow = new Intent(this,MenuActivity.class);
     startActivities(new Intent[]{gamewindow});
     MenuActivity.stopMusic();
+
 }
+private void   musu(){
+    switch (musicIg) {
+        case "souls":
+            MenuActivity.musicPlayer.stop();
+            MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.souls_mp3_de_zinzin);
+
+            break;
+        case "onvix":
+            MenuActivity.musicPlayer.stop();
+            MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.ovnx4);
+
+
+            break;
+        case "goofy":
+            MenuActivity.musicPlayer.stop();
+            MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.better_call_goofy_ahh_saul_bababoyy_remix);
+
+
+            break;
+        case "rock":
+            MenuActivity.musicPlayer.stop();
+            MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.hr_hdmi);
+
+
+            break;
+        case "wii":
+            MenuActivity.musicPlayer.stop();
+            MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.wii);
+
+
+            break;
+        case "caramel":
+            MenuActivity.musicPlayer.stop();
+            MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.caramel);
+
+
+            break;
+        case "sans armes":
+            MenuActivity.musicPlayer.stop();
+            MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.sans_armes);
+
+
+            break;
+        default:
+            MenuActivity.musicPlayer.stop();
+            MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.better_call_goofy_ahh_saul_bababoyy_remix);
+
+            break;
+
+    }
+    MenuActivity.musicPlayer.setLooping(true);
+    MenuActivity.musicPlayer.start();
+}
+
+
+
+private void option() {
+    switch (optionClique) {
+        case 0:
+
+            button9.setEnabled(true);
+            button9.setVisibility(View.VISIBLE);
+
+            button10.setEnabled(true);
+            button10.setVisibility(View.VISIBLE);
+
+            button11.setEnabled(true);
+            button11.setVisibility(View.VISIBLE);
+
+            button12.setVisibility(View.VISIBLE);
+            optionClique = 1;
+
+            break;
+
+        case 1:
+            optionClique = 0;
+
+            button9.setEnabled(false);
+            button9.setVisibility(View.INVISIBLE);
+
+            button10.setEnabled(false);
+            button10.setVisibility(View.INVISIBLE);
+
+            button11.setEnabled(false);
+            button11.setVisibility(View.INVISIBLE);
+
+            button12.setVisibility(View.INVISIBLE);
+            break;
+
+    }
+
+
+
+
+
+
+}
+
+
 
 
 
