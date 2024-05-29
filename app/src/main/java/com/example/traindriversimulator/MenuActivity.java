@@ -36,9 +36,6 @@ public class MenuActivity extends AppCompatActivity {
         musicPlayer.start();
 
 
-
-
-
     }
 
     @Override
@@ -54,6 +51,7 @@ public class MenuActivity extends AppCompatActivity {
     public static void stopMusic() {
         musicPlayer.stop();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void lancerJouer(View v){
         stopMusic();

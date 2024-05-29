@@ -1,5 +1,6 @@
 package com.example.traindriversimulator;
 
+import static androidx.core.content.ContextCompat.startActivities;
 import static com.example.traindriversimulator.GamesActivity.X;
 import static com.example.traindriversimulator.GamesActivity.longclick;
 

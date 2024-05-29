@@ -54,6 +54,7 @@ public class GamesActivity extends AppCompatActivity {
 
 
     private Button button1;
+    public static String musicIg;
     private Button button2;
     private Button button3;
     private Button button4;
@@ -82,7 +83,16 @@ public class GamesActivity extends AppCompatActivity {
 
 
         // Musique de guedin
-        MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.souls_mp3_de_zinzin);
+        switch (musicIg) {
+            case "souls" :
+                MenuActivity.musicPlayer = MediaPlayer.create(this, R.raw.souls_mp3_de_zinzin);
+            break;
+            case "" :
+                break;
+            default :
+                break;
+
+        }
         MenuActivity.musicPlayer .setLooping(true);
         MenuActivity.musicPlayer .start();
 
@@ -113,11 +123,6 @@ public class GamesActivity extends AppCompatActivity {
         linearLayout3.setOrientation(LinearLayout.VERTICAL);
 
 
-
-
-
-
-
         button1 = new Button(this);
         button2 = new Button(this);
         button3 = new Button(this);
@@ -126,24 +131,20 @@ public class GamesActivity extends AppCompatActivity {
         button6 = new Button(this);
         button7 = new Button(this);
 
+
         Button button8 = new Button(this);
 
 
-
-        button8.setId(2);
-        button8.setWidth(75);
-        button8.setHeight(75);
+        button8.setId(8);
+        button8.setWidth(50);
+        button8.setHeight(50);
+        button8.setX(GameView.dWidth - GameView.dWidth/4);
         button8.setBackgroundResource(R.drawable.exit);
 
         button8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gamewindow = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R)
-                    gamewindow = new Intent(context, MenuActivity.class);
-                startActivities(new Intent[]{gamewindow});
-                MenuActivity.stopMusic();
-
+                exit();
             }
         });
 
@@ -328,6 +329,7 @@ public class GamesActivity extends AppCompatActivity {
         linearLayout1.addView(button2);
         linearLayout1.addView(button3);
 
+
         linearLayout2.addView(button4);
         linearLayout2.addView(button5);
         linearLayout2.addView(button6);
@@ -336,17 +338,13 @@ public class GamesActivity extends AppCompatActivity {
         viewCapacite.addView(linearLayout1);
         viewBoutton.addView(linearLayout2);
 
+
         linearLayout3.addView(viewBoutton);
         linearLayout3.addView(viewCapacite);
 
+
         linearLayout3.setY(GameView.dHeight - 5*GameView.dHeight/32);
         linearLayout3.setX(0);
-
-
-
-
-
-
 
 
 
@@ -373,7 +371,13 @@ public class GamesActivity extends AppCompatActivity {
 
 
 
-
+private  void exit(){
+    Intent gamewindow = null;
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R)
+        gamewindow = new Intent(this,MenuActivity.class);
+    startActivities(new Intent[]{gamewindow});
+    MenuActivity.stopMusic();
+}
 
 
 
