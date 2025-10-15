@@ -20,8 +20,8 @@ Some purchases may **require parental authorization**, depending on your device�
 
 ## ⚠️ Requirements & Content
 
-- **Age rating:** 18+  
-- **No explicit content** (no graphic violence or nudity)  
+- **Age rating:** 21+  
+- **No explicit content** (nudity)  
 - Contains **political themes and satire**
 
 ---
